@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class Player extends Component{
     KeyHandler keyHandler;
-    private int speed;
+    private float speed;
 
 
     public Player(KeyHandler keyHandler){
@@ -16,16 +16,20 @@ public class Player extends Component{
         setDefaultValues();
     }
     public void setDefaultValues(){
-        this.speed = 1;
+        this.speed = 5;
     }
 
     public void update(){
-        if(keyHandler.up){gameObject.transform.position = gameObject.transform.position.add(Vector2.up.mul(speed));}
-        if(keyHandler.down){gameObject.transform.position = gameObject.transform.position.add(Vector2.down.mul(speed));}
-        if(keyHandler.left){gameObject.transform.position = gameObject.transform.position.add(Vector2.left.mul(speed));}
-        if(keyHandler.right){gameObject.transform.position = gameObject.transform.position.add(Vector2.right.mul(speed));}
-    }
 
+        Vector2 movement = Vector2.zero;
+
+        if(keyHandler.up){movement = movement.add(Vector2.up);}
+        if(keyHandler.down){movement = movement.add(Vector2.down);}
+        if(keyHandler.left){movement = movement.add(Vector2.left);}
+        if(keyHandler.right){movement = movement.add(Vector2.right);}
+        if(movement.equals(Vector2.zero)){return;}
+        gameObject.transform.translate(movement.getNormalized().mul(speed*GamePanel.getDeltaTime()));
+    }
     public void draw(Graphics2D g2d){
     }
 }

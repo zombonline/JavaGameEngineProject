@@ -1,11 +1,12 @@
 package Entity;
 
+import Main.GamePanel;
 import Utility.Vector2;
 
 public class Transform {
-    public Vector2 position;
-    public Vector2 rotation;
-    public Vector2 scale;
+    private Vector2 position;
+    private Vector2 rotation;
+    private Vector2 scale;
     public Transform(Vector2 position, Vector2 rotation, Vector2 scale){
         this.position = position;
         this.rotation = rotation;
@@ -15,6 +16,19 @@ public class Transform {
         this.position = new Vector2(0,0);
         this.rotation = new Vector2(0,0);
         this.scale = new Vector2(1,1);
-
+    }
+    public void setPosition(Vector2 newPosition){
+        position = newPosition;
+    }
+    public void translate(Vector2 translation) {
+        if (translation.equals(Vector2.zero)){
+            return;}
+        position = position.add(translation);
+    }
+    public Vector2 getPosition(){
+        return this.position;
+    }
+    public  Vector2 getScreenPosition(){
+        return position.mul(GamePanel.WORLD_SCALE);
     }
 }

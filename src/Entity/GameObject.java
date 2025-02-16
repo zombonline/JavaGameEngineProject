@@ -1,5 +1,7 @@
 package Entity;
 
+import Utility.Vector2;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +9,17 @@ import java.util.List;
 public class GameObject {
     public Transform transform;
     private List<Component> components = new ArrayList<>();
+    public String name;
 
-    public GameObject() {
+    public static GameObject createNew(String name, Vector2 initialPosition){
+        GameObject newObject = new GameObject(name);
+        newObject.transform.setPosition(initialPosition);
+        return newObject;
+    }
+
+    public GameObject(String name) {
         this.transform = new Transform();
+        this.name = name;
     }
 
     public <T extends Component> T addComponent(T component) {
@@ -27,6 +37,11 @@ public class GameObject {
             if (type.isInstance(c)) return type.cast(c);
         }
         return null;
+    }
+    public void awake(){
+        for(Component component : components){
+            component.awake();
+        }
     }
 
     public void update() {

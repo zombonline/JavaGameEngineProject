@@ -12,6 +12,7 @@ public abstract class Component {
         return gameObject;
     }
 
+    public void awake(){}
     public void update() {}
     public void draw(Graphics2D g2d) {}
 }

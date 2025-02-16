@@ -10,6 +10,6 @@ public class SpriteRenderer extends Component {
         this.spriteImage = spriteImage;
     }
     public void draw(Graphics2D g2d){
-        g2d.drawImage(spriteImage,(int)gameObject.transform.position.getX(),(int)gameObject.transform.position.getY(),null);
+        g2d.drawImage(spriteImage,(int)gameObject.transform.getScreenPosition().getX(),(int)gameObject.transform.getScreenPosition().getY(),null);
     }
 }

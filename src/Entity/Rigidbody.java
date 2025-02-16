@@ -27,7 +27,6 @@ public class Rigidbody extends Component{
 
         velocity = velocity.add(Vector2.down.mul(gravityScale));
         velocity = velocity.applyMax(maxVelocity);
-        gameObject.transform.position = gameObject.transform.position.add(velocity);
 
     }
 }
