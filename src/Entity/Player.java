@@ -17,7 +17,6 @@ public class Player extends Component{
     private Key rightKey;
     private Key jumpKey;
 
-    int xMovement = 0;
     public Player(KeyHandler keyHandler){
         this.keyHandler = keyHandler;
         setDefaultValues();
@@ -47,7 +46,5 @@ public class Player extends Component{
         if(leftKey.isHeld()){xMovement-=1;}
         if(rightKey.isHeld()){xMovement+=1;}
         rb.addForce(new Vector2(xMovement, 0).mul(speed*GamePanel.getDeltaTime()));
-    }
-    public void draw(Graphics2D g2d){
     }
 }

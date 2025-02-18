@@ -9,7 +9,7 @@ import Utility.Vector2;
 
 
 public class SpatialHashGrid {
-    private static int cellSize = 3;
+    private static int cellSize = 8;
     private static Map<Integer, List<Collider>> grid = new HashMap<>();;
 
 
@@ -33,7 +33,6 @@ public class SpatialHashGrid {
     public static void remove(Collider collider, int cellKey){
         List<Collider> cell = grid.get(cellKey);
         if(cell==null){
-            System.out.println("cell is null");
             return;
         }
         cell.remove(collider);

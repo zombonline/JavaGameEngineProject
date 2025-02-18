@@ -1,0 +1,13 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "scrimbo.png",
+      "delay": 10
+    },
+    {
+      "imageAddress": "scrimbo_wave.png",
+      "delay": 10
+    }
+  ]
+}

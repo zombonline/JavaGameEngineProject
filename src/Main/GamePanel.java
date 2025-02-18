@@ -2,6 +2,7 @@ package Main;
 
 import Entity.*;
 import Utility.Vector2;
+import com.fasterxml.jackson.databind.DatabindException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,7 +25,6 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     KeyHandler keyHandler = new KeyHandler();
-//    SpatialHashGrid spatialHashGrid = new SpatialHashGrid(10);
     Player player;
     GameObject brunge;
     ArrayList<GameObject> tiles = new ArrayList<GameObject>();
@@ -40,18 +40,19 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
 
     }
-    public void startGameThread() throws IOException {
+    public void startGameThread() throws IOException, DatabindException {
         player = new GameObject("Player Scrimbo").addComponent(player = new Player(keyHandler));
         player.getGameObject().addComponent(new SpriteRenderer(
                 ImageIO.read(getClass().getResourceAsStream("/Resources/scrimbo.png"))));
         player.getGameObject().addComponent(new Rigidbody());
         player.getGameObject().addComponent(new Collider());
-        System.out.println(player.getGameObject().transform.getPosition());
+        player.getGameObject().addComponent(new SpriteAnimator());
+        player.getComponent(SpriteAnimator.class).loadAnimation("", "test.json");
 
 
-        brunge = GameObject.createNew("Brunge", new Vector2(9,9));
-        brunge.addComponent(new Collider());
-        brunge.addComponent(new SpriteRenderer(ImageIO.read(getClass().getResourceAsStream("/Resources/brunge.png"))));
+//        brunge = GameObject.createNew("Brunge", new Vector2(9,9));
+//        brunge.addComponent(new Collider());
+//        brunge.addComponent(new SpriteRenderer(ImageIO.read(getClass().getResourceAsStream("/Resources/brunge.png"))));
 
         for(int i = 0; i < tileCountAcross; i++){
             GameObject newTile = GameObject.createNew("Tile " + i, new Vector2(i,tileCountDown-1));
@@ -89,7 +90,6 @@ public class GamePanel extends JPanel implements Runnable{
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -107,11 +107,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void awake(){
         player.getGameObject().awake();
-        brunge.awake();
     }
     public void update(){
         player.getGameObject().update();
-        brunge.update();
         for(GameObject tile : tiles){
             tile.update();
         }
@@ -121,7 +119,6 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         player.getGameObject().draw(g2d);
-        brunge.draw(g2d);
         for(GameObject tile : tiles){
             tile.draw(g2d);
         }

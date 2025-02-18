@@ -1,12 +1,14 @@
 package Main;
 
+import com.fasterxml.jackson.databind.DatabindException;
+
 import javax.swing.*;
 import java.io.IOException;
 
 public class Main {
     static JFrame frame = new JFrame();
     static GamePanel gamePanel = new GamePanel();
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, DatabindException {
         frame.setSize(400,300);
         frame.setVisible(true);
         frame.setTitle("Test Game");
