@@ -9,7 +9,7 @@ import Utility.Vector2;
 
 
 public class SpatialHashGrid {
-    private static int cellSize = 10;
+    private static int cellSize = 3;
     private static Map<Integer, List<Collider>> grid = new HashMap<>();;
 
 

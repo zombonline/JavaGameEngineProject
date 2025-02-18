@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_SCALE = 32;
@@ -26,6 +27,8 @@ public class GamePanel extends JPanel implements Runnable{
 //    SpatialHashGrid spatialHashGrid = new SpatialHashGrid(10);
     Player player;
     GameObject brunge;
+    ArrayList<GameObject> tiles = new ArrayList<GameObject>();
+
     Thread gameThread;
 
 
@@ -49,6 +52,13 @@ public class GamePanel extends JPanel implements Runnable{
         brunge = GameObject.createNew("Brunge", new Vector2(9,9));
         brunge.addComponent(new Collider());
         brunge.addComponent(new SpriteRenderer(ImageIO.read(getClass().getResourceAsStream("/Resources/brunge.png"))));
+
+        for(int i = 0; i < tileCountAcross; i++){
+            GameObject newTile = GameObject.createNew("Tile " + i, new Vector2(i,tileCountDown-1));
+            newTile.addComponent(new SpriteRenderer(ImageIO.read(getClass().getResourceAsStream("/Resources/tile.png"))));
+            newTile.addComponent(new Collider());
+            tiles.add(newTile);
+        }
 
         gameThread = new Thread(this);
         gameThread.start();
@@ -102,7 +112,9 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         player.getGameObject().update();
         brunge.update();
-
+        for(GameObject tile : tiles){
+            tile.update();
+        }
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -110,5 +122,8 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2d = (Graphics2D) g;
         player.getGameObject().draw(g2d);
         brunge.draw(g2d);
+        for(GameObject tile : tiles){
+            tile.draw(g2d);
+        }
     }
 }

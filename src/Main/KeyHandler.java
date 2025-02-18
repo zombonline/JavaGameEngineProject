@@ -2,50 +2,39 @@ package Main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
-public class KeyHandler implements KeyListener{
+public class KeyHandler implements KeyListener {
 
-    public boolean up, down, left, right;
+    private final Map<Integer, Key> keys = new HashMap<>();
+
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(KeyEvent e) {}
 
+    public Key addKey(int keyCode, Runnable onPressed, Runnable onReleased) {
+        Key key = new Key(onPressed, onReleased);
+        keys.put(keyCode, key);
+        return key;
+    }
+
+    public Key addKey(int keyCode){
+        Key key = new Key();
+        keys.put(keyCode, key);
+        return key;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch(key){
-            case KeyEvent.VK_UP:
-                up = true;
-                break;
-            case KeyEvent.VK_DOWN:
-                down = true;
-                break;
-            case KeyEvent.VK_LEFT:
-                left = true;
-                break;
-            case KeyEvent.VK_RIGHT:
-                right = true;
-                break;
+        if (keys.containsKey(e.getKeyCode())) {
+            keys.get(e.getKeyCode()).press();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch(key){
-            case KeyEvent.VK_UP:
-                up = false;
-                break;
-            case KeyEvent.VK_DOWN:
-                down = false;
-                break;
-            case KeyEvent.VK_LEFT:
-                left = false;
-                break;
-            case KeyEvent.VK_RIGHT:
-                right = false;
-                break;
+        if (keys.containsKey(e.getKeyCode())) {
+            keys.get(e.getKeyCode()).release();
         }
     }
 }
