@@ -1,10 +1,10 @@
-package Entity;
+package ObjectSystem;
 import Main.Bounds;
 import Main.GamePanel;
 import Main.SpatialHashGrid;
+import Utility.CollisionLayer;
 import Utility.Vector2;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +67,7 @@ public class Collider extends Component{
 
     private void checkCollidersNearby() {
         List<Collider> nearbyColliders = SpatialHashGrid.getNearby(colliderPosition, collisionMask);
+        List<Collider> colliding = new ArrayList<Collider>();
         for (Collider nearbyCollider : nearbyColliders) {
             if (nearbyCollider == this) {
                 continue;
@@ -76,12 +77,14 @@ public class Collider extends Component{
                 continue;
             }
             if(getGameObject().getComponent(Rigidbody.class)!=null){
-                this.getGameObject().getComponent(Rigidbody.class).handleCollision(overlap, nearbyCollider.getGameObject().transform);
+                colliding.add(nearbyCollider);
             }
         }
+        if(colliding.isEmpty()){return;}
+        this.getGameObject().getComponent(Rigidbody.class).handleCollisions(colliding);
     }
 
-    private Vector2 getOverlap(Collider other) {
+    public Vector2 getOverlap(Collider other) {
         Bounds otherBounds = other.getBounds();
         float overlapX = Math.max(0, Math.min(bounds.maxX, otherBounds.maxX) - Math.max(bounds.minX, otherBounds.minX));
         float overlapY = Math.max(0, Math.min(bounds.maxY, otherBounds.maxY) - Math.max(bounds.minY, otherBounds.minY));
@@ -95,21 +98,6 @@ public class Collider extends Component{
             SpatialHashGrid.insert(this);    // Insert into new cell
             previousCellKey = newCellKey;    // Update last known cell
         }
-    }
-
-    //I SHOULD PROBABLY MAKE A RAYCASTING CLASS AND STICK THIS IN THERE
-    public static Collider checkForColliderAtPoint(Vector2 point, ArrayList<CollisionLayer> mask){
-        List<Collider> nearbyColliders = SpatialHashGrid.getNearby(point, mask);
-        Collider result = null;
-        for (Collider nearbyCollider : nearbyColliders) {
-            Bounds b = nearbyCollider.getBounds();
-
-            if(point.getX() > b.minX && point.getX() < b.maxX && point.getY() > b.minY && point.getY() < b.maxY){
-                result = nearbyCollider;
-                break;
-            }
-        }
-        return result;
     }
 
     public CollisionLayer getCollisionLayer() {

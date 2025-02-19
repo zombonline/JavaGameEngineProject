@@ -1,12 +1,6 @@
-package Entity;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
+package ObjectSystem;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import Main.Animation;
 import com.fasterxml.jackson.databind.DatabindException;

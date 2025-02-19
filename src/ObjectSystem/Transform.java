@@ -1,9 +1,9 @@
-package Entity;
+package ObjectSystem;
 
 import Main.GamePanel;
 import Utility.Vector2;
 
-public class Transform {
+public class Transform extends Component{
     private Vector2 position;
     private Vector2 rotation;
     private Vector2 scale;

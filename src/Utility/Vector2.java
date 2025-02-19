@@ -50,8 +50,8 @@ public class Vector2 {
     }
 
     public static Vector2 lerp(Vector2 a, Vector2 b, float t){
-        float lerpedX = (1*t)*a.getX()+(t*b.getX());
-        float lerpedY = (1*t)*a.getY()+(t*b.getY());
+        float lerpedX = (1 - t) * a.getX() + t * b.getX();
+        float lerpedY = (1 - t) * a.getY() + t * b.getY();
         return new Vector2(lerpedX, lerpedY);
     }
     @Override

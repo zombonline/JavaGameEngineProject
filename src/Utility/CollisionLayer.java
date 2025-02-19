@@ -1,4 +1,4 @@
-package Entity;
+package Utility;
 
 public enum CollisionLayer {
     DEFAULT,

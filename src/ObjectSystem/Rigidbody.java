@@ -1,10 +1,11 @@
-package Entity;
+package ObjectSystem;
 
+import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
-import com.sun.source.tree.NewArrayTree;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Rigidbody extends Component{
     public float mass;
@@ -18,6 +19,8 @@ public class Rigidbody extends Component{
     public float gravityScale;
     private boolean isGrounded;
 
+    Collider rbCollider;
+
     public Rigidbody(){
         this.mass = 1;
         this.friction = 0.5f;
@@ -30,22 +33,43 @@ public class Rigidbody extends Component{
         this.gravityScale = .01f;
     }
 
+    @Override
+    public void awake() {
+        rbCollider = getComponent(Collider.class);
+        System.out.println(rbCollider == null);
+    }
+
     public void update(){
         velocity = new Vector2(velocity.getX()*drag, velocity.getY());
-        if(!checkGround()){
-            velocity = velocity.add(Vector2.down.mul(gravityScale));
-        }
+        velocity = velocity.add(Vector2.down.mul(gravityScale));
         velocity = velocity.applyMax(maxVelocity);
         getGameObject().transform.translate(velocity);
     }
 
-    public void handleCollision(Vector2 overlap, Transform other){
+    public void handleCollisions(List<Collider> colliders){
+        if(colliders.isEmpty()){return;}
+        Vector2 maxOverlap = new Vector2(0, 0);
+        Collider strongestCollider = null;
+
+        for (Collider c : colliders) {
+            Vector2 o = rbCollider.getOverlap(c);
+            if (o.getX() > maxOverlap.getX() || o.getY() > maxOverlap.getY()) {
+                maxOverlap = o;
+                strongestCollider = c;
+            }
+        }
+        handleCollision(strongestCollider);
+    }
+
+    public void handleCollision(Collider other){
         Vector2 thisPos = getGameObject().transform.getPosition();
-        Vector2 otherPos = other.getPosition();
+        Vector2 otherPos = other.getGameObject().transform.getPosition();
+        Vector2 overlap = rbCollider.getOverlap(other);
+        if(overlap.getX()<=0 || overlap.getY() <= 0){return;}
+        System.out.println(overlap);
         // Determine direction of collision
         float dx = thisPos.getX() - otherPos.getX();
         float dy = thisPos.getY() - otherPos.getY();
-
         if (Math.abs(dx) > Math.abs(dy)) {
             // X-axis collision (left/right)
             if (dx > 0) {
@@ -66,30 +90,28 @@ public class Rigidbody extends Component{
                 thisPos.setY(thisPos.getY() - overlap.getY());
             }
             velocity.setY(Math.abs(velocity.getY()) > 0.1 ? -velocity.getY() * restitution : 0);
-
         }
         getGameObject().transform.setPosition(thisPos);
+        System.out.println("Corrected overlap is now: " + rbCollider.getOverlap(other) );
     }
     public void addForce(Vector2 force){
         this.velocity = this.velocity.add(force);
     }
-    public boolean checkGround(){
-        Collider collider = getGameObject().getComponent(Collider.class);
-        if(collider!= null){
-            float x = collider.getColliderPosition().getX();
-            float y = collider.getColliderPosition().getY() + collider.getColliderSize().getY()/2;
-            Vector2 bottomPos = new Vector2(x,y);
-            bottomPos = bottomPos.add(Vector2.down.mul(.025f));
-
-            ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
-            mask.add(CollisionLayer.values()[0]);
-            new Raycast(new Vector2(getGameObject().transform.getPosition().getX(),collider.getBounds().maxY+0.01f),.01f,90, 10);
-            Collider collider1 = Collider.checkForColliderAtPoint(bottomPos, mask);
-            if(collider1!=null){
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean checkGround(){
+////        Collider collider = getGameObject().getComponent(Collider.class);
+////        if(collider!= null){
+////            float x = collider.getColliderPosition().getX();
+////            float y = collider.getBounds().maxY;
+////            Vector2 rayPoint = new Vector2(x,y).add(Vector2.down.mul(.01f));
+////            ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
+////            mask.add(CollisionLayer.values()[0]);
+////            Raycast raycast = new Raycast(rayPoint,.01f,90, 10, mask);
+////            Collider collider1 = raycast.checkForCollision();
+////            if(collider1!=null){
+////                return true;
+////            }
+////        }
+//        return false;
+//    }
 
 }

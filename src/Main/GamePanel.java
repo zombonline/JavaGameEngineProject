@@ -1,6 +1,6 @@
 package Main;
 
-import Entity.*;
+import ObjectSystem.*;
 import Utility.Vector2;
 import com.fasterxml.jackson.databind.DatabindException;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
-    public static final int WORLD_SCALE = 32;
+    public static final int WORLD_SCALE = 64;
     int tileCountAcross = 15;
     int tileCountDown = 15;
     int width = WORLD_SCALE * tileCountAcross;
@@ -26,7 +26,6 @@ public class GamePanel extends JPanel implements Runnable{
 
     KeyHandler keyHandler = new KeyHandler();
     Player player;
-    GameObject brunge;
     ArrayList<GameObject> tiles = new ArrayList<GameObject>();
 
     Thread gameThread;
@@ -48,11 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
         player.getGameObject().addComponent(new Collider());
         player.getGameObject().addComponent(new SpriteAnimator());
         player.getComponent(SpriteAnimator.class).loadAnimation("", "test.json");
-
-
-//        brunge = GameObject.createNew("Brunge", new Vector2(9,9));
-//        brunge.addComponent(new Collider());
-//        brunge.addComponent(new SpriteRenderer(ImageIO.read(getClass().getResourceAsStream("/Resources/brunge.png"))));
+        player.getGameObject().addComponent(new CameraFollow());
 
         for(int i = 0; i < tileCountAcross; i++){
             GameObject newTile = GameObject.createNew("Tile " + i, new Vector2(i,tileCountDown-1));

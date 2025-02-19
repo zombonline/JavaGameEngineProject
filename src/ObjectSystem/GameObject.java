@@ -1,4 +1,4 @@
-package Entity;
+package ObjectSystem;
 
 import Utility.Vector2;
 
@@ -19,6 +19,7 @@ public class GameObject {
 
     public GameObject(String name) {
         this.transform = new Transform();
+        this.transform.setGameObject(this);
         this.name = name;
     }
 

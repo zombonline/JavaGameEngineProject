@@ -1,4 +1,4 @@
-package Entity;
+package ObjectSystem;
 
 import java.awt.*;
 

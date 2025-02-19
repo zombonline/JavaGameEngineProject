@@ -1,10 +1,8 @@
 package Main;
 
-import java.awt.color.ICC_ColorSpace;
-import java.sql.ClientInfoStatus;
 import java.util.*;
-import Entity.Collider;
-import Entity.CollisionLayer;
+import ObjectSystem.Collider;
+import Utility.CollisionLayer;
 import Utility.Vector2;
 
 
