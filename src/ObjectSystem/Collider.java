@@ -43,7 +43,6 @@ public class Collider extends Component{
             this.colliderPosition = getGameObject().transform.getPosition().add(offset);
         }
         this.bounds = new Bounds(colliderPosition, size);
-
         setSpatialHashGridCell();
         checkCollidersNearby();
     }
@@ -96,15 +95,15 @@ public class Collider extends Component{
         return this.bounds;
     }
 
-//    @Override
-//    public void draw(Graphics2D g2d) {
-//        super.draw(g2d);
-//        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-//        Vector2 screenPos = getGameObject().transform.getScreenPosition().sub(camera.getPosition());
-//        int w = (int)size.getX()*GamePanel.WORLD_SCALE;
-//        int h = (int)size.getY()*GamePanel.WORLD_SCALE;
-//        g2d.fillRect((int)screenPos.getX(), (int)screenPos.getY(), w, h); // Draw the square
-//    }
+    @Override
+    public void draw(Graphics2D g2d) {
+        super.draw(g2d);
+        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
+        Vector2 screenPos = getGameObject().transform.getScreenPosition().sub(camera.getPosition());
+        int w = (int)size.getX()*GamePanel.WORLD_SCALE;
+        int h = (int)size.getY()*GamePanel.WORLD_SCALE;
+        g2d.fillRect((int)screenPos.getX(), (int)screenPos.getY(), w, h); // Draw the square
+    }
 
     public static Map<String,Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();

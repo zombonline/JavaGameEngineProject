@@ -58,7 +58,7 @@ public class Rigidbody extends Component{
         Collider strongestCollider = colliders.getFirst();
         for (Collider c : colliders) {
             Vector2 o = rbCollider.getOverlap(c);
-            if (o.getX() > maxOverlap.getX() || o.getY() > maxOverlap.getY()) {
+            if (o.getMag() > maxOverlap.getMag()) {
                 maxOverlap = o;
                 strongestCollider = c;
             }
@@ -83,7 +83,9 @@ public class Rigidbody extends Component{
                 // Player is to the left of the object
                 thisPos.setX(thisPos.getX() - overlap.getX());
             }
-            velocity.setX(Math.abs(velocity.getX()) > 0.1 ? -velocity.getX() * restitution : 0);
+            System.out.println(velocity);
+            velocity.setX(Math.abs(velocity.getX()) > 0.01 ? -velocity.getX() * restitution : 0);
+            System.out.println(velocity);
         } else {
             // Y-axis collision (top/bottom)
             if (dy > 0) {
