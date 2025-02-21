@@ -1,26 +1,32 @@
 package ObjectSystem;
 
 import Main.GamePanel;
+import Utility.CollisionLayer;
 import Utility.Vector2;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static Main.Main.camera;
 import static Main.Main.gamePanel;
 
 public class SpriteRenderer extends Component {
-    BufferedImage spriteImage;
+    public BufferedImage spriteImage;
 
     public SpriteRenderer(BufferedImage spriteImage){
         this.spriteImage = spriteImage;
     }
-    public SpriteRenderer(){
-        this.spriteImage = null;
+    public static Map<String,Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("spirteImage", null);
+        return defaultValues;
     }
     public void draw(Graphics2D g2d){
         if(this.spriteImage == null){return;}
-
         Vector2 screenPos = getGameObject().transform.getScreenPosition().sub(camera.getPosition());
 
         if (isVisible(screenPos)) {

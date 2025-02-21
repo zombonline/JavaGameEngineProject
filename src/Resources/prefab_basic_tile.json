@@ -1,6 +1,6 @@
 {
   "name": "Basic Tile",
   "components": {
-    "sprite_renderer": {"spriteImage": "tile.png"},
+    "spriteRenderer": {"spriteImage": "tile.png"},
     "collider": {}}
 }

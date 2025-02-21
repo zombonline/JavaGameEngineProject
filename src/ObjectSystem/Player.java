@@ -6,6 +6,8 @@ import Main.KeyHandler;
 import Utility.Vector2;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player extends Component{
     KeyHandler keyHandler;
@@ -14,9 +16,9 @@ public class Player extends Component{
 
     private Key leftKey, rightKey, aKey, dkey, jumpKey;
 
-    public Player(KeyHandler keyHandler){
+    public Player(KeyHandler keyHandler, float speed){
         this.keyHandler = keyHandler;
-        setDefaultValues();
+        this.speed = speed;
         setUpControls(keyHandler);
     }
 
@@ -30,12 +32,8 @@ public class Player extends Component{
                 ()->{});
     }
 
-    public void setDefaultValues(){
-        speed = 1;
-    }
 
     private void jump(){
-        System.out.println("Jump");
         rb.addForce(Vector2.up.mul(.25f));
     }
     @Override
@@ -48,5 +46,12 @@ public class Player extends Component{
         if(leftKey.isHeld() || aKey.isHeld()){xMovement-=1;}
         if(rightKey.isHeld() || dkey.isHeld()){xMovement+=1;}
         rb.addForce(new Vector2(xMovement, 0).mul(speed*GamePanel.getDeltaTime()));
+    }
+
+    public static Map<String,Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("keyHandler", new KeyHandler());
+        defaultValues.put("speed",1);
+        return defaultValues;
     }
 }

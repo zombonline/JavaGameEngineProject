@@ -3,18 +3,15 @@ package Main;
 import ObjectSystem.*;
 import Utility.CollisionLayer;
 import Utility.Vector2;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class PrefabReader {
     public static GameObject getObject(String fileName) throws IOException {
@@ -44,54 +41,93 @@ public class PrefabReader {
     }
     private static Component buildComponent(String name, JsonNode values) {
         return switch (name) {
-            case "sprite_renderer" -> buildSpriteRenderer(values);
+            case "spriteRenderer" -> buildSpriteRenderer(values);
             case "collider" -> buildCollider(values);
-            case "sprite_animator" -> buildSpriteAnimator(values);
-            case "rididbody" -> buildRigidbody(values);
+            case "spriteAnimator" -> buildSpriteAnimator(values);
+            case "rigidbody" -> buildRigidbody(values);
+            case "player" -> buildPlayer(values);
+            case "cameraFollow" -> buildCameraFollow(values);
             default -> null;
         };
     }
     private static SpriteRenderer buildSpriteRenderer(JsonNode values){
-        BufferedImage spriteImage = null;
-        if (!values.has("spriteImage")) {
-            return new SpriteRenderer(null);
-        }
-        try{
-            spriteImage = ImageIO.read(PrefabReader.class.getResourceAsStream("/Resources/"+values.get("spriteImage").asText()));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        Map<String,Object> defaultValues = SpriteRenderer.getDefaultValues();
+        BufferedImage spriteImage = getBufferedImageFromString ((values.has("spriteImage") ? values.get("spriteImage").asText() : defaultValues.get("spriteImage").toString()));
         return new SpriteRenderer(spriteImage);
     }
+
+
+
     private static Collider buildCollider(JsonNode values){
-        boolean isStatic = false;
-        CollisionLayer collisionLayer = CollisionLayer.DEFAULT ;
-        List<CollisionLayer> collisionMask = new ArrayList<CollisionLayer>();;
-        collisionMask.add(CollisionLayer.DEFAULT);
-        Vector2 size = Vector2.one; //multipled by world_scale
-        Vector2 offset = Vector2.zero; //multiplied by world_scale
-        return new Collider();
+        Map<String,Object> defaultValues = Collider.getDefaultValues();
+
+        boolean isStatic = (boolean) (values.has("isStatic") ? values.get("isStatic").asBoolean() : defaultValues.get("isStatic"));
+
+        CollisionLayer collisionLayer = (CollisionLayer) (values.has("collisionLayer") ?
+                CollisionLayer.valueOf(values.get("collisionLayer").asText())
+                : defaultValues.get("collisionLayer"));
+        ArrayList<CollisionLayer> collisionMask = (ArrayList<CollisionLayer>) (values.has("collisionMask") ?
+                CollisionLayer.fromStringList(getStringListFromJSONNode(values.get("collisionMask")))
+                : defaultValues.get("collisionMask"));
+        Vector2 size = (Vector2) (values.has("size") ? new Vector2(getFloatListFromJSONNode(values.get("size"))) : defaultValues.get("size"));
+        Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
+        return new Collider(isStatic, collisionLayer, collisionMask, size, offset);
     }
+
+    private static Player buildPlayer(JsonNode values){
+        Map<String,Object> defaultValues = Player.getDefaultValues();
+        float speed = (float) (values.has("speed") ? (float) values.get("speed").asDouble() : defaultValues.get("speed"));
+        KeyHandler keyHandler = (KeyHandler) defaultValues.get("keyHandler");
+        return new Player(keyHandler, speed);
+    }
+
+    private static CameraFollow buildCameraFollow(JsonNode values){
+        Map<String,Object> defaultValues = CameraFollow.getDefaultValues();
+        Bounds bounds = (Bounds) (values.has("bounds") ? new Bounds(getFloatListFromJSONNode(values.get("bounds"))) :
+                defaultValues.get("bounds"));
+        Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
+        return new CameraFollow(new Bounds(-100,100,-100,150),0.9f, 0.0003f,0.01f,6f);
+    }
+
+
+
     private static SpriteAnimator buildSpriteAnimator(JsonNode values){
         return new SpriteAnimator();
     }
     private static Rigidbody buildRigidbody(JsonNode values){
-        float drag = 0;
-        float restitution = 0;
-        float gravityScale = 0;
-        Vector2 maxVelocity = null;
-        if(values.has("drag")) {drag = values.get("drag").floatValue();}
-        if(values.has("restitution")) {restitution = values.get("restitution").floatValue();}
-        if(values.has("gravityScale")) {gravityScale = values.get("gravityScale").floatValue();}
-        if(values.has("maxVelocity")) {maxVelocity = new Vector2(values.get("maxVelocity").asText());}
-        return new Rigidbody(drag,restitution,gravityScale,maxVelocity);
+        Map<String,Object> defaultValues = Rigidbody.getDefaultValues();
+        float drag = (float) (values.has("drag") ? (float) values.get("drag").asDouble() : defaultValues.get("drag"));
+        float restitution = (float) (values.has("restitution") ? (float) values.get("restitution").asDouble() : defaultValues.get("restitution"));
+        float gravityScale = (float) (values.has("gravityScale") ? (float) values.get("gravityScale").asDouble() : defaultValues.get("gravityScale"));
+        Vector2 maxVelocity = (Vector2) (values.has("maxVelocity") ? new Vector2(getFloatListFromJSONNode(values.get("maxVelocity"))) : defaultValues.get("maxVelocity"));
+
+        return new Rigidbody(drag,gravityScale,restitution,maxVelocity);
     }
 
-    //MIGHT BE WORTH GIVING ALL COMPONENTS A GET DEFAULT VALUES FUNCTION SO THAT I AM NOT DEFINING THE DEFAULT VALUES IN THIS CALSS
+    private static BufferedImage getBufferedImageFromString(String val){
+        try {
+            return ImageIO.read(PrefabReader.class.getResourceAsStream("/Resources/"+val));
+        } catch (Exception e){
+            System.out.println("Couldn't create image from address");
+            return null;
+        }
+    }
+    private static ArrayList<Float> getFloatListFromJSONNode(JsonNode node) {
+        ObjectMapper mapper = new ObjectMapper();
+        if (!node.isArray()) {
+            return null;
+        }
+        return mapper.convertValue(node, new TypeReference<ArrayList<Float>>() {});
+    }
+    private static ArrayList<String> getStringListFromJSONNode(JsonNode node) {
+        ObjectMapper mapper = new ObjectMapper();
+        if (!node.isArray()) {
+            return null;
+        }
+        return mapper.convertValue(node, new TypeReference<ArrayList<String>>() {});
+    }
 
-    //
-     //
-     //
+
 }
 
 

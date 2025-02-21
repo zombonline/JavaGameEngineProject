@@ -1,6 +1,7 @@
 package Main;
 
 import ObjectSystem.*;
+import Utility.CollisionLayer;
 import Utility.Vector2;
 import com.fasterxml.jackson.databind.DatabindException;
 
@@ -23,33 +24,34 @@ public class GamePanel extends JPanel implements Runnable{
     Thread gameThread;
 
     //TEMP GAME OBJECTS
-    KeyHandler keyHandler = new KeyHandler();
-    Player player;
+//    KeyHandler keyHandler = new KeyHandler();
+    GameObject player;
     ArrayList<GameObject> tiles = new ArrayList<GameObject>();
     public GamePanel() {
         this.setPreferredSize(new Dimension(960, 960));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyHandler);
         this.setFocusable(true);
-
     }
     public void startGameThread() throws IOException, DatabindException {
-        player = new GameObject("Player Scrimbo").addComponent(player = new Player(keyHandler));
-        player.getGameObject().addComponent(new SpriteRenderer(
-                ImageIO.read(getClass().getResourceAsStream("/Resources/scrimbo.png"))));
-        player.getGameObject().addComponent(new Rigidbody());
-        player.getGameObject().addComponent(new Collider());
-        player.getGameObject().addComponent(new SpriteAnimator());
-        player.getComponent(SpriteAnimator.class).loadAnimation("", "test.json");
-        player.getGameObject().addComponent(new CameraFollow(new Bounds(-100,100,-100,150),0.9f, 0.0003f,0.01f,6f));
-        for(int i = 0; i < tileCountAcross; i++){
-            GameObject newTile = PrefabReader.getObject("prefab_basic_tile.json");
-            System.out.println("Created " + newTile.name);
-            newTile.transform.setPosition(new Vector2(i,tileCountDown-1));
-            tiles.add(newTile);
-        }
+//        player = new GameObject("Player Scrimbo").addComponent(player = new Player(keyHandler));
+//        player.getGameObject().addComponent(new SpriteRenderer(
+//                ImageIO.read(getClass().getResourceAsStream("/Resources/scrimbo.png"))));
+//        player.getGameObject().addComponent(new Rigidbody(0.9f,0.01f,0f, new Vector2(1,.5)));
+//        ArrayList<CollisionLayer> mask = new ArrayList<>();
+//        mask.add(CollisionLayer.DEFAULT);
+//        player.getGameObject().addComponent(new Collider(false, CollisionLayer.DEFAULT,mask,Vector2.one,Vector2.zero));
+//        player.getGameObject().addComponent(new SpriteAnimator());
+//        player.getComponent(SpriteAnimator.class).loadAnimation("", "test.json");
+//        player.getGameObject().addComponent(new CameraFollow(new Bounds(-100,100,-100,150),0.9f, 0.0003f,0.01f,6f));
 
+        player = PrefabReader.getObject("prefab_player.json");
+//        for(int i = 0; i < tileCountAcross; i++){
+//            GameObject newTile = PrefabReader.getObject("prefab_basic_tile.json");
+//            newTile.transform.setPosition(new Vector2(i,tileCountDown-1));
+//            tiles.add(newTile);
+//        }
+        tiles = TMXParser.parse();
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -94,10 +96,15 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void awake(){
-        player.getGameObject().awake();
+        player.awake();
+        for(GameObject tile : tiles){
+            tile.awake();
+        }
     }
     public void update(){
-        player.getGameObject().update();
+        if(player == null){return;}
+
+        player.update();
         for(GameObject tile : tiles){
             tile.update();
         }
@@ -107,7 +114,8 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        player.getGameObject().draw(g2d);
+        if(player == null){return;}
+        player.draw(g2d);
         for(GameObject tile : tiles){
             tile.draw(g2d);
         }

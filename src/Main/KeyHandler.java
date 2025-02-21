@@ -7,6 +7,10 @@ import java.util.Map;
 
 public class KeyHandler implements KeyListener {
 
+    public KeyHandler(){
+        Main.gamePanel.addKeyListener(this);
+    }
+
     private final Map<Integer, Key> keys = new HashMap<>();
 
     @Override

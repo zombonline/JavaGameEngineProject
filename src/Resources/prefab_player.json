@@ -1,0 +1,38 @@
+{
+  "name": "Player",
+  "components": {
+    "player": {"speed": 1.0},
+    "spriteRenderer": {
+      "spriteImage": "scrimbo.png"
+    },
+    "rigidbody": {
+      "drag": 0.9,
+      "gravityScale": 0.01,
+      "restitution": 0,
+      "maxVelocity": [1.0,5.0]
+    },
+    "collider": {
+      "isStatic": false,
+      "collisionLayer": "DEFAULT",
+      "collisionMask": [
+        "DEFAULT"
+      ],
+      "size": [1.0,1.0],
+      "offset": [0.0,0.0]
+    },
+    "spriteAnimator": {
+    },
+    "cameraFollow": {
+      "bounds": [
+        -100,
+        100,
+        -100,
+        150
+      ],
+      "minBoundsFollowStrength": 0.9,
+      "boundsFollowStrengthScale": 0.0003,
+      "idleFollowStrength": 0.01,
+      "idleFollowMaxDist": 6.0
+    }
+  }
+}

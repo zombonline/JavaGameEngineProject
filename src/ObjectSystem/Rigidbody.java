@@ -2,8 +2,12 @@ package ObjectSystem;
 import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
+import com.sun.source.tree.NewClassTree;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Rigidbody extends Component{
     public float mass;
@@ -19,11 +23,10 @@ public class Rigidbody extends Component{
     Collider rbCollider;
 
     public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity){
-        this.drag = 0.9f;
-        this.maxVelocity = new Vector2(1,5);
-        this.restitution = 0f;
-        this.gravityScale = .01f;
-
+        this.drag = drag;
+        this.gravityScale = gravityScale;
+        this.restitution = restitution;
+        this.maxVelocity = maxVelocity;
         this.velocity = Vector2.zero;
     }
 
@@ -36,8 +39,17 @@ public class Rigidbody extends Component{
     public void update(){
         velocity = new Vector2(velocity.getX()*drag, velocity.getY());
         velocity = velocity.add(Vector2.down.mul(gravityScale));
-        velocity = velocity.applyMax(maxVelocity);
+        if(maxVelocity != null){velocity = velocity.applyMax(maxVelocity);}
         getGameObject().transform.translate(velocity);
+    }
+
+    public static Map<String, Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("drag",0.9f);
+        defaultValues.put("restitution", 0f);
+        defaultValues.put("gravityScale", 0.01f);
+        defaultValues.put("maxVelocity", null);
+        return defaultValues;
     }
 
     public void handleCollisions(List<Collider> colliders){

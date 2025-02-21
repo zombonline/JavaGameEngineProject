@@ -2,6 +2,8 @@ package Main;
 
 import Utility.Vector2;
 
+import java.util.ArrayList;
+
 public class Bounds {
     public float minX, maxX, minY, maxY;
 
@@ -20,7 +22,12 @@ public class Bounds {
         this.minY = pos.getY()-halfHeight;
         this.maxY = pos.getY()+halfHeight;
     }
-
+    public Bounds(ArrayList vals){
+        this.minX = (float) (vals.getFirst());
+        this.maxX = (float) (vals.get(1));
+        this.minY = (float) (vals.get(2));
+        this.maxY = (float) (vals.get(3));
+    }
     @Override
     public String toString() {
         return "minX: " + minX + ", maxX: " + maxX + ", minY: " + minY + ", maxY: " + maxY;

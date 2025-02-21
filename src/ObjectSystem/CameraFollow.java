@@ -4,6 +4,9 @@ import Main.Main;
 import Main.Bounds;
 import Utility.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CameraFollow extends Component{
     Camera camera;
     Transform transform;
@@ -21,12 +24,10 @@ public class CameraFollow extends Component{
         this.idleFollowStrength = idleFollowStrength;
         this.idleFollowMaxDist = idleFollowMaxDist;
     }
-
     @Override
     public void awake() {
         transform = getGameObject().transform;
     }
-
     @Override
     public void update() {
         Vector2 cameraCentre = camera.getCameraCentrePosition();
@@ -49,5 +50,14 @@ public class CameraFollow extends Component{
             Vector2 smoothedPosition = Vector2.lerp(cameraCentre, playerPos, idleFollowStrength);
             camera.setPosition(smoothedPosition);
         }
+    }
+    public static Map<String,Object> getDefaultValues() {
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("bounds" , new Bounds(-100,100,-100,100));
+        defaultValues.put("minBoundsFollowStrength", 0.9);
+        defaultValues.put("boundsFollowStrengthScale", 0.0003);
+        defaultValues.put("idleFollowStrength", 0.01);
+        defaultValues.put("idleFollowMaxDist", 6.0);
+        return defaultValues;
     }
 }

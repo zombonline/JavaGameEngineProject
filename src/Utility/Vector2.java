@@ -1,5 +1,7 @@
 package Utility;
 
+import java.util.ArrayList;
+
 public class Vector2 {
 
     public static final Vector2 up = new Vector2(0,-1);
@@ -26,6 +28,11 @@ public class Vector2 {
             System.out.println("Unable to parse string to create Vector2.");
         }
     }
+    public Vector2(ArrayList vals){
+        this.x = (float) (vals.getFirst());
+        this.y = (float) (vals.getLast());
+    }
+
     public Vector2(){
         this(0,0);
     }
