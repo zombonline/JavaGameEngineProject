@@ -15,14 +15,17 @@ public class Camera{
     public void follow(GameObject target) {
         if (target != null) {
             this.position = target.transform.getPosition().sub(
-                    new Vector2(gamePanel.getWidth() / 2, gamePanel.getHeight() / 2)
+                    new Vector2((float) gamePanel.getWidth() / 2, (float) gamePanel.getHeight() / 2)
             );
         }
     }
     public Vector2 getPosition() {
         return position;
     }
+    public Vector2 getCameraCentrePosition(){
+        return new Vector2(position.getX()+((float) gamePanel.getWidth() /2),position.getY()+((float) gamePanel.getHeight() /2));
+    }
     public void setPosition(Vector2 position){
-        this.position = new Vector2(position.getX()-(gamePanel.getWidth()/2),position.getY()-(gamePanel.getHeight()/2));
+        this.position = new Vector2(position.getX()-((float) gamePanel.getWidth() /2),position.getY()-((float) gamePanel.getHeight() /2));
     }
 }

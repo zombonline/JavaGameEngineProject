@@ -28,7 +28,6 @@ public class SpriteRenderer extends Component {
             int h = spriteImage.getHeight()*(GamePanel.WORLD_SCALE/spriteImage.getHeight());
             g2d.drawImage(spriteImage,(int) screenPos.getX(), (int) screenPos.getY(), w, h,null);
         }
-
     }
     private boolean isVisible(Vector2 screenPos) {
         int w = spriteImage.getWidth() * GamePanel.WORLD_SCALE / spriteImage.getWidth();

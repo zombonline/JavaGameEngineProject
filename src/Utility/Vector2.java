@@ -17,6 +17,15 @@ public class Vector2 {
         this.x = x;
         this.y = y;
     }
+    public Vector2(String vals){
+        try {
+            String[] parts = vals.split(",");
+            this.x = Float.parseFloat(parts[0]);
+            this.y = Float.parseFloat(parts[1]);
+        } catch (Exception e){
+            System.out.println("Unable to parse string to create Vector2.");
+        }
+    }
     public Vector2(){
         this(0,0);
     }
@@ -48,7 +57,9 @@ public class Vector2 {
     public Vector2 applyMax(Vector2 v){
         return new Vector2(Math.min(this.x, v.getX()), Math.min(this.y, v.getY()));
     }
-
+    public static double dist(Vector2 a, Vector2 b){
+        return a.sub(b).getMag();
+    }
     public static Vector2 lerp(Vector2 a, Vector2 b, float t){
         float lerpedX = (1 - t) * a.getX() + t * b.getX();
         float lerpedY = (1 - t) * a.getY() + t * b.getY();

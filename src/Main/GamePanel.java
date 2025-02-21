@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_SCALE = 64;
-    int tileCountAcross = 15;
+    int tileCountAcross = 150;
     int tileCountDown = 15;
     int width = WORLD_SCALE * tileCountAcross;
     int height = WORLD_SCALE * tileCountDown;
@@ -20,19 +20,14 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
     private static double deltaTime = 0;
 
-    public static double getDeltaTime() {
-        return deltaTime;
-    }
+    Thread gameThread;
 
+    //TEMP GAME OBJECTS
     KeyHandler keyHandler = new KeyHandler();
     Player player;
     ArrayList<GameObject> tiles = new ArrayList<GameObject>();
-
-    Thread gameThread;
-
-
     public GamePanel() {
-        this.setPreferredSize(new Dimension(width, height));
+        this.setPreferredSize(new Dimension(960, 960));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
@@ -47,17 +42,19 @@ public class GamePanel extends JPanel implements Runnable{
         player.getGameObject().addComponent(new Collider());
         player.getGameObject().addComponent(new SpriteAnimator());
         player.getComponent(SpriteAnimator.class).loadAnimation("", "test.json");
-        player.getGameObject().addComponent(new CameraFollow());
-
+        player.getGameObject().addComponent(new CameraFollow(new Bounds(-100,100,-100,150),0.9f, 0.0003f,0.01f,6f));
         for(int i = 0; i < tileCountAcross; i++){
-            GameObject newTile = GameObject.createNew("Tile " + i, new Vector2(i,tileCountDown-1));
-            newTile.addComponent(new SpriteRenderer(ImageIO.read(getClass().getResourceAsStream("/Resources/tile.png"))));
-            newTile.addComponent(new Collider());
+            GameObject newTile = PrefabReader.getObject("prefab_basic_tile.json");
+            System.out.println("Created " + newTile.name);
+            newTile.transform.setPosition(new Vector2(i,tileCountDown-1));
             tiles.add(newTile);
         }
 
         gameThread = new Thread(this);
         gameThread.start();
+    }
+    public static double getDeltaTime() {
+        return deltaTime;
     }
     @Override
     public void run() {
@@ -67,28 +64,24 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         long timer = 0;
         int drawCount = 0;
-
         awake();
-
+        TMXParser.parse();
         while (gameThread != null) {
             currentTime = System.nanoTime();
             deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
             delta += (currentTime - lastTime) / drawInterval; // Accumulate time in terms of drawInterval
             timer += currentTime - lastTime;
             lastTime = currentTime;
-
             if (delta >= 1) {
                 update(); // Update game logic
                 repaint(); // Render the game
                 delta--; // Decrement delta by 1
                 drawCount++;
             }
-
             if (timer >= 1000000000) {
                 drawCount = 0;
                 timer = 0;
             }
-
             // Precise throttling to maintain 60 FPS
             long sleepTime = (long) ((lastTime - System.nanoTime() + drawInterval) / 1_000_000); // Calculate sleep time in milliseconds
             if (sleepTime > 0) {
@@ -108,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable{
         for(GameObject tile : tiles){
             tile.update();
         }
+
     }
     @Override
     public void paintComponent(Graphics g) {

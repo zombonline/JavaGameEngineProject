@@ -1,15 +1,12 @@
 package ObjectSystem;
-
 import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Rigidbody extends Component{
     public float mass;
-    public float friction;
     public Vector2 velocity;
     float drag;
     public Vector2 angularVelocity;
@@ -21,16 +18,13 @@ public class Rigidbody extends Component{
 
     Collider rbCollider;
 
-    public Rigidbody(){
-        this.mass = 1;
-        this.friction = 0.5f;
-        this.velocity = Vector2.zero;
+    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity){
         this.drag = 0.9f;
-        this.angularVelocity = Vector2.zero;
         this.maxVelocity = new Vector2(1,5);
-        this.maxAngularVelocity = Vector2.zero;
         this.restitution = 0f;
         this.gravityScale = .01f;
+
+        this.velocity = Vector2.zero;
     }
 
     @Override
@@ -49,8 +43,7 @@ public class Rigidbody extends Component{
     public void handleCollisions(List<Collider> colliders){
         if(colliders.isEmpty()){return;}
         Vector2 maxOverlap = new Vector2(0, 0);
-        Collider strongestCollider = null;
-
+        Collider strongestCollider = colliders.getFirst();
         for (Collider c : colliders) {
             Vector2 o = rbCollider.getOverlap(c);
             if (o.getX() > maxOverlap.getX() || o.getY() > maxOverlap.getY()) {
@@ -66,7 +59,6 @@ public class Rigidbody extends Component{
         Vector2 otherPos = other.getGameObject().transform.getPosition();
         Vector2 overlap = rbCollider.getOverlap(other);
         if(overlap.getX()<=0 || overlap.getY() <= 0){return;}
-        System.out.println(overlap);
         // Determine direction of collision
         float dx = thisPos.getX() - otherPos.getX();
         float dy = thisPos.getY() - otherPos.getY();
@@ -92,7 +84,6 @@ public class Rigidbody extends Component{
             velocity.setY(Math.abs(velocity.getY()) > 0.1 ? -velocity.getY() * restitution : 0);
         }
         getGameObject().transform.setPosition(thisPos);
-        System.out.println("Corrected overlap is now: " + rbCollider.getOverlap(other) );
     }
     public void addForce(Vector2 force){
         this.velocity = this.velocity.add(force);
