@@ -23,7 +23,7 @@ public class Raycast {
     }
 
     public Collider checkForCollision(){
-        float epsilon = 1e-6f;
+        float epsilon = 1e-9f;
         double radians = Math.toRadians(this.rotation);
         double targetX = this.origin.getX() + Math.cos(radians) * this.length;
         double targetY = this.origin.getY() + Math.sin(radians) * this.length;
@@ -31,7 +31,7 @@ public class Raycast {
         if (Math.abs(targetY) < epsilon) targetY = 0;
         Vector2 targetPoint = new Vector2(targetX,targetY);
         for(int i = 1; i <= checkFrequency; i++){
-            Vector2 lerpedPosition = Vector2.lerp(this.origin, targetPoint, i/checkFrequency);
+            Vector2 lerpedPosition = Vector2.lerp(this.origin, targetPoint, (float) i / checkFrequency);
             Collider collider = checkForColliderAtPoint(lerpedPosition, mask);
             if(collider!= null){
                 return collider;

@@ -47,6 +47,7 @@ public class PrefabReader {
             case "rigidbody" -> buildRigidbody(values);
             case "player" -> buildPlayer(values);
             case "cameraFollow" -> buildCameraFollow(values);
+            case "specialCrate" -> new SpecialCrate();
             default -> null;
         };
     }

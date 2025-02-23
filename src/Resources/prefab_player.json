@@ -24,13 +24,13 @@
     },
     "cameraFollow": {
       "bounds": [
-        -100,
-        100,
-        -100,
-        150
+        -50,
+        50,
+        -50,
+        75
       ],
       "minBoundsFollowStrength": 0.9,
-      "boundsFollowStrengthScale": 0.0003,
+      "boundsFollowStrengthScale": 0.0005,
       "idleFollowStrength": 0.01,
       "idleFollowMaxDist": 6.0
     }

@@ -1,6 +1,7 @@
 package Main;
 
 import ObjectSystem.*;
+import ObjectSystem.Component;
 import Utility.CollisionLayer;
 import Utility.Vector2;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -13,45 +14,21 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_SCALE = 64;
-    int tileCountAcross = 150;
-    int tileCountDown = 15;
-    int width = WORLD_SCALE * tileCountAcross;
-    int height = WORLD_SCALE * tileCountDown;
-
     int FPS = 60;
     private static double deltaTime = 0;
-
     Thread gameThread;
 
-    //TEMP GAME OBJECTS
-//    KeyHandler keyHandler = new KeyHandler();
-    GameObject player;
-    ArrayList<GameObject> tiles = new ArrayList<GameObject>();
+    public static ArrayList<GameObject> activeGameObjects = new ArrayList<GameObject>();
+    public static ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<GameObject>();
     public GamePanel() {
-        this.setPreferredSize(new Dimension(960, 960));
+        this.setPreferredSize(new Dimension(1024, 1024));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
     }
     public void startGameThread() throws IOException, DatabindException {
-//        player = new GameObject("Player Scrimbo").addComponent(player = new Player(keyHandler));
-//        player.getGameObject().addComponent(new SpriteRenderer(
-//                ImageIO.read(getClass().getResourceAsStream("/Resources/scrimbo.png"))));
-//        player.getGameObject().addComponent(new Rigidbody(0.9f,0.01f,0f, new Vector2(1,.5)));
-//        ArrayList<CollisionLayer> mask = new ArrayList<>();
-//        mask.add(CollisionLayer.DEFAULT);
-//        player.getGameObject().addComponent(new Collider(false, CollisionLayer.DEFAULT,mask,Vector2.one,Vector2.zero));
-//        player.getGameObject().addComponent(new SpriteAnimator());
-//        player.getComponent(SpriteAnimator.class).loadAnimation("", "test.json");
-//        player.getGameObject().addComponent(new CameraFollow(new Bounds(-100,100,-100,150),0.9f, 0.0003f,0.01f,6f));
-
-        player = PrefabReader.getObject("prefab_player.json");
-//        for(int i = 0; i < tileCountAcross; i++){
-//            GameObject newTile = PrefabReader.getObject("prefab_basic_tile.json");
-//            newTile.transform.setPosition(new Vector2(i,tileCountDown-1));
-//            tiles.add(newTile);
-//        }
-        tiles = TMXParser.parse();
+        activeGameObjects.addAll(TMXParser.parse());
+        activeGameObjects.add(PrefabReader.getObject("prefab_player.json"));
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -77,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
             if (delta >= 1) {
                 update(); // Update game logic
                 repaint(); // Render the game
+                destroyObjects(); //Remove objects marked for destroy at end of frame
                 delta--; // Decrement delta by 1
                 drawCount++;
             }
@@ -96,28 +74,33 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void awake(){
-        player.awake();
-        for(GameObject tile : tiles){
-            tile.awake();
+        for(GameObject gameObject : activeGameObjects){
+            gameObject.awake();
         }
     }
     public void update(){
-        if(player == null){return;}
-
-        player.update();
-        for(GameObject tile : tiles){
-            tile.update();
+        for(GameObject gameObject : activeGameObjects){
+            gameObject.update();
+            if(gameObject.destroyOnNextFrame){
+                gameObjectsToDestroy.add(gameObject);
+            }
         }
-
     }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        if(player == null){return;}
-        player.draw(g2d);
-        for(GameObject tile : tiles){
-            tile.draw(g2d);
+        for(GameObject gameObject : activeGameObjects){
+            gameObject.draw(g2d);
         }
+    }
+    public void destroyObjects(){
+        for(GameObject gameObject : gameObjectsToDestroy){
+            for(Component component : gameObject.getAllComponents()){
+                component.onDestroy();
+            }
+            activeGameObjects.remove(gameObject);
+        }
+        gameObjectsToDestroy.clear();
     }
 }

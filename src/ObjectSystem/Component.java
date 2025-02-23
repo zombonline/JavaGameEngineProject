@@ -18,6 +18,7 @@ public abstract class Component {
     public void awake() {}
     public void update() {}
     public void draw(Graphics2D g2d) {}
+    public void onDestroy(){}
 //    public static Map<String,Object> getDefaultValues() {}
 
 }

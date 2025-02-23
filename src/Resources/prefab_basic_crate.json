@@ -1,0 +1,6 @@
+{
+  "name": "Basic Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "crash_crate_basic.png"},
+    "collider": {}}
+}

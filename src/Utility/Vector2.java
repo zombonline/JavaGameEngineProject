@@ -67,11 +67,17 @@ public class Vector2 {
     public static double dist(Vector2 a, Vector2 b){
         return a.sub(b).getMag();
     }
-    public static Vector2 lerp(Vector2 a, Vector2 b, float t){
+    public static Vector2 lerp(Vector2 a, Vector2 b, float t) {
+        t = Math.max(0, Math.min(1, t)); // Clamp between 0 and 1
+        if (t == 0) return a;
+        if (t == 1) return b;
+
         float lerpedX = (1 - t) * a.getX() + t * b.getX();
         float lerpedY = (1 - t) * a.getY() + t * b.getY();
+
         return new Vector2(lerpedX, lerpedY);
     }
+
     @Override
     public String toString() {
         return this.x + ", " + this.y;
@@ -79,4 +85,19 @@ public class Vector2 {
     public boolean equals(Vector2 val){
         return (this.x == val.getX() && this.y == val.getY());
     }
+    public float distanceTo(Vector2 other) {
+        float dx = other.getX() - this.getX();
+        float dy = other.getY() - this.getY();
+        return (float) Math.sqrt(dx * dx + dy * dy);
+    }
+    public  float toAngle() {
+        return (float) Math.toDegrees(Math.atan2(this.getX(), this.getY()));
+    }
+    public Vector2 abs(){
+        return new Vector2(Math.abs(this.x),Math.abs(this.y));
+    }
+    public Vector2 invert() {
+        return new Vector2(-this.getX() ,-this.getY());
+    }
+
 }

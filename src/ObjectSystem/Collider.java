@@ -14,12 +14,41 @@ import java.util.Map;
 import static Main.Main.camera;
 
 public class Collider extends Component{
+    public interface CollisionListener {
+        void onCollisionEnter(Collider other);
+        void onCollisionExit(Collider other);
+        void onCollisionStay(Collider other);
+    }
+    private List<CollisionListener> listeners = new ArrayList<>();
+    public void addListener(CollisionListener listener) {
+        listeners.add(listener);
+    }
+    public void removeListener(CollisionListener listener) {
+        listeners.remove(listener);
+    }
+    public void notifyCollisionEnter(Collider other) {
+        for (CollisionListener listener : listeners) {
+            listener.onCollisionEnter(other);
+        }
+    }
+    public void notifyCollisionStay(Collider other){
+        for (CollisionListener listener : listeners) {
+            listener.onCollisionStay(other);
+        }
+    }
+    public void notifyCollisionExit(Collider other){
+        for (CollisionListener listener : listeners) {
+            listener.onCollisionExit(other);
+        }
+    }
+
     private boolean isStatic;
     private CollisionLayer collisionLayer;
     private ArrayList<CollisionLayer> collisionMask;
     private Vector2 size, offset, colliderPosition;
     private int previousCellKey = Integer.MIN_VALUE;
     private Bounds bounds;
+
 
     public Collider(boolean isStatic, CollisionLayer collisionLayer, ArrayList<CollisionLayer> collisionMask, Vector2 size, Vector2 offset) {
         this.isStatic = isStatic;
@@ -45,6 +74,10 @@ public class Collider extends Component{
         this.bounds = new Bounds(colliderPosition, size);
         setSpatialHashGridCell();
         checkCollidersNearby();
+    }
+    @Override
+    public void onDestroy(){
+        SpatialHashGrid.remove(this);
     }
 
     private void checkCollidersNearby() {
@@ -94,14 +127,18 @@ public class Collider extends Component{
     public Bounds getBounds(){
         return this.bounds;
     }
+    public ArrayList<CollisionLayer> getCollisionMask(){
+        return this.collisionMask;
+    }
 
     @Override
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
         g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-        Vector2 screenPos = getGameObject().transform.getScreenPosition().sub(camera.getPosition());
-        int w = (int)size.getX()*GamePanel.WORLD_SCALE;
-        int h = (int)size.getY()*GamePanel.WORLD_SCALE;
+        int w = (int)(size.getX() * GamePanel.WORLD_SCALE);
+        int h = (int)(size.getY() * GamePanel.WORLD_SCALE);
+        Vector2 screenPos =
+                getGameObject().transform.getPosition().sub(size.sub(Vector2.one).div(2)).mul(GamePanel.WORLD_SCALE).sub(camera.getPosition());
         g2d.fillRect((int)screenPos.getX(), (int)screenPos.getY(), w, h); // Draw the square
     }
 
@@ -116,4 +153,5 @@ public class Collider extends Component{
         defaultValues.put("offset", Vector2.zero);
         return defaultValues;
     }
+
 }

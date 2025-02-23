@@ -1,13 +1,8 @@
 package ObjectSystem;
-import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
-import com.sun.source.tree.NewClassTree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Rigidbody extends Component{
     public float mass;
@@ -18,11 +13,39 @@ public class Rigidbody extends Component{
     public Vector2 maxAngularVelocity;
     public float restitution;
     public float gravityScale;
-    private boolean isGrounded;
+    private List<Vector2> forces = new ArrayList<>();
 
+    ArrayList<Collider> allCollisionsLastFrame = new ArrayList<Collider>();
+
+    public void updateTouchingColliders(){
+        ArrayList<Collider> allCollisions = new ArrayList<Collider>();
+        allCollisions.addAll(below);
+        allCollisions.addAll(left);
+        allCollisions.addAll(right);
+        allCollisions.addAll(above);
+        allCollisions = new ArrayList<>(new HashSet<>(allCollisions));
+
+        for(Collider collider : allCollisions){
+            if(!allCollisionsLastFrame.contains(collider)){
+                collider.notifyCollisionEnter(rbCollider);
+            }
+            collider.notifyCollisionStay(rbCollider);
+        }
+        for(Collider collider : allCollisionsLastFrame){
+            if(!allCollisions.contains(collider)){
+                collider.notifyCollisionExit(rbCollider);
+            }
+        }
+        allCollisionsLastFrame = new ArrayList<>(allCollisions);
+    }
+
+    ArrayList<Collider> above = new ArrayList<Collider>(),
+            below = new ArrayList<Collider>(),
+            left = new ArrayList<Collider>(),
+            right = new ArrayList<Collider>();
     Collider rbCollider;
 
-    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity){
+    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity) {
         this.drag = drag;
         this.gravityScale = gravityScale;
         this.restitution = restitution;
@@ -33,14 +56,108 @@ public class Rigidbody extends Component{
     @Override
     public void awake() {
         rbCollider = getComponent(Collider.class);
-        System.out.println(rbCollider == null);
     }
 
     public void update(){
+        for (Vector2 force : forces) {
+            velocity = velocity.add(force);
+        }
+        forces.clear();
         velocity = new Vector2(velocity.getX()*drag, velocity.getY());
         velocity = velocity.add(Vector2.down.mul(gravityScale));
         if(maxVelocity != null){velocity = velocity.applyMax(maxVelocity);}
+        CheckForNewCollider(Vector2.down);
+        CheckForNewCollider(Vector2.up);
+        CheckForNewCollider(Vector2.left);
+        CheckForNewCollider(Vector2.right);
         getGameObject().transform.translate(velocity);
+        updateTouchingColliders();
+
+    }
+
+    private void CheckForNewCollider(Vector2 direction) {
+        Vector2 halfSize = rbCollider.getColliderSize().div(2);
+        Vector2 pos = gameObject.transform.getPosition();
+        Vector2 perp = new Vector2(-direction.getY(), direction.getX()).mul(halfSize).mul(0.8f);
+
+        Vector2 rayOrigin1 = pos.add(direction.mul(halfSize.getMag() - .01f)).add(perp);
+        Vector2 rayOrigin2 = pos.add(direction.mul(halfSize.getMag() - 0.1f)).sub(perp);
+        float angle = (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getY()));
+
+        ArrayList<Raycast> rays = new ArrayList<Raycast>();
+        rays.add(new Raycast(rayOrigin1, .0001f, angle, 30, rbCollider.getCollisionMask()));
+        rays.add(new Raycast(rayOrigin2, .0001f, angle, 30, rbCollider.getCollisionMask()));
+
+        ArrayList<Collider> hits = new ArrayList<>();
+        for(Raycast ray :rays){
+            Collider hit = ray.checkForCollision();
+            if (hit!=null){
+                hits.add(hit);
+            }
+        }
+        if (hits.isEmpty()) {
+            clearColliders(direction);
+            return;
+        }
+        boolean stopVelocity = true;
+        for(Collider hit : hits) {
+            switch ((int) direction.toAngle()) {
+                case 0:
+                    below.removeIf(collider -> !hits.contains(collider));
+                    if (!isInlist(hit, below)){stopVelocity = false;}
+                    break;
+                case 90:
+                    right.removeIf(collider -> !hits.contains(collider));
+                    if (!isInlist(hit, right)){stopVelocity = false;}
+                    break;
+                case -90:
+                    left.removeIf(collider -> !hits.contains(collider));
+                    if (!isInlist(hit, left)){stopVelocity = false;}
+                    break;
+                case 180:
+                    above.removeIf(collider -> !hits.contains(collider));
+                    if (!isInlist(hit, above)){stopVelocity = false;}
+                    break;
+            }
+        }
+        if(stopVelocity){
+            float overlap;
+            switch ((int) direction.toAngle()) {
+                case 0:
+                    overlap = getGameObject().transform.getPosition().getY() + halfSize.getY() - hits.getFirst().getBounds().minY;
+                    if(velocity.getY() > 0 & overlap>=0){velocity.setY(0);}
+                    break;
+                case 90:
+                    overlap = getGameObject().transform.getPosition().getX() + halfSize.getX() - hits.getFirst().getBounds().minX;
+                    if(velocity.getX() > 0 & overlap>= 0){velocity.setX(0);}
+                    break;
+                case -90:
+                    overlap = getGameObject().transform.getPosition().getX() - halfSize.getX() - hits.getFirst().getBounds().maxX;
+                    if(velocity.getX() < 0 & overlap>= 0){velocity.setX(0);}
+                    break;
+                case 180:
+                    overlap = getGameObject().transform.getPosition().getY() - halfSize.getY() - hits.getFirst().getBounds().maxY;
+                    if(velocity.getY() < 0 & overlap>=0){velocity.setY(0);}
+                    break;
+            }
+        }
+
+    }
+
+    private boolean isInlist(Collider hit, ArrayList<Collider> hits) {
+        if (!hits.contains(hit)) {
+            hits.add(hit);
+            return false;
+        }
+        return true;
+    }
+    private void clearColliders(Vector2 direction) {
+        switch ((int) direction.toAngle()) {
+            case 0: below.clear(); break;
+            case 90: right.clear(); break;
+            case -90: left.clear(); break;
+            case 180: above.clear(); break;
+        }
     }
 
     public static Map<String, Object> getDefaultValues(){
@@ -70,11 +187,9 @@ public class Rigidbody extends Component{
         Vector2 thisPos = getGameObject().transform.getPosition();
         Vector2 otherPos = other.getGameObject().transform.getPosition();
         Vector2 overlap = rbCollider.getOverlap(other);
-        if(overlap.getX()<=0 || overlap.getY() <= 0){return;}
-        // Determine direction of collision
         float dx = thisPos.getX() - otherPos.getX();
         float dy = thisPos.getY() - otherPos.getY();
-        if (Math.abs(dx) > Math.abs(dy)) {
+        if (overlap.getX() < overlap.getY()) {
             // X-axis collision (left/right)
             if (dx > 0) {
                 // Player is to the right of the object
@@ -83,9 +198,6 @@ public class Rigidbody extends Component{
                 // Player is to the left of the object
                 thisPos.setX(thisPos.getX() - overlap.getX());
             }
-            System.out.println(velocity);
-            velocity.setX(Math.abs(velocity.getX()) > 0.01 ? -velocity.getX() * restitution : 0);
-            System.out.println(velocity);
         } else {
             // Y-axis collision (top/bottom)
             if (dy > 0) {
@@ -95,28 +207,11 @@ public class Rigidbody extends Component{
                 // Player is above the object (standing on it)
                 thisPos.setY(thisPos.getY() - overlap.getY());
             }
-            velocity.setY(Math.abs(velocity.getY()) > 0.1 ? -velocity.getY() * restitution : 0);
         }
         getGameObject().transform.setPosition(thisPos);
     }
-    public void addForce(Vector2 force){
-        this.velocity = this.velocity.add(force);
+    public void addForce(Vector2 force) {
+        forces.add(force);  // Store forces instead of applying them immediately
     }
-//    public boolean checkGround(){
-////        Collider collider = getGameObject().getComponent(Collider.class);
-////        if(collider!= null){
-////            float x = collider.getColliderPosition().getX();
-////            float y = collider.getBounds().maxY;
-////            Vector2 rayPoint = new Vector2(x,y).add(Vector2.down.mul(.01f));
-////            ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
-////            mask.add(CollisionLayer.values()[0]);
-////            Raycast raycast = new Raycast(rayPoint,.01f,90, 10, mask);
-////            Collider collider1 = raycast.checkForCollision();
-////            if(collider1!=null){
-////                return true;
-////            }
-////        }
-//        return false;
-//    }
 
 }
