@@ -40,6 +40,15 @@ public class Player extends Component{
     public void awake() {
         super.awake();
         rb = getGameObject().getComponent(Rigidbody.class);
+        getComponent(SpriteAnimator.class).loadAnimation("/Resources/","test.json");
+        getComponent(SpriteAnimator.class).addListener(new SpriteAnimator.AnimatorListener() {
+            @Override
+            public void onAnimationEvent(String eventKey) {
+                if(eventKey.equals("waving")){
+                    System.out.println("Hello!");
+                }
+            }
+        });
     }
     public void update(){
         int xMovement= 0;

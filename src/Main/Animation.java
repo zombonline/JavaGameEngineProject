@@ -12,15 +12,17 @@ public class Animation {
     public static class AnimationStep {
         public String imageAddress;
         public int delay;
+        public String eventKey=null;
         @JsonIgnore
         public BufferedImage bufferedImage;
 
         public AnimationStep() {
         }
 
-        public AnimationStep(String imageAddress, int delay) {
+        public AnimationStep(String imageAddress, int delay, String eventKey) {
             this.imageAddress = imageAddress;
             this.delay = delay;
+            this.eventKey = eventKey;
             loadImage();
         }
 

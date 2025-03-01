@@ -125,19 +125,19 @@ public class Rigidbody extends Component{
             switch ((int) direction.toAngle()) {
                 case 0:
                     overlap = getGameObject().transform.getPosition().getY() + halfSize.getY() - hits.getFirst().getBounds().minY;
-                    if(velocity.getY() > 0 & overlap>=0){velocity.setY(0);}
+                    if(velocity.getY() > 0 && overlap>=0){velocity.setY(0);}
                     break;
                 case 90:
                     overlap = getGameObject().transform.getPosition().getX() + halfSize.getX() - hits.getFirst().getBounds().minX;
-                    if(velocity.getX() > 0 & overlap>= 0){velocity.setX(0);}
+                    if(velocity.getX() > 0 && overlap>= 0){velocity.setX(0);}
                     break;
                 case -90:
-                    overlap = getGameObject().transform.getPosition().getX() - halfSize.getX() - hits.getFirst().getBounds().maxX;
-                    if(velocity.getX() < 0 & overlap>= 0){velocity.setX(0);}
+                    overlap = hits.getFirst().getBounds().maxX - (getGameObject().transform.getPosition().getX() - halfSize.getX());
+                    if (velocity.getX() < 0 && overlap >= 0) { velocity.setX(0); }
                     break;
                 case 180:
-                    overlap = getGameObject().transform.getPosition().getY() - halfSize.getY() - hits.getFirst().getBounds().maxY;
-                    if(velocity.getY() < 0 & overlap>=0){velocity.setY(0);}
+                    overlap = hits.getFirst().getBounds().maxY - (getGameObject().transform.getPosition().getY() - halfSize.getY());
+                    if (velocity.getY() < 0 && overlap >= 0) { addForce(new Vector2(0, -velocity.getY())); }
                     break;
             }
         }

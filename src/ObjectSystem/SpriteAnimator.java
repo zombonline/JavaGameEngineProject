@@ -1,19 +1,20 @@
 package ObjectSystem;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 import Main.Animation;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class SpriteAnimator extends Component{
     SpriteRenderer spriteRenderer;
     int frameTimer = 0;
-    int currentStep = 0;
+    int currentStepIndex = 0;
     Animation currentAnim;
-    public void loadAnimation(String dir, String filename) throws IOException {
+
+
+    public void loadAnimation(String dir, String filename)  {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
             InputStream inputStream = getClass().getResourceAsStream("/Resources/test.json");
@@ -29,9 +30,25 @@ public class SpriteAnimator extends Component{
             currentAnim = animation;
             frameTimer = animation.animationSteps.get(0).delay;
         }
-        catch (DatabindException e) {
+        catch (Exception e) {
             System.out.println("Animation not loaded");
             System.out.println(e);
+        }
+    }
+
+    public interface AnimatorListener {
+        void onAnimationEvent(String eventKey);
+    }
+    private List<SpriteAnimator.AnimatorListener> listeners = new ArrayList<>();
+    public void addListener(SpriteAnimator.AnimatorListener listener) {
+        listeners.add(listener);
+    }
+    public void removeListener(SpriteAnimator.AnimatorListener listener) {
+        listeners.remove(listener);
+    }
+    public void notifyAnimationEvent(String eventKey) {
+        for (SpriteAnimator.AnimatorListener listener : listeners) {
+            listener.onAnimationEvent(eventKey);
         }
     }
 //    C:\Users\megaz\Documents\JavaGameEngineProject\src\Resources\test.json
@@ -48,16 +65,20 @@ public class SpriteAnimator extends Component{
         if(currentAnim == null){return;}
         frameTimer--;
         if(frameTimer == 0){
-            currentStep++;
-            if(currentStep>=currentAnim.animationSteps.size()){
+            currentStepIndex++;
+            if(currentStepIndex >=currentAnim.animationSteps.size()){
                 if(currentAnim.isLooping){
-                    currentStep = 0;
+                    currentStepIndex = 0;
                 } else {
-                    currentStep = currentAnim.animationSteps.size()-1;
+                    currentStepIndex = currentAnim.animationSteps.size()-1;
                 }
             }
-            spriteRenderer.spriteImage = currentAnim.animationSteps.get(currentStep).bufferedImage;
-            frameTimer = currentAnim.animationSteps.get(currentStep).delay;
+            String eventKey = currentAnim.animationSteps.get(currentStepIndex).eventKey;
+            if(eventKey!=null){
+                notifyAnimationEvent(eventKey);
+            }
+            spriteRenderer.spriteImage = currentAnim.animationSteps.get(currentStepIndex).bufferedImage;
+            frameTimer = currentAnim.animationSteps.get(currentStepIndex).delay;
         }
     }
 }

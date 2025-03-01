@@ -7,7 +7,8 @@
     },
     {
       "imageAddress": "scrimbo_wave.png",
-      "delay": 10
+      "delay": 10,
+      "eventKey": "waving"
     }
   ]
 }
