@@ -1,5 +1,6 @@
 package ObjectSystem;
 
+import Main.GamePanel;
 import Utility.Vector2;
 
 import java.awt.*;
@@ -10,8 +11,8 @@ public class GameObject {
     public Transform transform;
     private List<Component> components = new ArrayList<>();
     public String name;
-    public boolean destroyOnNextFrame = false;
-
+    private boolean destroyOnNextFrame = false;
+    private boolean awake = false;
     public static GameObject createNew(String name, Vector2 initialPosition){
         GameObject newObject = new GameObject(name);
         newObject.transform.setPosition(initialPosition);
@@ -19,11 +20,13 @@ public class GameObject {
     }
     public static void destroy(GameObject object){
         object.destroyOnNextFrame = true;
+        GamePanel.gameObjectsToDestroy.add(object);
     }
     public GameObject(String name) {
         this.transform = new Transform();
         this.transform.setGameObject(this);
         this.name = name;
+        GamePanel.activeGameObjects.add(this);
     }
     public <T extends Component> T addComponent(T component) {
         components.add(component);
@@ -40,6 +43,8 @@ public class GameObject {
         return components;
     }
     public void awake(){
+        if(awake){return;}
+        awake=true;
         for(Component component : components){
             component.awake();
         }

@@ -2,10 +2,11 @@ package ObjectSystem;
 
 import Main.Main;
 import Main.Bounds;
+import Main.GamePanel;
 import Utility.Vector2;
-
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class CameraFollow extends Component{
     Camera camera;
@@ -15,7 +16,12 @@ public class CameraFollow extends Component{
     private float idleFollowStrength;
     private float idleFollowMaxDist;
     private Bounds bounds;
+    float followEnterThreshold = 50f;
+    float followExitThreshold = 50f;
 
+    boolean outOfXBounds = false, outOfYBounds = false;
+
+    public Vector2 lookAhead = Vector2.right.mul(4f);
     public CameraFollow(Bounds bounds, float minBoundsFollowStrength, float boundsFollowStrengthScale, float idleFollowStrength, float idleFollowMaxDist){
         camera = Main.camera;
         this.bounds = bounds;
@@ -31,23 +37,26 @@ public class CameraFollow extends Component{
     @Override
     public void update() {
         Vector2 cameraCentre = camera.getCameraCentrePosition();
-        Vector2 playerPos = transform.getScreenPosition();
+        Vector2 playerPos = transform.getScreenPosition().add(lookAhead.mul(GamePanel.WORLD_SCALE));
 
-
-        boolean outOfXBounds = playerPos.getX() < cameraCentre.getX() + bounds.minX || playerPos.getX() > cameraCentre.getX() + bounds.maxX;
-        boolean outOfYBounds = playerPos.getY() < cameraCentre.getY() + bounds.minY || playerPos.getY() > cameraCentre.getY() + bounds.maxY;
+        float xThreshold = outOfXBounds ? followEnterThreshold : followExitThreshold;
+        float yThreshold = outOfYBounds ? followEnterThreshold : followExitThreshold;
+        outOfXBounds = playerPos.getX() < cameraCentre.getX() + (bounds.minX-xThreshold) || playerPos.getX() > cameraCentre.getX() + (bounds.maxX+xThreshold);
+        outOfYBounds = playerPos.getY() < cameraCentre.getY() + (bounds.minY - yThreshold) || playerPos.getY() > cameraCentre.getY() + (bounds.maxY + yThreshold);
 
         if (outOfXBounds || outOfYBounds) {
             float distanceX = Math.abs(playerPos.getX() - cameraCentre.getX());
             float distanceY = Math.abs(playerPos.getY() - cameraCentre.getY());
-            float dynamicFollowStrength = Math.min(minBoundsFollowStrength, boundsFollowStrengthScale * Math.max(distanceX, distanceY));
-
-            Vector2 smoothedPosition = Vector2.lerp(cameraCentre, playerPos, dynamicFollowStrength);
+            float dynamicFollowStrength = Math.max(minBoundsFollowStrength, boundsFollowStrengthScale * Math.max(distanceX, distanceY));
+            System.out.println("STRONG: " + dynamicFollowStrength);
+            Vector2 smoothedPosition = Vector2.lerp(cameraCentre, playerPos, (float) (dynamicFollowStrength * GamePanel.getDeltaTime()));
             camera.setPosition(smoothedPosition);
         }
         else{
+            System.out.println("WEAK");
+
             if (Vector2.dist(cameraCentre,playerPos) < idleFollowMaxDist){return;}
-            Vector2 smoothedPosition = Vector2.lerp(cameraCentre, playerPos, idleFollowStrength);
+            Vector2 smoothedPosition = Vector2.lerp(cameraCentre, playerPos, (float) (idleFollowStrength * GamePanel.getDeltaTime()));
             camera.setPosition(smoothedPosition);
         }
     }

@@ -1,8 +1,0 @@
-{
-  "name": "Basic Tile",
-  "components": {
-    "spriteRenderer": {"spriteImage": "crash_crate_life.png"},
-    "collider": {},
-    "specialCrate": {}
-  }
-}

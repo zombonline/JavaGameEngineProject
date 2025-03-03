@@ -16,28 +16,34 @@ import static Main.Main.gamePanel;
 
 public class SpriteRenderer extends Component {
     public BufferedImage spriteImage;
-
+    public Vector2 offset;
+    public SpriteRenderer(BufferedImage spriteImage, Vector2 offset){
+        this.spriteImage = spriteImage;
+        this.offset = offset;
+    }
     public SpriteRenderer(BufferedImage spriteImage){
         this.spriteImage = spriteImage;
+        this.offset = Vector2.zero;
     }
     public static Map<String,Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
-        defaultValues.put("spirteImage", null);
+        defaultValues.put("spriteImage", null);
+        defaultValues.put("offset", Vector2.zero);
         return defaultValues;
     }
     public void draw(Graphics2D g2d){
         if(this.spriteImage == null){return;}
-        Vector2 screenPos = getGameObject().transform.getScreenPosition().sub(camera.getPosition());
+        Vector2 screenPos = getGameObject().transform.getScreenPosition().sub(camera.getPosition()).add(offset.mul(GamePanel.WORLD_SCALE));
 
         if (isVisible(screenPos)) {
-            int w = spriteImage.getWidth()*(GamePanel.WORLD_SCALE/spriteImage.getWidth());
-            int h = spriteImage.getHeight()*(GamePanel.WORLD_SCALE/spriteImage.getHeight());
+            int w = GamePanel.WORLD_SCALE;
+            int h = (int) (GamePanel.WORLD_SCALE*gameObject.transform.getScale().getY());
             g2d.drawImage(spriteImage,(int) screenPos.getX(), (int) screenPos.getY(), w, h,null);
         }
     }
     private boolean isVisible(Vector2 screenPos) {
-        int w = spriteImage.getWidth() * GamePanel.WORLD_SCALE / spriteImage.getWidth();
-        int h = spriteImage.getHeight() * GamePanel.WORLD_SCALE / spriteImage.getHeight();
+        int w = GamePanel.WORLD_SCALE;
+        int h = GamePanel.WORLD_SCALE;
 
         return screenPos.getX() + w > 0 &&
                 screenPos.getY() + h > 0 &&

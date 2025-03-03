@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Player extends Component{
     KeyHandler keyHandler;
-    private float speed;
+    public float speed;
     Rigidbody rb;
 
     private Key leftKey, rightKey, aKey, dkey, jumpKey;
@@ -34,21 +34,13 @@ public class Player extends Component{
 
 
     private void jump(){
+        rb.velocity = Vector2.zero;
         rb.addForce(Vector2.up.mul(.25f));
     }
     @Override
     public void awake() {
         super.awake();
         rb = getGameObject().getComponent(Rigidbody.class);
-        getComponent(SpriteAnimator.class).loadAnimation("/Resources/","test.json");
-        getComponent(SpriteAnimator.class).addListener(new SpriteAnimator.AnimatorListener() {
-            @Override
-            public void onAnimationEvent(String eventKey) {
-                if(eventKey.equals("waving")){
-                    System.out.println("Hello!");
-                }
-            }
-        });
     }
     public void update(){
         int xMovement= 0;

@@ -71,7 +71,7 @@ public class Collider extends Component{
         if(!isStatic){
             this.colliderPosition = getGameObject().transform.getPosition().add(offset);
         }
-        this.bounds = new Bounds(colliderPosition, size);
+        this.bounds = new Bounds(colliderPosition, size.mul(gameObject.transform.getScale()));
         setSpatialHashGridCell();
         checkCollidersNearby();
     }
@@ -122,7 +122,7 @@ public class Collider extends Component{
         return colliderPosition;
     }
     public Vector2 getColliderSize(){
-        return size;
+        return size.mul(gameObject.transform.getScale());
     }
     public Bounds getBounds(){
         return this.bounds;
@@ -133,13 +133,13 @@ public class Collider extends Component{
 
     @Override
     public void draw(Graphics2D g2d) {
-        super.draw(g2d);
-        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-        int w = (int)(size.getX() * GamePanel.WORLD_SCALE);
-        int h = (int)(size.getY() * GamePanel.WORLD_SCALE);
-        Vector2 screenPos =
-                getGameObject().transform.getPosition().sub(size.sub(Vector2.one).div(2)).mul(GamePanel.WORLD_SCALE).sub(camera.getPosition());
-        g2d.fillRect((int)screenPos.getX(), (int)screenPos.getY(), w, h); // Draw the square
+//        super.draw(g2d);
+//        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
+//        int w = (int)(size.getX()*gameObject.transform.getScale().getX() * GamePanel.WORLD_SCALE);
+//        int h = (int)(size.getY()*gameObject.transform.getScale().getY() * GamePanel.WORLD_SCALE);
+//        Vector2 screenPos =
+//                getGameObject().transform.getPosition().sub(size.sub(Vector2.one).div(2)).mul(GamePanel.WORLD_SCALE).sub(camera.getPosition());
+//        g2d.fillRect((int)screenPos.getX(), (int)screenPos.getY(), w, h); // Draw the square
     }
 
     public static Map<String,Object> getDefaultValues(){

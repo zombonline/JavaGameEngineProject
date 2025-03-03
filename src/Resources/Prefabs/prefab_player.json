@@ -3,7 +3,7 @@
   "components": {
     "player": {"speed": 1.0},
     "spriteRenderer": {
-      "spriteImage": "scrimbo.png"
+      "spriteImage": "/Resources/Images/scrimbo.png"
     },
     "rigidbody": {
       "drag": 0.9,
@@ -24,14 +24,14 @@
     },
     "cameraFollow": {
       "bounds": [
-        -50,
-        50,
-        -50,
-        75
+        -200,
+        200,
+        -200,
+        200
       ],
-      "minBoundsFollowStrength": 0.9,
-      "boundsFollowStrengthScale": 0.0005,
-      "idleFollowStrength": 0.01,
+      "minBoundsFollowStrength": 1,
+      "boundsFollowStrengthScale": 0.003,
+      "idleFollowStrength": 1,
       "idleFollowMaxDist": 6.0
     }
   }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
-    public static final int WORLD_SCALE = 64;
+    public static final int WORLD_SCALE = 100;
     int FPS = 60;
     private static double deltaTime = 0;
     Thread gameThread;
@@ -21,14 +21,15 @@ public class GamePanel extends JPanel implements Runnable{
     public static ArrayList<GameObject> activeGameObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<GameObject>();
     public GamePanel() {
-        this.setPreferredSize(new Dimension(1024, 1024));
-        this.setBackground(Color.BLACK);
+        this.setPreferredSize(new Dimension(1864, 1024));
+        this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
     }
     public void startGameThread() throws IOException, DatabindException {
-        activeGameObjects.addAll(TMXParser.parse());
-        activeGameObjects.add(PrefabReader.getObject("prefab_player.json"));
+        //temporary creating objects (will be done with a level file)
+        TMXParser.parse();
+        PrefabReader.getObject("/Resources/Prefabs/prefab_player.json");
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -37,14 +38,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / FPS; // Time per frame in nanoseconds (16.67 ms for 60 FPS)
+        double drawInterval = 1000000000.0 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
         int drawCount = 0;
-        awake();
-        TMXParser.parse();
         while (gameThread != null) {
             currentTime = System.nanoTime();
             deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
@@ -52,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable{
             timer += currentTime - lastTime;
             lastTime = currentTime;
             if (delta >= 1) {
+                awake(); // Call awake (only new objects will run this)
                 update(); // Update game logic
                 repaint(); // Render the game
                 destroyObjects(); //Remove objects marked for destroy at end of frame
@@ -81,9 +81,6 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         for(GameObject gameObject : activeGameObjects){
             gameObject.update();
-            if(gameObject.destroyOnNextFrame){
-                gameObjectsToDestroy.add(gameObject);
-            }
         }
     }
     @Override

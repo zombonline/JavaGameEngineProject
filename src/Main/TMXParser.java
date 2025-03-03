@@ -7,10 +7,8 @@ import ObjectSystem.GameObject;
 import Utility.Vector2;
 import org.w3c.dom.*;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.jar.JarEntry;
 
 public class TMXParser {
     public static ArrayList<GameObject> parse() {
@@ -46,15 +44,15 @@ public class TMXParser {
                             int value = Integer.parseInt(values[y * mapWidth + x].trim()); // Convert to int
                             GameObject newTile = null;
                             switch (value){
-                                case 1: newTile = PrefabReader.getObject("prefab_basic_crate.json");
+                                case 1: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
                                     break;
-                                case 4: newTile = PrefabReader.getObject("prefab_life_crate.json");
+                                case 4: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_hover.json");
                                     break;
-                                case 5: newTile = PrefabReader.getObject("prefab_bouncy_crate.json");
+                                case 5: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
                                     break;
-                                case 8: newTile = PrefabReader.getObject("prefab_red_crate.json");
+                                case 8: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_explosive.json");
                                     break;
-                                case 15: newTile = PrefabReader.getObject("prefab_metal_crate.json");
+                                case 15: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
                                     break;
                             }
                             if (newTile == null){continue;}

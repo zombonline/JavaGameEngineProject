@@ -6,6 +6,7 @@ import Utility.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.graalvm.nativeimage.c.struct.CPointerTo;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,31 +15,49 @@ import java.io.InputStream;
 import java.util.*;
 
 public class PrefabReader {
-    public static GameObject getObject(String fileName) throws IOException {
+    public static GameObject getObject(String path) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        InputStream inputStream = PrefabReader.class.getResourceAsStream("/Resources/" + fileName);
+        InputStream inputStream = PrefabReader.class.getResourceAsStream(path);
+
         if (inputStream == null) {
-            System.out.println("DEBUG: Could not find test.json in resources.");
+            System.out.println("DEBUG: Could not find " + path + " in resources.");
+            return null;
         }
+
         JsonNode rootNode = objectMapper.readTree(inputStream);
         JsonNode componentsNode = rootNode.get("components");
         GameObject newObject = GameObject.createNew(rootNode.get("name").asText(), Vector2.zero);
 
         if (componentsNode != null && componentsNode.isObject()) {
-            Iterator<String> fieldNames = componentsNode.fieldNames();
-            while (fieldNames.hasNext()) {
+            Iterator<Map.Entry<String, JsonNode>> fields = componentsNode.fields();
 
-                String componentName = fieldNames.next();
-                JsonNode componentValue = componentsNode.get(componentName); // Get the corresponding value
-                Component component = buildComponent(componentName, componentValue);
-                if(component!= null){
-                    newObject.addComponent(component);
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> entry = fields.next();
+                String componentName = entry.getKey();
+                JsonNode componentData = entry.getValue();
+
+                if (componentData.isArray()) {
+                    // Handle multiple components of the same type
+                    for (JsonNode item : componentData) {
+                        System.out.println("Creating " + componentName + " for " + rootNode.get("name"));
+                        Component component = buildComponent(componentName, item);
+                        if (component != null) {
+                            newObject.addComponent(component);
+                        }
+                    }
+                } else {
+                    // Handle single component
+                    System.out.println("Creating " + componentName + " for " + rootNode.get("name"));
+                    Component component = buildComponent(componentName, componentData);
+                    if (component != null) {
+                        newObject.addComponent(component);
+                    }
                 }
             }
         }
         return newObject;
-
     }
+
     private static Component buildComponent(String name, JsonNode values) {
         return switch (name) {
             case "spriteRenderer" -> buildSpriteRenderer(values);
@@ -47,14 +66,16 @@ public class PrefabReader {
             case "rigidbody" -> buildRigidbody(values);
             case "player" -> buildPlayer(values);
             case "cameraFollow" -> buildCameraFollow(values);
-            case "specialCrate" -> new SpecialCrate();
+            case "crateBounce" -> new CrateBounce();
+            case "crateHover" -> new CrateHover();
             default -> null;
         };
     }
     private static SpriteRenderer buildSpriteRenderer(JsonNode values){
         Map<String,Object> defaultValues = SpriteRenderer.getDefaultValues();
         BufferedImage spriteImage = getBufferedImageFromString ((values.has("spriteImage") ? values.get("spriteImage").asText() : defaultValues.get("spriteImage").toString()));
-        return new SpriteRenderer(spriteImage);
+        Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
+        return new SpriteRenderer(spriteImage, offset);
     }
 
 
@@ -86,8 +107,11 @@ public class PrefabReader {
         Map<String,Object> defaultValues = CameraFollow.getDefaultValues();
         Bounds bounds = (Bounds) (values.has("bounds") ? new Bounds(getFloatListFromJSONNode(values.get("bounds"))) :
                 defaultValues.get("bounds"));
-        Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
-        return new CameraFollow(new Bounds(-100,100,-100,150),0.9f, 0.0003f,0.01f,6f);
+        float minBoundsFollowStrength = (float) (values.has("minBoundsFollowStrength") ? (float) values.get("minBoundsFollowStrength").asDouble() : defaultValues.get("minBoundsFollowStrength"));
+        float boundsFollowStrengthScale = (float) (values.has("boundsFollowStrengthScale") ? (float) values.get("boundsFollowStrengthScale").asDouble() : defaultValues.get("boundsFollowStrengthScale"));
+        float idleFollowStrength = (float) (values.has("idleFollowStrength") ? (float) values.get("idleFollowStrength").asDouble() : defaultValues.get("idleFollowStrength"));
+        float idleFollowMaxDist = (float) (values.has("idleFollowMaxDist") ? (float) values.get("idleFollowMaxDist").asDouble() : defaultValues.get("idleFollowMaxDist"));
+        return new CameraFollow(bounds,minBoundsFollowStrength, boundsFollowStrengthScale,idleFollowStrength,idleFollowMaxDist);
     }
 
 
@@ -107,7 +131,7 @@ public class PrefabReader {
 
     private static BufferedImage getBufferedImageFromString(String val){
         try {
-            return ImageIO.read(PrefabReader.class.getResourceAsStream("/Resources/"+val));
+            return ImageIO.read(PrefabReader.class.getResourceAsStream(val));
         } catch (Exception e){
             System.out.println("Couldn't create image from address");
             return null;

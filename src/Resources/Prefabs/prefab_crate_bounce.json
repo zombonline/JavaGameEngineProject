@@ -1,0 +1,8 @@
+{
+  "name": "Bounce Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_bounce.png"},
+    "collider": {},
+    "crateBounce": {}
+  }
+}
