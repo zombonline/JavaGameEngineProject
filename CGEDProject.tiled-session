@@ -1,0 +1,70 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Tilesets/test_level.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "Tilesets"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "Tilesets/Tiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.125,
+            "scaleInEditor": 0.25
+        },
+        "Tilesets/test_level.tmx": {
+            "scale": 0.0625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 8224,
+                "y": 5792
+            }
+        },
+        "src/Resources/Tilesets/Tiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInEditor": 0.25
+        },
+        "src/Resources/Tilesets/Tiles1.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "src/Resources/Tilesets/test_level.tmx": {
+            "scale": 0.125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 7824,
+                "y": 4272
+            }
+        },
+        "src/Resources/Tilesets/test_level_1.tmx": {
+            "scale": 0.03125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 16672,
+                "y": 4352
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 512,
+    "map.tileWidth": 512,
+    "map.width": 100,
+    "openFiles": [
+        "Tilesets/Tiles.tsx",
+        "Tilesets/test_level.tmx"
+    ],
+    "project": "CGEDProject.tiled-project",
+    "recentFiles": [
+        "src/Resources/Tilesets/Tiles.tsx",
+        "src/Resources/Tilesets/Tiles1.tsx",
+        "Tilesets/Tiles.tsx",
+        "Tilesets/test_level.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}

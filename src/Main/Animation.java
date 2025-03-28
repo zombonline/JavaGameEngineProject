@@ -27,10 +27,11 @@ public class Animation {
         }
 
         public void loadImage() {
+            System.out.println("Loading image: " + imageAddress);
             try {
-                this.bufferedImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/" + imageAddress));
+                this.bufferedImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(Assets.getAssetPath(imageAddress)));
             } catch (IOException e) {
-                System.err.println("Failed to load image: " + imageAddress);
+                System.out.println("Failed to load image: " + imageAddress);
                 e.printStackTrace();
             }
         }

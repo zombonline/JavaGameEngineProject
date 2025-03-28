@@ -2,5 +2,12 @@
   "name": "Basic Crate",
   "components": {
     "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_basic.png"},
-    "collider": {}}
+    "collider": {},
+    "crateBounce": {
+      "bounceStrength": 0.25
+    },
+    "rigidbody": {
+      "isKinematic": true
+    }
+  }
 }

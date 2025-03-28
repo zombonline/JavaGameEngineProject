@@ -1,0 +1,21 @@
+{
+  "isLooping": false,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.EXPLOSION_SMALL",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.EXPLOSION_MEDIUM",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.EXPLOSION_BIG",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.EXPLOSION_BIG",
+      "delay": 10
+    }
+  ]
+}

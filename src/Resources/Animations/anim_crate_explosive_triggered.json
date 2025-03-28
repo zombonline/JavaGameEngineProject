@@ -1,0 +1,41 @@
+{
+  "isLooping": false,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE_TRIGGERED",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE_TRIGGERED",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE_TRIGGERED",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE",
+      "delay": 6
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE_TRIGGERED",
+      "delay": 6
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE",
+      "delay": 6
+    },
+    {
+      "imageAddress": "Images.CRATE_EXPLOSIVE_TRIGGERED",
+      "delay": 6
+    }
+  ]
+}

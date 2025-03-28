@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.*;
 
 public class PrefabReader {
-    public static GameObject getObject(String path) throws IOException {
+    public static GameObject getObject(String path)  {
         ObjectMapper objectMapper = new ObjectMapper();
         InputStream inputStream = PrefabReader.class.getResourceAsStream(path);
 
@@ -23,8 +23,12 @@ public class PrefabReader {
             System.out.println("DEBUG: Could not find " + path + " in resources.");
             return null;
         }
-
-        JsonNode rootNode = objectMapper.readTree(inputStream);
+        JsonNode rootNode;
+        try{
+            rootNode = objectMapper.readTree(inputStream);
+        } catch (Exception e){
+            return null;
+        }
         JsonNode componentsNode = rootNode.get("components");
         GameObject newObject = GameObject.createNew(rootNode.get("name").asText(), Vector2.zero);
 
@@ -66,8 +70,10 @@ public class PrefabReader {
             case "rigidbody" -> buildRigidbody(values);
             case "player" -> buildPlayer(values);
             case "cameraFollow" -> buildCameraFollow(values);
-            case "crateBounce" -> new CrateBounce();
+            case "crateBounce" -> buildCrateBounce(values);
             case "crateHover" -> new CrateHover();
+            case "crateExplosive" -> buildCrateExplosive(values);
+            case "explosion" -> buildExplosion(values);
             default -> null;
         };
     }
@@ -93,7 +99,8 @@ public class PrefabReader {
                 : defaultValues.get("collisionMask"));
         Vector2 size = (Vector2) (values.has("size") ? new Vector2(getFloatListFromJSONNode(values.get("size"))) : defaultValues.get("size"));
         Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
-        return new Collider(isStatic, collisionLayer, collisionMask, size, offset);
+        boolean isTrigger = (boolean) (values.has("isTrigger") ? values.get("isTrigger").asBoolean() : defaultValues.get("isTrigger"));
+        return new Collider(isStatic, collisionLayer, collisionMask, size, offset, isTrigger);
     }
 
     private static Player buildPlayer(JsonNode values){
@@ -114,10 +121,10 @@ public class PrefabReader {
         return new CameraFollow(bounds,minBoundsFollowStrength, boundsFollowStrengthScale,idleFollowStrength,idleFollowMaxDist);
     }
 
-
-
     private static SpriteAnimator buildSpriteAnimator(JsonNode values){
-        return new SpriteAnimator();
+        Map<String,Object> defaultValues = Rigidbody.getDefaultValues();
+        String startingAnim = (values.has("startingAnim") ?  values.get("startingAnim").asText() : "");
+        return new SpriteAnimator(Assets.getAssetPath(startingAnim));
     }
     private static Rigidbody buildRigidbody(JsonNode values){
         Map<String,Object> defaultValues = Rigidbody.getDefaultValues();
@@ -125,10 +132,23 @@ public class PrefabReader {
         float restitution = (float) (values.has("restitution") ? (float) values.get("restitution").asDouble() : defaultValues.get("restitution"));
         float gravityScale = (float) (values.has("gravityScale") ? (float) values.get("gravityScale").asDouble() : defaultValues.get("gravityScale"));
         Vector2 maxVelocity = (Vector2) (values.has("maxVelocity") ? new Vector2(getFloatListFromJSONNode(values.get("maxVelocity"))) : defaultValues.get("maxVelocity"));
+        boolean isKinematic = (boolean) (values.has("isKinematic") ? values.get("isKinematic").asBoolean() : defaultValues.get("isKinematic"));
 
-        return new Rigidbody(drag,gravityScale,restitution,maxVelocity);
+        return new Rigidbody(drag,gravityScale,restitution,maxVelocity,isKinematic);
     }
-
+    public static CrateBounce buildCrateBounce(JsonNode values){
+        Map<String,Object> defaultValues = CrateBounce.getDefaultValues();
+        float bounceStrength = (float) (values.has("bounceStrength") ? (float) values.get("bounceStrength").asDouble() : defaultValues.get("bounceStrength"));
+        return new CrateBounce(bounceStrength);
+    }
+    public static CrateExplosive buildCrateExplosive(JsonNode values){
+        Map<String,Object> defaultValues = CrateBounce.getDefaultValues();
+        float bounceStrength = (float) (values.has("bounceStrength") ? (float) values.get("bounceStrength").asDouble() : defaultValues.get("bounceStrength"));
+        return new CrateExplosive(bounceStrength);
+    }
+    public static Explosion buildExplosion(JsonNode values){
+        return new Explosion();
+    }
     private static BufferedImage getBufferedImageFromString(String val){
         try {
             return ImageIO.read(PrefabReader.class.getResourceAsStream(val));

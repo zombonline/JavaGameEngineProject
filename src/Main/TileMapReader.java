@@ -4,17 +4,18 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import ObjectSystem.GameObject;
+import Utility.Tile;
 import Utility.Vector2;
 import org.w3c.dom.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class TMXParser {
+public class TileMapReader {
     public static ArrayList<GameObject> parse() {
         ArrayList<GameObject> tiles = new ArrayList<>();
         try {
-            InputStream file = TMXParser.class.getResourceAsStream("/Resources/JungleWoods_Test.tmx");
+            InputStream file = TileMapReader.class.getResourceAsStream("/Resources/Tilesets/test_level_1.tmx");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(file);
@@ -43,18 +44,22 @@ public class TMXParser {
                         for (int x = 0; x < mapWidth; x++) {
                             int value = Integer.parseInt(values[y * mapWidth + x].trim()); // Convert to int
                             GameObject newTile = null;
-                            switch (value){
-                                case 1: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
-                                    break;
-                                case 4: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_hover.json");
-                                    break;
-                                case 5: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
-                                    break;
-                                case 8: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_explosive.json");
-                                    break;
-                                case 15: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
-                                    break;
-                            }
+                                Tile tile = Tile.fromValue(value);
+                                if(tile==null){continue;}
+                                System.out.println("Resources/Prefabs/"+tile+".json");
+                                newTile = PrefabReader.getObject("/Resources/Prefabs/"+tile+".json");
+//                            switch (value){
+//                                case 1: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
+//                                    break;
+//                                case 4: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_hover.json");
+//                                    break;
+//                                case 5: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
+//                                    break;
+//                                case 8: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_explosive.json");
+//                                    break;
+//                                case 15: newTile = PrefabReader.getObject("/Resources/Prefabs/prefab_crate_basic.json");
+//                                    break;
+//                            }
                             if (newTile == null){continue;}
                             newTile.transform.setPosition(new Vector2(x,y));
                             tiles.add(newTile);
@@ -64,7 +69,7 @@ public class TMXParser {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Couldn't load level");
         }
         return tiles;
     }

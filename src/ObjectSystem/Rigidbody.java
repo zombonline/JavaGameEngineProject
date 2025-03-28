@@ -14,8 +14,9 @@ public class Rigidbody extends Component{
     public float restitution;
     public float gravityScale;
     private List<Vector2> forces = new ArrayList<>();
-
     ArrayList<Collider> allCollisionsLastFrame = new ArrayList<Collider>();
+
+    private boolean isKinematic;
 
     public void updateTouchingColliders(){
         ArrayList<Collider> allCollisions = new ArrayList<Collider>();
@@ -45,12 +46,13 @@ public class Rigidbody extends Component{
             right = new ArrayList<Collider>();
     Collider rbCollider;
 
-    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity) {
+    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity, boolean isKinematic) {
         this.drag = drag;
         this.gravityScale = gravityScale;
         this.restitution = restitution;
         this.maxVelocity = maxVelocity;
         this.velocity = Vector2.zero;
+        this.isKinematic = isKinematic;
     }
 
     @Override
@@ -65,13 +67,21 @@ public class Rigidbody extends Component{
         forces.clear();
         velocity = new Vector2(velocity.getX()*drag, velocity.getY());
         velocity = velocity.add(Vector2.down.mul(gravityScale));
-        if(maxVelocity != null){velocity = velocity.applyMax(maxVelocity);}
+        if(maxVelocity != null){
+            if(Math.abs(velocity.getX()) > maxVelocity.getX()){
+                velocity.setX(Math.signum(velocity.getX())*maxVelocity.getX());
+            }
+            if(Math.abs(velocity.getY()) > maxVelocity.getY()){
+                velocity.setY(Math.signum(velocity.getY())*maxVelocity.getY());
+            }
+        }
         CheckForNewCollider(Vector2.down);
         CheckForNewCollider(Vector2.up);
         CheckForNewCollider(Vector2.left);
         CheckForNewCollider(Vector2.right);
-        getGameObject().transform.translate(velocity);
         updateTouchingColliders();
+        if(isKinematic){return;}
+        getGameObject().transform.translate(velocity);
 
     }
 
@@ -120,7 +130,9 @@ public class Rigidbody extends Component{
                     break;
             }
         }
-        if(stopVelocity){
+        if(stopVelocity && !isKinematic){
+            hits.removeIf(Collider::isTrigger);
+            if(hits.isEmpty()){return;}
             float overlap;
             switch ((int) direction.toAngle()) {
                 case 0:
@@ -166,10 +178,13 @@ public class Rigidbody extends Component{
         defaultValues.put("restitution", 0f);
         defaultValues.put("gravityScale", 0.01f);
         defaultValues.put("maxVelocity", null);
+        defaultValues.put("isKinematic", false);
         return defaultValues;
     }
 
     public void handleCollisions(List<Collider> colliders){
+        colliders.removeIf(Collider::isTrigger);
+
         if(colliders.isEmpty()){return;}
         Vector2 maxOverlap = new Vector2(0, 0);
         Collider strongestCollider = colliders.getFirst();
@@ -184,6 +199,7 @@ public class Rigidbody extends Component{
     }
 
     public void handleCollision(Collider other){
+        if(isKinematic){return;}
         Vector2 thisPos = getGameObject().transform.getPosition();
         Vector2 otherPos = other.getGameObject().transform.getPosition();
         Vector2 overlap = rbCollider.getOverlap(other);

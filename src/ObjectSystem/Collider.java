@@ -48,14 +48,16 @@ public class Collider extends Component{
     private Vector2 size, offset, colliderPosition;
     private int previousCellKey = Integer.MIN_VALUE;
     private Bounds bounds;
+    private boolean isTrigger;
 
 
-    public Collider(boolean isStatic, CollisionLayer collisionLayer, ArrayList<CollisionLayer> collisionMask, Vector2 size, Vector2 offset) {
+    public Collider(boolean isStatic, CollisionLayer collisionLayer, ArrayList<CollisionLayer> collisionMask, Vector2 size, Vector2 offset, boolean isTrigger) {
         this.isStatic = isStatic;
         this.collisionLayer = collisionLayer;
         this.collisionMask = collisionMask;
         this.size = size;
         this.offset = offset;
+        this.isTrigger = isTrigger;
     }
 
     @Override
@@ -71,7 +73,8 @@ public class Collider extends Component{
         if(!isStatic){
             this.colliderPosition = getGameObject().transform.getPosition().add(offset);
         }
-        this.bounds = new Bounds(colliderPosition, size.mul(gameObject.transform.getScale()));
+        Vector2 scaledSize = size.mul(gameObject.transform.getScale());
+        this.bounds = new Bounds(colliderPosition, scaledSize);
         setSpatialHashGridCell();
         checkCollidersNearby();
     }
@@ -114,7 +117,9 @@ public class Collider extends Component{
             previousCellKey = newCellKey;    // Update last known cell
         }
     }
-
+    public boolean isTrigger(){
+        return isTrigger;
+    }
     public CollisionLayer getCollisionLayer() {
         return collisionLayer;
     }
@@ -135,11 +140,9 @@ public class Collider extends Component{
     public void draw(Graphics2D g2d) {
 //        super.draw(g2d);
 //        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-//        int w = (int)(size.getX()*gameObject.transform.getScale().getX() * GamePanel.WORLD_SCALE);
-//        int h = (int)(size.getY()*gameObject.transform.getScale().getY() * GamePanel.WORLD_SCALE);
-//        Vector2 screenPos =
-//                getGameObject().transform.getPosition().sub(size.sub(Vector2.one).div(2)).mul(GamePanel.WORLD_SCALE).sub(camera.getPosition());
-//        g2d.fillRect((int)screenPos.getX(), (int)screenPos.getY(), w, h); // Draw the square
+//        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
+//        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE));
+//        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
     }
 
     public static Map<String,Object> getDefaultValues(){
@@ -151,6 +154,7 @@ public class Collider extends Component{
         defaultValues.put("collisionMask", collisionMask);
         defaultValues.put("size", Vector2.one);
         defaultValues.put("offset", Vector2.zero);
+        defaultValues.put("isTrigger", false);
         return defaultValues;
     }
 

@@ -6,6 +6,9 @@
       {"spriteImage": "/Resources/Images/Crates/crate_hover_effect.png", "offset": [0.0, 1.0]}
       ],
     "collider": {},
-    "crateHover": {}
+    "crateHover": {},
+    "rigidbody": {
+      "isKinematic": true
+    }
   }
 }

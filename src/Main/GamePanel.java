@@ -2,11 +2,10 @@ package Main;
 
 import ObjectSystem.*;
 import ObjectSystem.Component;
-import Utility.CollisionLayer;
 import Utility.Vector2;
 import com.fasterxml.jackson.databind.DatabindException;
+import org.w3c.dom.Text;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -14,22 +13,26 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_SCALE = 100;
+    public static final int width = 1864;
+    public static final int height = 1024;
     int FPS = 60;
     private static double deltaTime = 0;
     Thread gameThread;
 
+    GameObject player;
+    public static ArrayList<GameObject> gameObjectsToAwake = new ArrayList<GameObject>();
     public static ArrayList<GameObject> activeGameObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<GameObject>();
     public GamePanel() {
-        this.setPreferredSize(new Dimension(1864, 1024));
+        this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
     }
     public void startGameThread() throws IOException, DatabindException {
         //temporary creating objects (will be done with a level file)
-        TMXParser.parse();
-        PrefabReader.getObject("/Resources/Prefabs/prefab_player.json");
+        TileMapReader.parse();
+        player = PrefabReader.getObject("/Resources/Prefabs/prefab_player.json");
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -74,9 +77,11 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void awake(){
-        for(GameObject gameObject : activeGameObjects){
+        for(GameObject gameObject : gameObjectsToAwake){
             gameObject.awake();
+            activeGameObjects.add(gameObject);
         }
+        gameObjectsToAwake.clear();
     }
     public void update(){
         for(GameObject gameObject : activeGameObjects){
@@ -86,10 +91,18 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawDebugText(g);
         Graphics2D g2d = (Graphics2D) g;
         for(GameObject gameObject : activeGameObjects){
             gameObject.draw(g2d);
+            Vector2 pos = gameObject.transform.getPosition().mul(GamePanel.WORLD_SCALE).sub(Main.camera.getPosition());
         }
+    }
+    public void drawDebugText(Graphics g){
+        g.drawString("Position: " + player.transform.getPosition().toString(), 10,10);
+        g.drawString("Velocity: " + player.getComponent(Rigidbody.class).velocity, 10,20);
+
+
     }
     public void destroyObjects(){
         for(GameObject gameObject : gameObjectsToDestroy){

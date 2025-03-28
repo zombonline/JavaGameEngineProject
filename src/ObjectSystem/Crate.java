@@ -3,24 +3,39 @@ package ObjectSystem;
 import Utility.Vector2;
 
 public class Crate extends Component{
-
     Collider collider;
     Collider.CollisionListener listener;
+
+    boolean breakable;
+    public Crate(boolean breakable){
+        this.breakable = breakable;
+    }
     @Override
     public void awake() {
+        SetupCollisionEvents();
+    }
+
+    private void SetupCollisionEvents() {
         collider = getComponent(Collider.class);
         if(collider!=null){
             listener = new Collider.CollisionListener() {
                 @Override
                 public void onCollisionEnter(Collider other) {
-                    onCrateEnter(other);
+                    double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
+                    double colliderTop = Math.floor(collider.getBounds().minY * 10)/10;
+                    if(otherBottom <= colliderTop){
+                        onCrateTouchTop(other);
+                    }
+                    double playerTop = Math.floor(other.getBounds().minY * 10) / 10;
+                    double colliderBottom = Math.floor(collider.getBounds().maxY * 10) / 10;
+                    if(playerTop >= colliderBottom){
+                       onCrateTouchBottom(other);
+                    }
                 }
-
                 @Override
                 public void onCollisionExit(Collider other) {
                     onCrateExit(other);
                 }
-
                 @Override
                 public void onCollisionStay(Collider other) {
                     onCrateStay(other);
@@ -29,7 +44,11 @@ public class Crate extends Component{
             collider.addListener(listener);
         }
     }
-    public void onCrateEnter(Collider other){}
+
+    public void onCrateTouchTop(Collider other){
+    }
+    public void onCrateTouchBottom(Collider other){
+    }
     public void onCrateExit(Collider other){}
     public void onCrateStay(Collider other){}
 }

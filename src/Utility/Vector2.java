@@ -61,9 +61,14 @@ public class Vector2 {
     public Vector2 div(Vector2 v){
         return new Vector2(this.x / v.getX(), this.y / v.getY());
     }
-    public Vector2 applyMax(Vector2 v){
+    public Vector2 applyMax(Vector2 v) {
         return new Vector2(Math.min(this.x, v.getX()), Math.min(this.y, v.getY()));
     }
+
+    public Vector2 applyMin(Vector2 v) {
+        return new Vector2(Math.max(this.x, v.getX()), Math.max(this.y, v.getY()));
+    }
+
     public static double dist(Vector2 a, Vector2 b){
         return a.sub(b).getMag();
     }

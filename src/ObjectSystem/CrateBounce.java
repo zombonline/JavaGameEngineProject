@@ -2,21 +2,42 @@ package ObjectSystem;
 
 import Utility.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CrateBounce extends Crate{
+    float bounceStrength;
+    public CrateBounce(float bounceStrength){
+        super(true);
+        this.bounceStrength = bounceStrength;
+    }
 
     @Override
-    public void onCrateEnter(Collider other) {
-        System.out.println("Hello!");
-        if(other.gameObject.name.equals("Player")){
-            double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
-            double colliderTop = Math.floor(collider.getBounds().minY*10)/10;
-            System.out.println("Player Bottom: " + otherBottom);
-            System.out.println("Crate Top: " + colliderTop);
-            if(otherBottom <= colliderTop){
-                other.getComponent(Rigidbody.class).velocity = Vector2.zero;
-                other.getComponent(Rigidbody.class).addForce(Vector2.up.mul(.25f));
-                GameObject.destroy(gameObject);
-            }
-        }
+    public void awake() {
+        super.awake();
+    }
+
+    @Override
+    public void onCrateTouchTop(Collider other) {
+        if(!other.gameObject.name.equals("Player")){ return; }
+        if(other.getComponent(Rigidbody.class).velocity.getY()<0.1f){return;}
+        other.getComponent(Rigidbody.class).velocity = Vector2.zero;
+        other.getComponent(Rigidbody.class).addForce(Vector2.up.mul(bounceStrength));
+        GameObject.destroy(gameObject);
+    }
+
+    @Override
+    public void onCrateTouchBottom(Collider other) {
+        if(!other.gameObject.name.equals("Player")){ return; }
+        if(other.getComponent(Rigidbody.class).velocity.getY()>-0.1f){ return;}
+        other.getComponent(Rigidbody.class).velocity = Vector2.zero;
+        other.getComponent(Rigidbody.class).addForce(Vector2.down.mul(.25f));
+        GameObject.destroy(gameObject);
+    }
+
+    public static Map<String, Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("bounceStrength", .25f);
+        return defaultValues;
     }
 }

@@ -11,14 +11,6 @@ public class Camera{
         this.position = new Vector2(0, 0); // Start at origin
         this.gamePanel = gamePanel;
     }
-
-    public void follow(GameObject target) {
-        if (target != null) {
-            this.position = target.transform.getPosition().sub(
-                    new Vector2((float) gamePanel.getWidth() / 2, (float) gamePanel.getHeight() / 2)
-            );
-        }
-    }
     public Vector2 getPosition() {
         return position;
     }

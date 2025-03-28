@@ -13,22 +13,27 @@ public class SpriteAnimator extends Component{
     int currentStepIndex = 0;
     Animation currentAnim;
 
+    public SpriteAnimator(String startingAnim){
+        if(startingAnim.equals("")){return;}
+        loadAnimation(startingAnim);
+    }
 
-    public void loadAnimation(String dir, String filename)  {
+    public void loadAnimation(String animPath)  {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
-            InputStream inputStream = getClass().getResourceAsStream("/Resources/test.json");
+            InputStream inputStream = getClass().getResourceAsStream(animPath);
             if (inputStream == null) {
-                System.out.println("DEBUG: Could not find test.json in resources.");
+                System.out.println("DEBUG: Could not find " + animPath + " in resources.");
             }
             Animation animation = objectMapper.readValue(inputStream, Animation.class);
             System.out.println("islooping: " + animation.isLooping);
             for (Animation.AnimationStep step : animation.animationSteps) {
                 System.out.println("Image: " + step.imageAddress + ", Delay: " + step.delay);
                 step.loadImage();
+                System.out.println("image loaded");
             }
             currentAnim = animation;
-            frameTimer = animation.animationSteps.get(0).delay;
+            frameTimer = animation.animationSteps.getFirst().delay;
         }
         catch (Exception e) {
             System.out.println("Animation not loaded");
@@ -38,6 +43,7 @@ public class SpriteAnimator extends Component{
 
     public interface AnimatorListener {
         void onAnimationEvent(String eventKey);
+        void onAnimationComlete();
     }
     private List<SpriteAnimator.AnimatorListener> listeners = new ArrayList<>();
     public void addListener(SpriteAnimator.AnimatorListener listener) {
@@ -49,6 +55,11 @@ public class SpriteAnimator extends Component{
     public void notifyAnimationEvent(String eventKey) {
         for (SpriteAnimator.AnimatorListener listener : listeners) {
             listener.onAnimationEvent(eventKey);
+        }
+    }
+    public void notifyAnimationComplete(){
+        for(SpriteAnimator.AnimatorListener listener : listeners) {
+            listener.onAnimationComlete();
         }
     }
 //    C:\Users\megaz\Documents\JavaGameEngineProject\src\Resources\test.json
@@ -71,6 +82,8 @@ public class SpriteAnimator extends Component{
                     currentStepIndex = 0;
                 } else {
                     currentStepIndex = currentAnim.animationSteps.size()-1;
+                    notifyAnimationComplete();
+                    System.out.println("Notifying animation complete");
                 }
             }
             String eventKey = currentAnim.animationSteps.get(currentStepIndex).eventKey;

@@ -9,13 +9,16 @@ import java.util.List;
 public class CrateHover extends Crate{
     Vector2 initialPosition;
     Vector2 dir = Vector2.down;
-    float hoverSpeed= 1.5f;
+    float hoverSpeed= .5f;
     float hoverDistance = .4f;
     float sinkSpeed = 2.25f;
     float sinkingDistance = 5f;
     boolean isSinking = false;
     List<GameObject> objectsAttached = new ArrayList<GameObject>();
 
+    public CrateHover(){
+        super(true);
+    }
     @Override
     public void awake() {
         super.awake();
@@ -38,20 +41,20 @@ public class CrateHover extends Crate{
             }
         }
     }
+
     @Override
-    public void onCrateEnter(Collider other) {
+    public void onCrateTouchTop(Collider other) {
         if(other.getComponent(Rigidbody.class)!=null){
             objectsAttached.add(other.gameObject);
         }
     }
+
 
     @Override
     public void onCrateStay(Collider other) {
         if(other.gameObject.name.equals("Player")){
             double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
             double colliderTop = Math.floor(collider.getBounds().minY*10)/10;
-            System.out.println("Player Bottom: " + otherBottom);
-            System.out.println("Crate Top: " + colliderTop);
             if(otherBottom <= colliderTop){
                 if(other.getComponent(Rigidbody.class).velocity.getY() > 0){
                     other.getComponent(Rigidbody.class).velocity.setY(0);
