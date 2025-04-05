@@ -23,12 +23,12 @@ public class Crate extends Component{
                 public void onCollisionEnter(Collider other) {
                     double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
                     double colliderTop = Math.floor(collider.getBounds().minY * 10)/10;
-                    if(otherBottom <= colliderTop){
+                    if(otherBottom <= colliderTop+0.25f){
                         onCrateTouchTop(other);
                     }
                     double playerTop = Math.floor(other.getBounds().minY * 10) / 10;
                     double colliderBottom = Math.floor(collider.getBounds().maxY * 10) / 10;
-                    if(playerTop >= colliderBottom){
+                    if(playerTop >= colliderBottom-0.25f){
                        onCrateTouchBottom(other);
                     }
                 }

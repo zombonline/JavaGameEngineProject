@@ -3,14 +3,12 @@ package ObjectSystem;
 import Main.GamePanel;
 import Main.Key;
 import Main.KeyHandler;
-import Main.Main;
 import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
-
+import Main.DebugText;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +53,11 @@ public class Player extends Component{
         if(leftKey.isHeld() || aKey.isHeld()){xMovement-=1;}
         if(rightKey.isHeld() || dkey.isHeld()){xMovement+=1;}
         rb.addForce(new Vector2(xMovement, 0).mul(speed*GamePanel.getDeltaTime()));
+
+
+        DebugText.log("Player Position", gameObject.transform.getPosition().toString());
+        DebugText.log("Player Velocity", (getComponent(Rigidbody.class).velocity.mul(1000).truncate().div(1000)).toString());
+
     }
     public boolean isGrounded(){
         Vector2 rayOrigin1 = new Vector2(col.getBounds().minX,col.getBounds().maxY+0.1f);

@@ -1,15 +1,15 @@
 {
   "name": "Player",
   "components": {
-    "player": {"speed": 1.0},
+    "player": {"speed": 2.0},
     "spriteRenderer": {
       "spriteImage": "/Resources/Images/scrimbo.png"
     },
     "rigidbody": {
-      "drag": 0.9,
+      "drag": 0.85,
       "gravityScale": 0.01,
       "restitution": 0,
-      "maxVelocity": [1.0,0.5]
+      "maxVelocity": [0.175,0.45]
     },
     "collider": {
       "isStatic": false,
@@ -29,10 +29,9 @@
         -200,
         200
       ],
-      "minBoundsFollowStrength": 2,
-      "boundsFollowStrengthScale": 0.03,
-      "idleFollowStrength": 2,
-      "idleFollowMaxDist": 10.0
+      "minFollowStrength": 0.01,
+      "maxFollowStrength": 0.075,
+      "smoothSpeed": 0.001
     }
   }
 }

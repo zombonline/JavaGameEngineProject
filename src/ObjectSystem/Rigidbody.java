@@ -1,4 +1,5 @@
 package ObjectSystem;
+import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
 
@@ -66,7 +67,7 @@ public class Rigidbody extends Component{
         }
         forces.clear();
         velocity = new Vector2(velocity.getX()*drag, velocity.getY());
-        velocity = velocity.add(Vector2.down.mul(gravityScale));
+        if(!isGrounded()){velocity = velocity.add(Vector2.down.mul(gravityScale));}
         if(maxVelocity != null){
             if(Math.abs(velocity.getX()) > maxVelocity.getX()){
                 velocity.setX(Math.signum(velocity.getX())*maxVelocity.getX());
@@ -83,6 +84,16 @@ public class Rigidbody extends Component{
         if(isKinematic){return;}
         getGameObject().transform.translate(velocity);
 
+    }
+
+    public boolean isGrounded(){
+        Vector2 rayOrigin1 = new Vector2(rbCollider.getBounds().minX+0.1f,rbCollider.getBounds().maxY+0.1f);
+        Vector2 rayOrigin2 = new Vector2(rbCollider.getBounds().maxX-0.1f, rbCollider.getBounds().maxY+0.1f);
+        ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
+        mask.add(CollisionLayer.DEFAULT);
+        Raycast raycast1 = new Raycast(rayOrigin1,.1f,0,10, mask);
+        Raycast raycast2 = new Raycast(rayOrigin2,.1f,0,10, mask);
+        return raycast1.checkForCollision() != null || raycast2.checkForCollision() != null;
     }
 
     private void CheckForNewCollider(Vector2 direction) {

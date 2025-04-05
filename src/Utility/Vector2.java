@@ -104,5 +104,24 @@ public class Vector2 {
     public Vector2 invert() {
         return new Vector2(-this.getX() ,-this.getY());
     }
+    public Vector2 truncate() { return new Vector2(Math.floor(this.x),Math.floor(this.y));}
+    public Vector2 clamp(Vector2 max) {
+        float clampedX = Math.max(-max.getX(), Math.min(this.getX(), max.getX()));
+        float clampedY = Math.max(-max.getY(), Math.min(this.getY(), max.getY()));
+        return new Vector2(clampedX, clampedY);
+    }
+    public float dot(Vector2 other) {
+        return this.getX() * other.getX() + this.getY() * other.getY();
+    }
+
+    public Vector2 projectOnto(Vector2 other) {
+        float dotProduct = this.dot(other);
+        float otherMagnitudeSquared = other.getX() * other.getX() + other.getY() * other.getY();
+        float scalar = dotProduct / otherMagnitudeSquared;
+        return other.mul(scalar);
+    }
+    public Vector2 perpendicular() {
+        return new Vector2(-this.getY(), this.getX());
+    }
 
 }

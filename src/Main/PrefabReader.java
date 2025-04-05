@@ -110,15 +110,21 @@ public class PrefabReader {
         return new Player(keyHandler, speed);
     }
 
+
+    //ap<String,Object> defaultValues = new HashMap<>();
+    //        defaultValues.put("bounds" , new Bounds(-100,100,-100,100));
+    //        defaultValues.put("minFollowStrength", 0.001f);
+    //        defaultValues.put("maxFollowStrength", 0.07f);
+    //        defaultValues.put("smoothingSpeed", -.002f);
+    //        return defaultValues;
     private static CameraFollow buildCameraFollow(JsonNode values){
         Map<String,Object> defaultValues = CameraFollow.getDefaultValues();
         Bounds bounds = (Bounds) (values.has("bounds") ? new Bounds(getFloatListFromJSONNode(values.get("bounds"))) :
                 defaultValues.get("bounds"));
-        float minBoundsFollowStrength = (float) (values.has("minBoundsFollowStrength") ? (float) values.get("minBoundsFollowStrength").asDouble() : defaultValues.get("minBoundsFollowStrength"));
-        float boundsFollowStrengthScale = (float) (values.has("boundsFollowStrengthScale") ? (float) values.get("boundsFollowStrengthScale").asDouble() : defaultValues.get("boundsFollowStrengthScale"));
-        float idleFollowStrength = (float) (values.has("idleFollowStrength") ? (float) values.get("idleFollowStrength").asDouble() : defaultValues.get("idleFollowStrength"));
-        float idleFollowMaxDist = (float) (values.has("idleFollowMaxDist") ? (float) values.get("idleFollowMaxDist").asDouble() : defaultValues.get("idleFollowMaxDist"));
-        return new CameraFollow(bounds,minBoundsFollowStrength, boundsFollowStrengthScale,idleFollowStrength,idleFollowMaxDist);
+        float minFollowStrength = (float) (values.has("minFollowStrength") ? (float) values.get("minFollowStrength").asDouble() : defaultValues.get("minFollowStrength"));
+        float maxFollowStrength = (float) (values.has("maxFollowStrength") ? (float) values.get("maxFollowStrength").asDouble() : defaultValues.get("maxFollowStrength"));
+        float smoothingSpeed = (float) (values.has("smoothingSpeed") ? (float) values.get("smoothingSpeed").asDouble() : defaultValues.get("smoothingSpeed"));
+        return new CameraFollow(bounds,minFollowStrength,maxFollowStrength,smoothingSpeed);
     }
 
     private static SpriteAnimator buildSpriteAnimator(JsonNode values){
