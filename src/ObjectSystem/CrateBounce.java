@@ -1,5 +1,6 @@
 package ObjectSystem;
 
+import Main.DebugText;
 import Utility.Vector2;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class CrateBounce extends Crate{
     @Override
     public void onCrateTouchTop(Collider other) {
         if(!other.gameObject.name.equals("Player")){ return; }
+        DebugText.logTemporarily(" Player velocity: " + other.getComponent(Rigidbody.class).velocity.getY());
         if(other.getComponent(Rigidbody.class).velocity.getY()<0.1f){return;}
         other.getComponent(Rigidbody.class).velocity = Vector2.zero;
         other.getComponent(Rigidbody.class).addForce(Vector2.up.mul(bounceStrength));

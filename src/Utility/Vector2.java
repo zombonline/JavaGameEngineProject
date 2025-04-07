@@ -123,5 +123,9 @@ public class Vector2 {
     public Vector2 perpendicular() {
         return new Vector2(-this.getY(), this.getX());
     }
-
+    public Vector2 toDp(int decimalPlaces){
+        return new Vector2(
+                (Math.floor(this.getX()*Math.pow(10,decimalPlaces))/Math.pow(10,decimalPlaces))
+                , (Math.floor(this.getY()*Math.pow(10,decimalPlaces))/Math.pow(10,decimalPlaces)));
+    }
 }

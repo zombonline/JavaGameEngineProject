@@ -5,11 +5,8 @@ import Main.Bounds;
 import Main.DebugText;
 import Main.GamePanel;
 import Utility.Vector2;
-import com.sun.jdi.FloatType;
-import com.sun.source.tree.ForLoopTree;
 
 import java.awt.*;
-import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,8 +50,8 @@ public class CameraFollow extends Component{
         outOfXBounds = playerPos.getX()+transform.getScreenScale().getX() < screenBounds.minX + threshold + 200 ||
                 playerPos.getX() > screenBounds.maxX - threshold;
         outOfYBounds = playerPos.getY() < screenBounds.minY+threshold || playerPos.getY() > screenBounds.maxY-threshold;
-        DebugText.log("Out of X Bounds", String.valueOf(outOfXBounds));
-        DebugText.log("Out of Y Bounds", String.valueOf(outOfYBounds));
+        DebugText.logPermanently("Out of X Bounds", String.valueOf(outOfXBounds));
+        DebugText.logPermanently("Out of Y Bounds", String.valueOf(outOfYBounds));
 
         if (outOfXBounds || outOfYBounds ) {
             followStrength+=smoothingSpeed;
@@ -64,7 +61,7 @@ public class CameraFollow extends Component{
         }
         Vector2 cameraCentre = camera.getCameraCentrePosition();
         followStrength = Math.clamp(followStrength, minFollowStrength, maxFollowStrength);
-        DebugText.log("Camera Follow Strength",String.valueOf(followStrength));
+        DebugText.logPermanently("Camera Follow Strength",String.valueOf(followStrength));
         Vector2 smoothedPosition = Vector2.lerp(cameraCentre, transform.getPosition().mul(GamePanel.WORLD_SCALE), followStrength);
         camera.setPosition(smoothedPosition);
         outOfBoundsLastFrame = outOfXBounds || outOfYBounds;
