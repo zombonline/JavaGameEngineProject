@@ -7,7 +7,7 @@ import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
 import Main.DebugText;
-import java.awt.*;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +55,8 @@ public class Player extends Component{
         rb.addForce(new Vector2(xMovement, 0).mul(speed*GamePanel.getDeltaTime()));
 
 
-        DebugText.log("Player Position", gameObject.transform.getPosition().toString());
-        DebugText.log("Player Velocity", (getComponent(Rigidbody.class).velocity.mul(1000).truncate().div(1000)).toString());
+        DebugText.logPermanently("Player Position", gameObject.transform.getPosition().toString());
+        DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.mul(1000).truncate().div(1000)).toString());
 
     }
     public boolean isGrounded(){

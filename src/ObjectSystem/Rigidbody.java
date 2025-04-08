@@ -148,7 +148,7 @@ public class Rigidbody extends Component{
             switch ((int) direction.toAngle()) {
                 case 0:
                     overlap = getGameObject().transform.getPosition().getY() + halfSize.getY() - hits.getFirst().getBounds().minY;
-                    if(velocity.getY() > 0 && overlap>=0){velocity.setY(0);}
+                    if(velocity.getY() > 0 && overlap>=0){ addForce(new Vector2(0, -velocity.getY()));}
                     break;
                 case 90:
                     overlap = getGameObject().transform.getPosition().getX() + halfSize.getX() - hits.getFirst().getBounds().minX;

@@ -1,5 +1,6 @@
 package ObjectSystem;
 import Main.Bounds;
+import Main.DebugText;
 import Main.GamePanel;
 import Main.SpatialHashGrid;
 import Utility.CollisionLayer;
@@ -30,6 +31,7 @@ public class Collider extends Component{
         for (CollisionListener listener : listeners) {
             listener.onCollisionEnter(other);
         }
+        DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
     }
     public void notifyCollisionStay(Collider other){
         for (CollisionListener listener : listeners) {

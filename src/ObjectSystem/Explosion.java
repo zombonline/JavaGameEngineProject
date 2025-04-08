@@ -5,7 +5,7 @@ import Utility.Vector2;
 import java.util.ArrayList;
 
 public class Explosion extends Component{
-    float scale = 3.5f;
+    float scale = 3f;
     SpriteRenderer spriteRenderer;
     SpriteAnimator spriteAnimator;
     SpriteAnimator.AnimatorListener animatorListener;
@@ -23,19 +23,13 @@ public class Explosion extends Component{
         spriteAnimator = getComponent(SpriteAnimator.class);
         animatorListener = new SpriteAnimator.AnimatorListener() {
             @Override
-            public void onAnimationEvent(String eventKey) {}
+            public void onAnimationEvent(String eventKey) {
+                if(eventKey.equals("destroy")) {
+                    destroyObjectsInRange();
+                }
+            }
             @Override
             public void onAnimationComlete() {
-                for(GameObject object : objectsInRange){
-                    if(object.getComponent(Crate.class)!=null){
-                        if(object.getComponent(CrateExplosive.class)!=null){
-                            object.getComponent(CrateExplosive.class).ExplodeImmediate();
-                        } else {
-                            GameObject.destroy(object);
-                        }
-                    }
-                }
-                GameObject.destroy(gameObject);
             }
         };
         spriteAnimator.addListener(animatorListener);
@@ -59,5 +53,16 @@ public class Explosion extends Component{
             collider.addListener(listener);
         }
     }
-
+    private void destroyObjectsInRange(){
+        for (GameObject object : objectsInRange) {
+            if (object.getComponent(Crate.class) != null) {
+                if (object.getComponent(CrateExplosive.class) != null) {
+                    object.getComponent(CrateExplosive.class).ExplodeImmediate();
+                } else {
+                    GameObject.destroy(object);
+                }
+            }
+        }
+        GameObject.destroy(gameObject);
+    }
 }

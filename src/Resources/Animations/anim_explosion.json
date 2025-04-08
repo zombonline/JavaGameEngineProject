@@ -11,7 +11,8 @@
     },
     {
       "imageAddress": "Images.EXPLOSION_BIG",
-      "delay": 10
+      "delay": 10,
+      "eventKey": "destroy"
     },
     {
       "imageAddress": "Images.EXPLOSION_BIG",

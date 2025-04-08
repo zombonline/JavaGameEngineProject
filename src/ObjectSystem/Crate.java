@@ -1,5 +1,6 @@
 package ObjectSystem;
 
+import Main.DebugText;
 import Utility.Vector2;
 
 public class Crate extends Component{
@@ -23,7 +24,9 @@ public class Crate extends Component{
                 public void onCollisionEnter(Collider other) {
                     double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
                     double colliderTop = Math.floor(collider.getBounds().minY * 10)/10;
+                    DebugText.logTemporarily("CRATE COLLISION: Other Bottom (" + otherBottom + ")" + ", Crate Top (" + colliderTop + ")");
                     if(otherBottom <= colliderTop+0.25f){
+                        DebugText.logTemporarily("TOUCHING TOP");
                         onCrateTouchTop(other);
                     }
                     double playerTop = Math.floor(other.getBounds().minY * 10) / 10;

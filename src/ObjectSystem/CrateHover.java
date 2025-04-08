@@ -9,6 +9,7 @@ import java.util.List;
 public class CrateHover extends Crate{
     Vector2 initialPosition;
     Vector2 dir = Vector2.down;
+    float currentSpeed;
     float hoverSpeed= .5f;
     float hoverDistance = .4f;
     float sinkSpeed = 2.25f;
@@ -26,12 +27,10 @@ public class CrateHover extends Crate{
     }
     @Override
     public void update() {
-        float speed = isSinking ? sinkSpeed : hoverSpeed;
+        currentSpeed = isSinking ? sinkSpeed : hoverSpeed;
         float distance = isSinking ? sinkingDistance : hoverDistance;
-        gameObject.transform.translate(dir.mul(speed* GamePanel.getDeltaTime()));
-        for(GameObject attachedObject : objectsAttached){
-            attachedObject.transform.translate(dir.add(Vector2.up.mul(0.01f)).mul(speed* GamePanel.getDeltaTime()));
-        }
+        gameObject.transform.translate(dir.mul(currentSpeed* GamePanel.getDeltaTime()));
+
         if(Vector2.dist(initialPosition, gameObject.transform.getPosition()) > distance){
             if (isSinking){
                 GameObject.destroy(gameObject);
@@ -46,22 +45,18 @@ public class CrateHover extends Crate{
     public void onCrateTouchTop(Collider other) {
         if(other.getComponent(Rigidbody.class)!=null){
             objectsAttached.add(other.gameObject);
+            if(other.gameObject.name.equals("Player")){
+                isSinking = true;
+                dir = Vector2.down;
+            }
         }
     }
 
 
     @Override
     public void onCrateStay(Collider other) {
-        if(other.gameObject.name.equals("Player")){
-            double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
-            double colliderTop = Math.floor(collider.getBounds().minY*10)/10;
-            if(otherBottom <= colliderTop){
-                if(other.getComponent(Rigidbody.class).velocity.getY() > 0){
-                    other.getComponent(Rigidbody.class).velocity.setY(0);
-                }
-                isSinking = true;
-                dir = Vector2.down;
-            }
+        for(GameObject attachedObject : objectsAttached){
+            attachedObject.transform.translate(dir.add(Vector2.up.mul(0.01f)).mul(currentSpeed* GamePanel.getDeltaTime()));
         }
     }
 
