@@ -6,12 +6,11 @@ import Utility.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.graalvm.nativeimage.c.struct.CPointerTo;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class PrefabReader {
@@ -39,21 +38,23 @@ public class PrefabReader {
                 Map.Entry<String, JsonNode> entry = fields.next();
                 String componentName = entry.getKey();
                 JsonNode componentData = entry.getValue();
-
+                Component component = null;
                 if (componentData.isArray()) {
-                    // Handle multiple components of the same type
                     for (JsonNode item : componentData) {
                         System.out.println("Creating " + componentName + " for " + rootNode.get("name"));
-                        Component component = buildComponent(componentName, item);
-                        if (component != null) {
-                            newObject.addComponent(component);
-                        }
+                        component = buildComponent(componentName, item);
                     }
                 } else {
                     // Handle single component
                     System.out.println("Creating " + componentName + " for " + rootNode.get("name"));
-                    Component component = buildComponent(componentName, componentData);
-                    if (component != null) {
+                    component = buildComponent(componentName, componentData);
+                }
+                if(component!= null){
+                    if(component instanceof Transform){
+                        newObject.transform.setPosition(((Transform) component).getPosition());
+                        newObject.transform.setRotation(((Transform) component).getRotation());
+                        newObject.transform.setScale(((Transform) component).getScale());
+                    } else {
                         newObject.addComponent(component);
                     }
                 }
@@ -64,6 +65,7 @@ public class PrefabReader {
 
     private static Component buildComponent(String name, JsonNode values) {
         return switch (name) {
+            case "transform" -> buildTransform(values);
             case "spriteRenderer" -> buildSpriteRenderer(values);
             case "collider" -> buildCollider(values);
             case "spriteAnimator" -> buildSpriteAnimator(values);
@@ -77,14 +79,21 @@ public class PrefabReader {
             default -> null;
         };
     }
+
+    private static Transform buildTransform(JsonNode values){
+        Map<String,Object> defaultValues = Transform.getDefaultValues();
+        Vector2 position = (Vector2) (values.has("position") ? new Vector2(getFloatListFromJSONNode(values.get("position"))) : defaultValues.get("position"));
+        Vector2 rotation = (Vector2) (values.has("rotation") ? new Vector2(getFloatListFromJSONNode(values.get("rotation"))) : defaultValues.get("rotation"));
+        Vector2 scale = (Vector2) (values.has("scale") ? new Vector2(getFloatListFromJSONNode(values.get("scale"))) : defaultValues.get("scale"));
+        return new Transform(position, rotation, scale);
+    }
+
     private static SpriteRenderer buildSpriteRenderer(JsonNode values){
         Map<String,Object> defaultValues = SpriteRenderer.getDefaultValues();
         BufferedImage spriteImage = getBufferedImageFromString ((values.has("spriteImage") ? values.get("spriteImage").asText() : defaultValues.get("spriteImage").toString()));
         Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
         return new SpriteRenderer(spriteImage, offset);
     }
-
-
 
     private static Collider buildCollider(JsonNode values){
         Map<String,Object> defaultValues = Collider.getDefaultValues();
@@ -110,13 +119,6 @@ public class PrefabReader {
         return new Player(keyHandler, speed);
     }
 
-
-    //ap<String,Object> defaultValues = new HashMap<>();
-    //        defaultValues.put("bounds" , new Bounds(-100,100,-100,100));
-    //        defaultValues.put("minFollowStrength", 0.001f);
-    //        defaultValues.put("maxFollowStrength", 0.07f);
-    //        defaultValues.put("smoothingSpeed", -.002f);
-    //        return defaultValues;
     private static CameraFollow buildCameraFollow(JsonNode values){
         Map<String,Object> defaultValues = CameraFollow.getDefaultValues();
         Bounds bounds = (Bounds) (values.has("bounds") ? new Bounds(getFloatListFromJSONNode(values.get("bounds"))) :

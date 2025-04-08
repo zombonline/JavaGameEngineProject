@@ -30,6 +30,14 @@ public class GameObject {
         component.setGameObject(this);
         return component;
     }
+    public <T extends Component> void removeComponent(Class<T> type) {
+        for (Component c : components) {
+            if (type.isInstance(c)) {
+                components.remove(c);
+                break;
+            }
+        }
+    }
     public <T extends Component> T getComponent(Class<T> type) {
         for (Component c : components) {
             if (type.isInstance(c)) return type.cast(c);

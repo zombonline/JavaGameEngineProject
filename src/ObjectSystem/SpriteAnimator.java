@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Main.Animation;
+import Main.Assets;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.imageio.ImageIO;
 
 
 public class SpriteAnimator extends Component{
@@ -21,7 +24,7 @@ public class SpriteAnimator extends Component{
     public void loadAnimation(String animPath)  {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
-            InputStream inputStream = getClass().getResourceAsStream(animPath);
+            InputStream inputStream = getClass().getResourceAsStream(Assets.getAssetPath(animPath));
             if (inputStream == null) {
                 System.out.println("DEBUG: Could not find " + animPath + " in resources.");
             }

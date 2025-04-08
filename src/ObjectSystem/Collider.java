@@ -138,11 +138,11 @@ public class Collider extends Component{
 
     @Override
     public void draw(Graphics2D g2d) {
-//        super.draw(g2d);
-//        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-//        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
-//        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE));
-//        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
+        super.draw(g2d);
+        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
+        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
+        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
+        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
     }
 
     public static Map<String,Object> getDefaultValues(){

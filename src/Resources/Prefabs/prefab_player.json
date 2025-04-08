@@ -1,9 +1,12 @@
 {
   "name": "Player",
   "components": {
+    "transform": {
+      "scale": [2.0,1.5]
+    },
     "player": {"speed": 2.0},
     "spriteRenderer": {
-      "spriteImage": "/Resources/Images/scrimbo.png"
+      "spriteImage": "/Resources/Images/test_player_sprite.png"
     },
     "rigidbody": {
       "drag": 0.85,
@@ -17,10 +20,11 @@
       "collisionMask": [
         "DEFAULT"
       ],
-      "size": [0.7,1.0],
+      "size": [0.4,0.9],
       "offset": [0.0,0.0]
     },
     "spriteAnimator": {
+      "startingAnim":"Animations.PLAYER_TEST_RUN"
     },
     "cameraFollow": {
       "bounds": [

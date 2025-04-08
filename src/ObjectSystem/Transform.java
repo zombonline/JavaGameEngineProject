@@ -4,6 +4,10 @@ import Main.GamePanel;
 import Main.Main;
 import Utility.Vector2;
 
+import javax.sound.midi.VoiceStatus;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Transform extends Component{
     private Vector2 position;
     private Vector2 rotation;
@@ -33,6 +37,9 @@ public class Transform extends Component{
     public Vector2 getPosition(){
         return this.position;
     }
+    public Vector2 getRotation(){return this.rotation;}
+    public void setRotation(Vector2 rotation){this.rotation = rotation;}
+
     public Vector2 getScreenScale(){
         return scale.mul(GamePanel.WORLD_SCALE);
     }
@@ -44,5 +51,12 @@ public class Transform extends Component{
         return position.mul(GamePanel.WORLD_SCALE)
                 .sub(getScreenScale().div(2))
                 .sub(adjustedCameraPos); // Apply modified camera position
+    }
+    public static Map<String,Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("position", Vector2.zero);
+        defaultValues.put("rotation", Vector2.zero);
+        defaultValues.put("scale", Vector2.one);
+        return defaultValues;
     }
 }

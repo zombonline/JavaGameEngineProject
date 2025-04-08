@@ -1,0 +1,13 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.PLAYER_TEST_RUN_1",
+      "delay": 10
+    },
+    {
+      "imageAddress": "Images.PLAYER_TEST_RUN_2",
+      "delay": 10
+    }
+  ]
+}
