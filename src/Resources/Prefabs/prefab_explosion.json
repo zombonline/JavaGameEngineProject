@@ -6,6 +6,9 @@
     "collider": {
       "isTrigger": true
     },
-    "explosion": {}
+    "explosion": {},
+    "rigidbody": {
+      "isKinematic": true
+    }
   }
 }

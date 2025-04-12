@@ -128,4 +128,7 @@ public class Vector2 {
                 (Math.floor(this.getX()*Math.pow(10,decimalPlaces))/Math.pow(10,decimalPlaces))
                 , (Math.floor(this.getY()*Math.pow(10,decimalPlaces))/Math.pow(10,decimalPlaces)));
     }
+    public Vector2 toSign(){
+        return new Vector2(Math.signum(this.getX()), Math.signum(this.getY()));
+    }
 }

@@ -4,10 +4,7 @@
     "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_basic.png"},
     "collider": {},
     "crateBounce": {
-      "bounceStrength": 0.25
-    },
-    "rigidbody": {
-      "isKinematic": true
+      "bounceStrength":20
     }
   }
 }

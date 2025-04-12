@@ -5,6 +5,7 @@ import Main.GamePanel;
 import Main.SpatialHashGrid;
 import Utility.CollisionLayer;
 import Utility.Vector2;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,8 +32,10 @@ public class Collider extends Component{
         for (CollisionListener listener : listeners) {
             listener.onCollisionEnter(other);
         }
+
         DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
     }
+
     public void notifyCollisionStay(Collider other){
         for (CollisionListener listener : listeners) {
             listener.onCollisionStay(other);
@@ -100,8 +103,9 @@ public class Collider extends Component{
                 colliding.add(nearbyCollider);
             }
         }
-        if(colliding.isEmpty()){return;}
-        this.getGameObject().getComponent(Rigidbody.class).handleCollisions(colliding);
+        if(this.getGameObject().getComponent(Rigidbody.class)!=null){
+            this.getGameObject().getComponent(Rigidbody.class).handleCollisions(colliding);
+        }
     }
 
     public Vector2 getOverlap(Collider other) {
@@ -140,11 +144,11 @@ public class Collider extends Component{
 
     @Override
     public void draw(Graphics2D g2d) {
-        super.draw(g2d);
-        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
-        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
-        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
+//        super.draw(g2d);
+//        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
+//        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
+//        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
+//        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
     }
 
     public static Map<String,Object> getDefaultValues(){

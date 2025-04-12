@@ -3,12 +3,10 @@
   "components": {
     "spriteRenderer": [
       {"spriteImage": "/Resources/Images/Crates/crate_hover.png"},
-      {"spriteImage": "/Resources/Images/Crates/crate_hover_effect.png", "offset": [0.0, 1.0]}
-      ],
+      {"spriteImage": "/Resources/Images/Crates/crate_hover_effect.png", "offset": [0.0, 1.0]},
+      {"spriteImage": "/Resources/Images/Crates/crate_hover.png"}
+    ],
     "collider": {},
-    "crateHover": {},
-    "rigidbody": {
-      "isKinematic": true
-    }
+    "crateHover": {  }
   }
 }

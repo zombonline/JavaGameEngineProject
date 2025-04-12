@@ -1,6 +1,9 @@
 package Main;
 
 import ObjectSystem.*;
+import ObjectSystem.Crate.CrateBounce;
+import ObjectSystem.Crate.CrateExplosive;
+import ObjectSystem.Crate.CrateHover;
 import Utility.CollisionLayer;
 import Utility.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.*;
 
 public class PrefabReader {
@@ -42,20 +44,19 @@ public class PrefabReader {
                 if (componentData.isArray()) {
                     for (JsonNode item : componentData) {
                         System.out.println("Creating " + componentName + " for " + rootNode.get("name"));
-                        component = buildComponent(componentName, item);
+                        newObject.addComponent(buildComponent(componentName, item));
                     }
                 } else {
-                    // Handle single component
                     System.out.println("Creating " + componentName + " for " + rootNode.get("name"));
                     component = buildComponent(componentName, componentData);
-                }
-                if(component!= null){
-                    if(component instanceof Transform){
-                        newObject.transform.setPosition(((Transform) component).getPosition());
-                        newObject.transform.setRotation(((Transform) component).getRotation());
-                        newObject.transform.setScale(((Transform) component).getScale());
-                    } else {
-                        newObject.addComponent(component);
+                    if(component!= null){
+                        if(component instanceof Transform){
+                            newObject.transform.setPosition(((Transform) component).getPosition());
+                            newObject.transform.setRotation(((Transform) component).getRotation());
+                            newObject.transform.setScale(((Transform) component).getScale());
+                        } else {
+                            newObject.addComponent(component);
+                        }
                     }
                 }
             }
@@ -73,9 +74,10 @@ public class PrefabReader {
             case "player" -> buildPlayer(values);
             case "cameraFollow" -> buildCameraFollow(values);
             case "crateBounce" -> buildCrateBounce(values);
-            case "crateHover" -> new CrateHover();
+            case "crateHover" -> buildCrateHover(values);
             case "crateExplosive" -> buildCrateExplosive(values);
             case "explosion" -> buildExplosion(values);
+            case "playerAnimator" -> new PlayerAnimation();
             default -> null;
         };
     }
@@ -147,12 +149,21 @@ public class PrefabReader {
     public static CrateBounce buildCrateBounce(JsonNode values){
         Map<String,Object> defaultValues = CrateBounce.getDefaultValues();
         float bounceStrength = (float) (values.has("bounceStrength") ? (float) values.get("bounceStrength").asDouble() : defaultValues.get("bounceStrength"));
-        return new CrateBounce(bounceStrength);
+        int hitsToDestroy = (values.has("hitsToDestroy") ? values.get("hitsToDestroy").asInt() : (int) defaultValues.get("hitsToDestroy"));
+        return new CrateBounce(bounceStrength, hitsToDestroy);
     }
     public static CrateExplosive buildCrateExplosive(JsonNode values){
         Map<String,Object> defaultValues = CrateBounce.getDefaultValues();
         float bounceStrength = (float) (values.has("bounceStrength") ? (float) values.get("bounceStrength").asDouble() : defaultValues.get("bounceStrength"));
         return new CrateExplosive(bounceStrength);
+    }
+    public static CrateHover buildCrateHover(JsonNode values){
+        Map<String,Object> defaultValues = CrateHover.getDefaultValues();
+        float bounceStrength = (float) (values.has("bounceStrength") ? (float) values.get("bounceStrength").asDouble() : defaultValues.get("bounceStrength"));
+        int hitsToDestroy = (values.has("hitsToDestroy") ? values.get("hitsToDestroy").asInt() : (int) defaultValues.get("hitsToDestroy"));
+        float hoverSpeed = (float) (values.has("hoverSpeed") ? (float) values.get("hoverSpeed").asDouble() : defaultValues.get("hoverSpeed"));
+        float hoverDistance = (float) (values.has("hoverDistance") ? (float) values.get("hoverDistance").asDouble() : defaultValues.get("hoverDistance"));
+        return new CrateHover(bounceStrength,hitsToDestroy,hoverSpeed,hoverDistance);
     }
     public static Explosion buildExplosion(JsonNode values){
         return new Explosion();

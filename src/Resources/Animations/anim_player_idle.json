@@ -1,0 +1,9 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.PLAYER_IDLE",
+      "delay": 10
+    }
+  ]
+}

@@ -2,17 +2,17 @@
   "name": "Player",
   "components": {
     "transform": {
-      "scale": [2.0,1.5]
+      "scale": [2.0,1.8]
     },
-    "player": {"speed": 2.0},
+    "player": {"speed": 50},
     "spriteRenderer": {
-      "spriteImage": "/Resources/Images/test_player_sprite.png"
+      "spriteImage": "/Resources/Images/test_player_sprite.png",
+      "offset": [0.0, -0.15]
     },
     "rigidbody": {
-      "drag": 0.85,
-      "gravityScale": 0.01,
+      "drag": 7,
       "restitution": 0,
-      "maxVelocity": [0.175,0.45]
+      "maxVelocity": [6,200]
     },
     "collider": {
       "isStatic": false,
@@ -20,22 +20,23 @@
       "collisionMask": [
         "DEFAULT"
       ],
-      "size": [0.4,0.9],
+      "size": [0.4,0.7],
       "offset": [0.0,0.0]
     },
     "spriteAnimator": {
       "startingAnim":"Animations.PLAYER_TEST_RUN"
     },
+    "playerAnimator": {},
     "cameraFollow": {
       "bounds": [
-        -250,
-        200,
+        -100,
+        100,
         -200,
         200
       ],
       "minFollowStrength": 0.01,
-      "maxFollowStrength": 0.075,
-      "smoothSpeed": 0.001
+      "maxFollowStrength": 0.065,
+      "smoothingSpeed": 0.2
     }
   }
 }

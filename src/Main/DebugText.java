@@ -1,8 +1,11 @@
 package Main;
 
+import org.w3c.dom.Text;
+
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +18,7 @@ public class DebugText {
     }
     public static void logTemporarily(String info)
     {
-        tempInfo.add(info);
+        tempInfo.add(LocalDateTime.now().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + ": " + info);
         if(tempInfo.size() > 10){
             tempInfo = new ArrayList<>(tempInfo.subList(tempInfo.size() - 10, tempInfo.size()));
         }
@@ -23,14 +26,21 @@ public class DebugText {
 
     public static void drawDebugText(Graphics g){
         int i = 0;
+        int w = 0;
+        g.setColor(Color.blue);
         for (Map.Entry<String, String> entry : permanentInfo.entrySet()) {
             i++;
-            g.drawString(entry.getKey()+":"+entry.getValue(), 10 ,11*i);
+            String text = entry.getKey()+":"+entry.getValue();
+            if(text.length()>w){w=text.length();}
+            g.drawString(text, 10 ,11*i);
         }
-        i+=5;
+        i+=2;
         for(String entry : tempInfo){
             i++;
+            if(entry.length()>w){w=entry.length();}
             g.drawString(entry, 10, 11*i);
         }
+        g.drawRect(10, 0, Math.round(w*6.2f), (11*i)+5);
+
     }
 }

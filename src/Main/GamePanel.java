@@ -92,11 +92,11 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        DebugText.drawDebugText(g);
         for(GameObject gameObject : activeGameObjects){
             gameObject.draw(g2d);
             Vector2 pos = gameObject.transform.getPosition().mul(GamePanel.WORLD_SCALE).sub(Main.camera.getPosition());
         }
+        DebugText.drawDebugText(g);
     }
     public void destroyObjects(){
         for(GameObject gameObject : gameObjectsToDestroy){

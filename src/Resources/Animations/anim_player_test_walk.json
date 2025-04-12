@@ -3,19 +3,19 @@
   "animationSteps": [
     {
       "imageAddress": "Images.PLAYER_TEST_RUN_1",
-      "delay": 4
+      "delay": 8
     },
     {
       "imageAddress": "Images.PLAYER_TEST_RUN_2",
-      "delay": 4
+      "delay": 8
     },
     {
       "imageAddress": "Images.PLAYER_TEST_RUN_3",
-      "delay": 4
+      "delay": 8
     },
     {
       "imageAddress": "Images.PLAYER_TEST_RUN_4",
-      "delay": 4
+      "delay": 8
     }
   ]
 }

@@ -1,14 +1,12 @@
 package ObjectSystem;
 
-import Main.GamePanel;
-import Main.Key;
-import Main.KeyHandler;
+import Main.*;
 import Utility.CollisionLayer;
 import Utility.Raycast;
 import Utility.Vector2;
-import Main.DebugText;
 
 import java.awt.event.KeyEvent;
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +18,16 @@ public class Player extends Component{
     private Key leftKey, rightKey, aKey, dkey, jumpKey;
     Collider col;
 
+    SpriteAnimator animator;
+    //Jump variables
+    public float coyoteTime = 0.025f, coyoteTimer;
+    public float pressTime = 0.125f, pressTimer;
+
     public Player(KeyHandler keyHandler, float speed){
         this.keyHandler = keyHandler;
         this.speed = speed;
         setUpControls(keyHandler);
     }
-
     private void setUpControls(KeyHandler keyHandler) {
         leftKey = keyHandler.addKey(KeyEvent.VK_LEFT);
         rightKey = keyHandler.addKey(KeyEvent.VK_RIGHT);
@@ -35,39 +37,35 @@ public class Player extends Component{
                 this::jump,
                 ()->{});
     }
-
-
     private void jump(){
-        if(!isGrounded()){return;}
-        rb.velocity.setY(0);
-        rb.addForce(Vector2.up.mul(.25f));
+        pressTimer = pressTime;
     }
     @Override
     public void awake() {
         super.awake();
         rb = getComponent(Rigidbody.class);
         col = getComponent(Collider.class);
+        animator = getComponent(SpriteAnimator.class);
     }
     public void update(){
         int xMovement= 0;
         if(leftKey.isHeld() || aKey.isHeld()){xMovement-=1;}
         if(rightKey.isHeld() || dkey.isHeld()){xMovement+=1;}
         rb.addForce(new Vector2(xMovement, 0).mul(speed*GamePanel.getDeltaTime()));
+        if(rb.isGrounded()){coyoteTimer = coyoteTime;}
+        if(coyoteTimer>0 && pressTimer > 0 ){
+            rb.velocity.setY(0);
+            rb.addForce(Vector2.up.mul(16));
+            pressTimer = 0;
+            coyoteTimer = 0;
+        }
+        pressTimer-=GamePanel.getDeltaTime();
 
-
-        DebugText.logPermanently("Player Position", gameObject.transform.getPosition().toString());
-        DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.mul(1000).truncate().div(1000)).toString());
+        DebugText.logPermanently("Player Position", gameObject.transform.getPosition().toDp(2).toString());
+        DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.toDp(2).toString()));
 
     }
-    public boolean isGrounded(){
-        Vector2 rayOrigin1 = new Vector2(col.getBounds().minX,col.getBounds().maxY+0.1f);
-        Vector2 rayOrigin2 = new Vector2(col.getBounds().maxX, col.getBounds().maxY+0.1f);
-        ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
-        mask.add(CollisionLayer.DEFAULT);
-        Raycast raycast1 = new Raycast(rayOrigin1,.1f,0,10, mask);
-        Raycast raycast2 = new Raycast(rayOrigin2,.1f,0,10, mask);
-        return raycast1.checkForCollision() != null || raycast2.checkForCollision() != null;
-    }
+
 
     public static Map<String,Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();

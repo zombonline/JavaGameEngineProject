@@ -4,7 +4,6 @@
     "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_explosive.png"},
     "collider": {},
     "crateExplosive": {},
-    "spriteAnimator": {},
-    "rigidbody": {"isKinematic": true}
+    "spriteAnimator": {}
   }
 }
