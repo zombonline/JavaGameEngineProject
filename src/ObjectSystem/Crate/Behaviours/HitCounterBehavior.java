@@ -3,6 +3,7 @@ package ObjectSystem.Crate.Behaviours;
 import ObjectSystem.Collider;
 import ObjectSystem.Crate.Crate;
 import ObjectSystem.Player;
+import ObjectSystem.PlayerComboTracker;
 import ObjectSystem.Rigidbody;
 
 import javax.sound.midi.VoiceStatus;
@@ -12,6 +13,8 @@ import java.util.List;
 public class HitCounterBehavior implements CrateBehavior {
     int currentHitPoints;
     int startingHitPoints;
+    public boolean active = true;
+
     public HitCounterBehavior(int startingHitPoints) {
         this.startingHitPoints = startingHitPoints;
         this.currentHitPoints = startingHitPoints;
@@ -31,20 +34,21 @@ public class HitCounterBehavior implements CrateBehavior {
     public void onTouchTop(Collider other, Crate crate) {
         if(other.getComponent(Player.class)==null){return;}
         if (other.getComponent(Rigidbody.class).velocityLastFrame.getY() < crate.requiredHitStrength) return;
-        takeHit();
+        takeHit(other);
     }
     @Override
     public void onTouchBottom(Collider other, Crate crate) {
         if(other.getComponent(Player.class)==null){return;}
         if (other.getComponent(Rigidbody.class).velocityLastFrame.getY() > -crate.requiredHitStrength) return;
-        takeHit();
+        takeHit(other);
     }
 
     @Override
     public void onExplosionNearby(Crate crate) {
     }
 
-    private void takeHit(){
+    private void takeHit(Collider other){
+        if(!active){return;}
         currentHitPoints--;
         notifyHitTaken();
         if(currentHitPoints<=0){

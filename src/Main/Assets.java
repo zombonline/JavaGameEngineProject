@@ -2,6 +2,7 @@ package Main;
 
 import ObjectSystem.Explosion;
 
+import java.lang.reflect.Field;
 import java.util.AbstractSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,56 +20,60 @@ public class Assets {
     }
 
     public static class Images {
-        public static final String EXPLOSION_SMALL = "Resources\\Images\\effect_explosion_small.png";
-        public static final String EXPLOSION_MEDIUM = "Resources\\Images\\effect_explosion_medium.png";
-        public static final String EXPLOSION_BIG = "Resources\\Images\\effect_explosion_big.png";
+        public static final String EXPLOSION_SMALL = "/Resources\\Images\\effect_explosion_small.png";
+        public static final String EXPLOSION_MEDIUM = "/Resources\\Images\\effect_explosion_medium.png";
+        public static final String EXPLOSION_BIG = "/Resources\\Images\\effect_explosion_big.png";
 
-        public static final String CRATE_EXPLOSIVE = "Resources\\Images\\Crates\\crate_explosive.png";
-        public static final String CRATE_EXPLOSIVE_TRIGGERED = "Resources\\Images\\Crates\\crate_explosive_triggered.png";
+        public static final String CRATE_EXPLOSIVE = "/Resources\\Images\\Crates\\crate_explosive.png";
+        public static final String CRATE_EXPLOSIVE_TRIGGERED = "/Resources\\Images\\Crates\\crate_explosive_triggered.png";
 
-        public static final String CRATE_BACKGROUND = "Resources/Images/Crates/crate_background.png";
+        public static final String CRATE_BASIC = "/Resources\\Images\\Crates\\crate_basic.png";
 
-        public static final String PLAYER_TEST_RUN_1 = "Resources/Images/test_player_run_1.png";
-        public static final String PLAYER_TEST_RUN_2 = "Resources/Images/test_player_run_2.png";
-        public static final String PLAYER_TEST_RUN_3 = "Resources/Images/test_player_run_3.png";
-        public static final String PLAYER_TEST_RUN_4 = "Resources/Images/test_player_run_4.png";
-        public static final String PLAYER_IDLE = "Resources/Images/player_idle.png";
-        public static final String PLAYER_TEST_FALL_1 = "Resources/Images/test_player_fall_1.png";
-        public static final String PLAYER_TEST_FALL_2 = "Resources/Images/test_player_fall_2.png";
+        public static final String CRATE_BACKGROUND = "/Resources/Images/Crates/crate_background.png";
+
+        public static final String PLAYER_TEST_RUN_1 = "/Resources/Images/test_player_run_1.png";
+        public static final String PLAYER_TEST_RUN_2 = "/Resources/Images/test_player_run_2.png";
+        public static final String PLAYER_TEST_RUN_3 = "/Resources/Images/test_player_run_3.png";
+        public static final String PLAYER_TEST_RUN_4 = "/Resources/Images/test_player_run_4.png";
+        public static final String PLAYER_IDLE = "/Resources/Images/player_idle.png";
+        public static final String PLAYER_TEST_FALL_1 = "/Resources/Images/test_player_fall_1.png";
+        public static final String PLAYER_TEST_FALL_2 = "/Resources/Images/test_player_fall_2.png";
+
+        public static final String DOOR_TOP = "/Resources/Images/door_top.png";
+        public static final String DOOR_BOTTOM = "/Resources/Images/door_bottom.png";
     }
 
     public static class Prefabs {
         public static final String EXPLOSION = "/Resources\\Prefabs\\prefab_explosion.json";
-        public static final String CRATE_BACKGROUND = "Resources/Prefabs/prefab_crate_background.json";
+        public static final String CRATE_BACKGROUND = "/Resources/Prefabs/prefab_crate_background.json";
+        public static final String DOOR = "/Resources/Prefabs/prefab_door.json";
+    }
+
+    public static class Levels {
+        public static final String LEVEL_TEST = "/Resources/Tilesets/test_level.tmx";
+        public static final String LEVEL_TEST_1 = "/Resources/Tilesets/test_level_1.tmx";
     }
 
     private static final Map<String, String> assetMap = new HashMap<>();
 
     static {
-        assetMap.put("Animations.EXPLOSION", Animations.EXPLOSION);
-        assetMap.put("Animations.CRATE_EXPLOSIVE_TRIGGER", Animations.CRATE_EXPLOSIVE_TRIGGER);
-        assetMap.put("Animations.PLAYER_TEST_RUN", Animations.PLAYER_TEST_RUN);
-        assetMap.put("Animations.PLAYER_TEST_WALK", Animations.PLAYER_TEST_WALK);
-        assetMap.put("Animations.PLAYER_IDLE", Animations.PLAYER_IDLE);
+        addAssetsFromClass("Animations", Animations.class);
+        addAssetsFromClass("Images", Images.class);
+        addAssetsFromClass("Prefabs", Prefabs.class);
+        addAssetsFromClass("Levels", Levels.class);
+    }
 
-
-        assetMap.put("Images.EXPLOSION_SMALL", Images.EXPLOSION_SMALL);
-        assetMap.put("Images.EXPLOSION_MEDIUM", Images.EXPLOSION_MEDIUM);
-        assetMap.put("Images.EXPLOSION_BIG", Images.EXPLOSION_BIG);
-        assetMap.put("Images.CRATE_EXPLOSIVE", Images.CRATE_EXPLOSIVE);
-        assetMap.put("Images.CRATE_EXPLOSIVE_TRIGGERED", Images.CRATE_EXPLOSIVE_TRIGGERED);
-        assetMap.put("Images.CRATE_BACKGROUND", Images.CRATE_BACKGROUND);
-        assetMap.put("Images.PLAYER_TEST_RUN_1", Images.PLAYER_TEST_RUN_1);
-        assetMap.put("Images.PLAYER_TEST_RUN_2", Images.PLAYER_TEST_RUN_2);
-        assetMap.put("Images.PLAYER_TEST_RUN_3", Images.PLAYER_TEST_RUN_3);
-        assetMap.put("Images.PLAYER_TEST_RUN_4", Images.PLAYER_TEST_RUN_4);
-        assetMap.put("Images.PLAYER_IDLE", Images.PLAYER_IDLE);
-        assetMap.put("Images.PLAYER_TEST_FALL_1", Images.PLAYER_TEST_FALL_1);
-        assetMap.put("Images.PLAYER_TEST_FALL_2", Images.PLAYER_TEST_FALL_2);
-
-
-        assetMap.put("Prefabs.EXPLOSION", Prefabs.EXPLOSION);
-        assetMap.put("Prefabs.CRATE_BACKGROUND",Prefabs.CRATE_BACKGROUND);
+    private static void addAssetsFromClass(String prefix, Class<?> clazz) {
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.getType() == String.class) {
+                try {
+                    String name = field.getName();
+                    String value = (String) field.get(null);
+                    assetMap.put(prefix + "." + name, value);
+                } catch (IllegalAccessException ignored) {
+                }
+            }
+        }
     }
 
     public static String getAssetPath(String key) {

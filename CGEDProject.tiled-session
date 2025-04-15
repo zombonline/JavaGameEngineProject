@@ -23,6 +23,14 @@
                 "y": 5792
             }
         },
+        "src/Resources/Level_Test.tmx": {
+            "scale": 0.9143749999999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 581.818181818182,
+                "y": 470.2665755297334
+            }
+        },
         "src/Resources/Tilesets/Tiles.tsx": {
             "dynamicWrapping": true,
             "scaleInEditor": 0.25
@@ -33,19 +41,19 @@
             "scaleInEditor": 1
         },
         "src/Resources/Tilesets/test_level.tmx": {
-            "scale": 0.125,
+            "scale": 0.03125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 7824,
-                "y": 4272
+                "x": 11584,
+                "y": 6496
             }
         },
         "src/Resources/Tilesets/test_level_1.tmx": {
             "scale": 0.03125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 16672,
-                "y": 4352
+                "x": 4128,
+                "y": 11488
             }
         }
     },

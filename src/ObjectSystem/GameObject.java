@@ -11,11 +11,6 @@ public class GameObject {
     public Transform transform;
     private List<Component> components = new ArrayList<>();
     public String name;
-    public static GameObject createNew(String name, Vector2 initialPosition){
-        GameObject newObject = new GameObject(name);
-        newObject.transform.setPosition(initialPosition);
-        return newObject;
-    }
     public static void destroy(GameObject object){
         GamePanel.gameObjectsToDestroy.add(object);
     }

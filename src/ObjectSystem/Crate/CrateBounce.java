@@ -1,11 +1,13 @@
 package ObjectSystem.Crate;
 
 
+import Main.GamePanel;
 import ObjectSystem.Crate.Behaviours.BounceBehavior;
 import ObjectSystem.Crate.Behaviours.DestroyedByExplosionBehaviour;
 import ObjectSystem.Crate.Behaviours.ExplodeBehavior;
 import ObjectSystem.Crate.Behaviours.HitCounterBehavior;
 import ObjectSystem.GameObject;
+import ObjectSystem.PlayerComboTracker;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +25,7 @@ public class CrateBounce extends Crate {
                 new HitCounterBehavior.HitCounterListener() {
                     @Override
                     public void onHit(int current, int start) {
-
+                        GamePanel.currentLevel.getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
                     }
 
                     @Override
@@ -36,7 +38,7 @@ public class CrateBounce extends Crate {
     public static Map<String, Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("bounceStrength", 10f);
-        defaultValues.put("hitsToDestroy",5);
+        defaultValues.put("hitsToDestroy",1);
         return defaultValues;
     }
 }

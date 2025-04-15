@@ -37,6 +37,7 @@
       "minFollowStrength": 0.01,
       "maxFollowStrength": 0.065,
       "smoothingSpeed": 0.2
-    }
+    },
+    "playerComboTracker": {}
   }
 }

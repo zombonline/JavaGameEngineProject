@@ -1,13 +1,9 @@
 package ObjectSystem;
 
 import Main.*;
-import Utility.CollisionLayer;
-import Utility.Raycast;
 import Utility.Vector2;
 
 import java.awt.event.KeyEvent;
-import java.util.AbstractSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +15,6 @@ public class Player extends Component{
     Collider col;
 
     SpriteAnimator animator;
-    //Jump variables
     public float coyoteTime = 0.025f, coyoteTimer;
     public float pressTime = 0.125f, pressTimer;
 

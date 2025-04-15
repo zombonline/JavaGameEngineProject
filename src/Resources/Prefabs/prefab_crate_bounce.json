@@ -4,7 +4,8 @@
     "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_bounce.png"},
     "collider": {},
     "crateBounce": {
-      "bounceStrength":25
+      "bounceStrength":25,
+      "hitsToDestroy": 3
     }
   }
 }

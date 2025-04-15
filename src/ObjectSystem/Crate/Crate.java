@@ -1,16 +1,18 @@
 package ObjectSystem.Crate;
 
 import Main.DebugText;
+import Main.GamePanel;
 import ObjectSystem.Collider;
 import ObjectSystem.Component;
 import ObjectSystem.Crate.Behaviours.CrateBehavior;
+
 
 import java.util.List;
 
 public class Crate extends Component {
     Collider collider;
     Collider.CollisionListener listener;
-    boolean breakable;
+    boolean breakable, destroyed;
     public float requiredHitStrength = .01f;
 
     protected List<CrateBehavior> behaviors;
@@ -61,9 +63,6 @@ public class Crate extends Component {
                     if (playerTop >= colliderBottom - 0.25f) {
                         for (CrateBehavior b : behaviors) {b.onTouchBottom(other, Crate.this);}
                     }
-
-
-
                 }
 
                 @Override
@@ -74,5 +73,18 @@ public class Crate extends Component {
             };
             collider.addListener(listener);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(destroyed) return;   
+        if(isBreakable()){
+            destroyed = true;
+            GamePanel.currentLevel.incrementCratesDestroyed();
+        }
+    }
+
+    public boolean isBreakable() {
+        return breakable;
     }
 }

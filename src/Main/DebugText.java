@@ -16,6 +16,7 @@ public class DebugText {
     public static void logPermanently(String key, String value) {
         permanentInfo.put(key,value);
     }
+    private static int width, height;
     public static void logTemporarily(String info)
     {
         tempInfo.add(LocalDateTime.now().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + ": " + info);
@@ -27,7 +28,10 @@ public class DebugText {
     public static void drawDebugText(Graphics g){
         int i = 0;
         int w = 0;
+        g.setColor(Color.white);
+        g.fillRect(10, 0, width, height);
         g.setColor(Color.blue);
+        g.setFont(new Font("Arial", Font.PLAIN, 10));
         for (Map.Entry<String, String> entry : permanentInfo.entrySet()) {
             i++;
             String text = entry.getKey()+":"+entry.getValue();
@@ -40,7 +44,8 @@ public class DebugText {
             if(entry.length()>w){w=entry.length();}
             g.drawString(entry, 10, 11*i);
         }
-        g.drawRect(10, 0, Math.round(w*6.2f), (11*i)+5);
+        width = Math.round(w*6.1f);
+        height = (11*i)+5;
 
     }
 }

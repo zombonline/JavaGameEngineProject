@@ -51,6 +51,11 @@ public class SpatialHashGrid {
             grid.remove(cellKey);
         }
     }
+
+    public static void clear(){
+        grid.clear();
+    }
+
     public static List<Collider> getNearby(Vector2 pos, ArrayList<CollisionLayer> layerMask) {
         List<Collider> nearbyColliders = new ArrayList<>();
         for (Collider collider : getNearby(pos)) {

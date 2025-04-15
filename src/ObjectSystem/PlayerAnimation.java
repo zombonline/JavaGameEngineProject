@@ -1,7 +1,6 @@
 package ObjectSystem;
 
 import Main.Assets;
-import Utility.Vector2;
 
 public class PlayerAnimation extends Component{
     Player player;

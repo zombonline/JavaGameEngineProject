@@ -14,6 +14,7 @@ public class HoverBehavior implements CrateBehavior{
     Vector2 dir = Vector2.down;
     float hoverSpeed= .5f;
     float hoverDistance = .4f;
+    public boolean active = true;
 
     public HoverBehavior(float hoverSpeed, float hoverDistance){
         this.hoverSpeed = hoverSpeed;
@@ -25,6 +26,7 @@ public class HoverBehavior implements CrateBehavior{
     }
     @Override
     public void update(Crate crate) {
+        if(!active){return;}
         GameObject crateGameObject = crate.getGameObject();
 
         crateGameObject.transform.translate(dir.mul(hoverSpeed* GamePanel.getDeltaTime()));

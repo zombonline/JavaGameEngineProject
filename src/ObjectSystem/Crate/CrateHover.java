@@ -7,6 +7,7 @@ import ObjectSystem.Crate.Behaviours.DestroyedByExplosionBehaviour;
 import ObjectSystem.Crate.Behaviours.HitCounterBehavior;
 import ObjectSystem.Crate.Behaviours.HoverBehavior;
 import ObjectSystem.GameObject;
+import ObjectSystem.PlayerComboTracker;
 import ObjectSystem.Rigidbody;
 import Utility.Vector2;
 
@@ -28,9 +29,11 @@ public class CrateHover extends Crate{
                 new HitCounterBehavior.HitCounterListener() {
                     @Override
                     public void onHit(int current, int start) {
+                        GamePanel.currentLevel.getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
                     }
                     @Override
                     public void onHitsReachedZero() {
+
                         GameObject.destroy(gameObject);
                     }
                 }

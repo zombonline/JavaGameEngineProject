@@ -5,15 +5,10 @@ import Main.GamePanel;
 import Main.SpatialHashGrid;
 import Utility.CollisionLayer;
 import Utility.Vector2;
-import com.fasterxml.jackson.databind.node.BooleanNode;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-
-import static Main.Main.camera;
 
 public class Collider extends Component{
     public interface CollisionListener {
@@ -32,8 +27,20 @@ public class Collider extends Component{
         for (CollisionListener listener : listeners) {
             listener.onCollisionEnter(other);
         }
+        handleCollisionLog(other);
+    }
 
-        DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
+    private void handleCollisionLog(Collider other) {
+        //check has codes so only one prints
+        if(gameObject.name.charAt(0) == other.gameObject.name.charAt(0)){
+            if (System.identityHashCode(this) < System.identityHashCode(other)) {
+                DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
+            }
+        } else {
+            if(gameObject.name.charAt(0) < other.gameObject.name.charAt(0)){
+                DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
+            }
+        }
     }
 
     public void notifyCollisionStay(Collider other){
@@ -55,6 +62,7 @@ public class Collider extends Component{
     private Bounds bounds;
     private boolean isTrigger;
 
+    ArrayList<Collider> allCollisions = new ArrayList<>(), allCollisionsLastFrame = new ArrayList<Collider>();
 
     public Collider(boolean isStatic, CollisionLayer collisionLayer, ArrayList<CollisionLayer> collisionMask, Vector2 size, Vector2 offset, boolean isTrigger) {
         this.isStatic = isStatic;
@@ -86,6 +94,8 @@ public class Collider extends Component{
     @Override
     public void onDestroy(){
         SpatialHashGrid.remove(this);
+        allCollisions.clear();
+        allCollisionsLastFrame.clear();
     }
 
     private void checkCollidersNearby() {
@@ -99,14 +109,41 @@ public class Collider extends Component{
             if (overlap.getY() <= 0 || overlap.getX() <= 0) {
                 continue;
             }
-            if(getGameObject().getComponent(Rigidbody.class)!=null){
-                colliding.add(nearbyCollider);
-            }
+            colliding.add(nearbyCollider);
+            allCollisions.add(nearbyCollider);
         }
+        allCollisions.removeIf(collider -> !colliding.contains(collider));
+        updateTouchingColliders();
         if(this.getGameObject().getComponent(Rigidbody.class)!=null){
             this.getGameObject().getComponent(Rigidbody.class).handleCollisions(colliding);
         }
     }
+
+    public void updateTouchingColliders() {
+        // Use a HashSet to eliminate duplicates without modifying the original list during iteration
+        List<Collider> uniqueCollisions = new ArrayList<>(new HashSet<>(allCollisions));
+
+        // Iterate over a copy or snapshot to avoid problematic modifications while looping
+        for (Collider collider : uniqueCollisions) {
+            // Check and handle "CollisionEnter" and "CollisionStay" events
+            if (!allCollisionsLastFrame.contains(collider)) {
+                collider.notifyCollisionEnter(this);
+            }
+            collider.notifyCollisionStay(this);
+        }
+
+        // Avoid modifying the original list; prepare another loop for exit collisions
+        List<Collider> collisionsLastFrameCopy = new ArrayList<>(allCollisionsLastFrame);
+        for (Collider collider : collisionsLastFrameCopy) {
+            if (!uniqueCollisions.contains(collider)) {
+                collider.notifyCollisionExit(this);
+            }
+        }
+
+        // Update last frame collisions safely outside of loops
+        allCollisionsLastFrame = new ArrayList<>(uniqueCollisions);
+    }
+
 
     public Vector2 getOverlap(Collider other) {
         Bounds otherBounds = other.getBounds();
@@ -144,10 +181,10 @@ public class Collider extends Component{
 
     @Override
     public void draw(Graphics2D g2d) {
-//        super.draw(g2d);
-//        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-//        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
-//        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
+        super.draw(g2d);
+        g2d.setColor(new Color(255,0,0,100)); // Set color of the square
+        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
+        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
 //        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
     }
 

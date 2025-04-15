@@ -45,10 +45,10 @@ public class CameraFollow extends Component{
         lookAhead = (lookAhead * (1.0 - 0.025f)) + (lookAheadTarget * 0.025f);
         Vector2 playerPos = new Vector2(transform.getScreenPosition().getX()+(lookAhead*GamePanel.WORLD_SCALE),transform.getScreenPosition().getY());
         Bounds screenBounds = new Bounds(
-                (((float) GamePanel.width /2) + bounds.minX),
-                (((float) GamePanel.width /2) + bounds.maxX),
-                (((float) GamePanel.height /2) + bounds.minY),
-                (((float) GamePanel.height /2) + bounds.maxY));
+                (((float) Main.width /2) + bounds.minX),
+                (((float) Main.width /2) + bounds.maxX),
+                (((float) Main.height /2) + bounds.minY),
+                (((float) Main.height /2) + bounds.maxY));
 
         if(outOfBoundsLastFrame){
             threshold = 75;
@@ -97,14 +97,14 @@ public class CameraFollow extends Component{
 //        g2d.setColor(new Color(255,255,0,100));
 //        Vector2 playerPos = transform.getPosition().add(transform.getScale()).mul(GamePanel.WORLD_SCALE);
 //        g2d.fillOval((int) playerPos.getX()-5,(int) playerPos.getY()-5,10,10);
-//        Vector2 screenCenter = new Vector2(GamePanel.width /2,GamePanel.height /2);
+//        Vector2 screenCenter = new Vector2(Main.width /2,Main.height /2);
 //        g2d.fillOval((int) screenCenter.getX()-5,(int)screenCenter.getY()-5,10,10);
 //
 //        Bounds screenBounds = new Bounds(
-//                (((float) GamePanel.width /2) + bounds.minX + threshold),
-//                (((float) GamePanel.width /2) + bounds.maxX - threshold),
-//                (((float) GamePanel.height /2) + bounds.minY),
-//                (((float) GamePanel.height /2) + bounds.maxY));
+//                (((float) Main.width /2) + bounds.minX + threshold),
+//                (((float) Main.width /2) + bounds.maxX - threshold),
+//                (((float) Main.height /2) + bounds.minY),
+//                (((float) Main.height /2) + bounds.maxY));
 //        g2d.drawRect((int) screenBounds.minX, (int) screenBounds.minY,
 //                (int) (screenBounds.maxX - screenBounds.minX),
 //                (int) (screenBounds.maxY - screenBounds.minY));
