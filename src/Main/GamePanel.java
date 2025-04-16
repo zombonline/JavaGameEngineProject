@@ -2,61 +2,38 @@ package Main;
 
 import ObjectSystem.*;
 import ObjectSystem.Component;
+import ObjectSystem.Image;
+import Utility.Vector2;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_SCALE = 100;
-    int FPS = 60;
+    public static final int FPS = 60;
     private static double deltaTime = 0;
     Thread gameThread;
 
-    public static ArrayList<GameObject> gameObjectsToAwake = new ArrayList<GameObject>();
-    public static ArrayList<GameObject> activeGameObjects = new ArrayList<GameObject>();
-    public static ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<GameObject>();
     public static LevelData currentLevel;
 
     boolean running = false;
     boolean paused = false;
-    public GamePanel() {
-        this.setBackground(Color.darkGray);
-        this.setDoubleBuffered(true);
-        this.setFocusable(true);
-    }
     public void startGameThread(String level){
-        stopGameThread();
         currentLevel = LevelLoader.parse(level);
-        gameThread = new Thread(this);
         running = true;
-        gameThread.start();
-    }
-    public void stopGameThread(){
-        running = false;
-        gameObjectsToAwake.clear();
-        gameObjectsToDestroy.clear();
-        activeGameObjects.clear();
-        SpatialHashGrid.clear();
-        if(gameThread != null){
-            try {
-                gameThread.interrupt();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if(gameThread == null){
+            gameThread = new Thread(this);
+            gameThread.start();
         }
     }
     public static double getDeltaTime() {
         return deltaTime;
     }
-    public void pauseGameThread(){
-        paused = true;
-    }
-    public void resumeGameThread(){
-        paused = false;
-    }
     @Override
     public void run() {
+        gameThread = Thread.currentThread();
         double drawInterval = 1000000000.0 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -110,18 +87,18 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void awake(){
         try {
-            for (GameObject gameObject : gameObjectsToAwake) {
+            for (GameObject gameObject : currentLevel.gameObjectsToAwake) {
                 gameObject.awake();
-                activeGameObjects.add(gameObject);
+                currentLevel.activeGameObjects.add(gameObject);
             }
-            gameObjectsToAwake.clear();
+            currentLevel.gameObjectsToAwake.clear();
         } catch (Exception e) {
             return;
         }
     }
     public void update(){
         try {
-            for (GameObject gameObject : activeGameObjects) {
+            for (GameObject gameObject : currentLevel.activeGameObjects) {
                 if (!running) {
                     return;
                 }
@@ -136,7 +113,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         try {
-            for (GameObject gameObject : activeGameObjects) {
+            for (GameObject gameObject : currentLevel.activeGameObjects) {
                 gameObject.draw(g2d);
             }
             DebugText.drawDebugText(g);
@@ -147,13 +124,13 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void destroyObjects(){
         try {
-            for (GameObject gameObject : gameObjectsToDestroy) {
+            for (GameObject gameObject :currentLevel.gameObjectsToDestroy) {
                 for (Component component : gameObject.getAllComponents()) {
                     component.onDestroy();
                 }
-                activeGameObjects.remove(gameObject);
+                currentLevel.activeGameObjects.remove(gameObject);
             }
-            gameObjectsToDestroy.clear();
+            currentLevel.gameObjectsToDestroy.clear();
         } catch (Exception e) {
             return;
         }

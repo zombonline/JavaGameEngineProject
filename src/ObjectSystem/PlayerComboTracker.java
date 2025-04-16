@@ -55,8 +55,8 @@ public class PlayerComboTracker extends Component{
     @Override
     public void draw(Graphics2D g2d) {
         if(comboDisplayTimer<0){return;}
-        Vector2 screenPos = gameObject.transform.getScreenPosition();
-        Vector2 screenScale = gameObject.transform.getScreenScale();
+        Vector2 screenPos = gameObject.getTransform().getScreenPosition();
+        Vector2 screenScale = gameObject.getTransform().getScreenScale();
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, fontSize));
         fontSize+=fontSizeIncrement;

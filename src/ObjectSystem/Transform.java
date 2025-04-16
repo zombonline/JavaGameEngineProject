@@ -3,10 +3,9 @@ package ObjectSystem;
 import Main.GamePanel;
 import Main.Main;
 import Utility.Vector2;
-
-import javax.sound.midi.VoiceStatus;
 import java.util.HashMap;
 import java.util.Map;
+import Main.Assets;
 
 public class Transform extends Component{
     private Vector2 position;
@@ -18,17 +17,16 @@ public class Transform extends Component{
         this.scale = scale;
     }
     public Transform(){
-        this.position = new Vector2(0,0);
-        this.rotation = new Vector2(0,0);
-        this.scale = new Vector2(1,1f);
+        this(Vector2.zero, Vector2.zero, Vector2.one);
     }
     public void setPosition(Vector2 newPosition){
         position = newPosition;
+        checkIfOutOfBounds();
     }
     public void translate(Vector2 translation) {
         if (translation.equals(Vector2.zero)){
             return;}
-        position = position.add(translation);
+        setPosition(position.add(translation));
     }
     public Vector2 getScale(){
         return  this.scale;
@@ -58,5 +56,12 @@ public class Transform extends Component{
         defaultValues.put("rotation", Vector2.zero);
         defaultValues.put("scale", Vector2.one);
         return defaultValues;
+    }
+
+    private void checkIfOutOfBounds(){
+        if(GamePanel.currentLevel == null){return;}
+        if(position.getX() < 0 || position.getX() > GamePanel.currentLevel.getWidth() || position.getY() < 0 || position.getY() > GamePanel.currentLevel.getHeight()){
+            Main.gamePanel.startGameThread(Assets.Levels.LEVEL_TEST_1);
+        }
     }
 }

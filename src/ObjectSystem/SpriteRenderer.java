@@ -34,16 +34,16 @@ public class SpriteRenderer extends Component {
             return;
         }
 
-        if (gameObject.name.equals("Background Crate")) {
+        if (gameObject.getName().equals("Background Crate")) {
             parallaxFactor = 0.7f;
         }
 
         // Use a custom parallax factor (e.g., 0.5f for half-speed movement)
-        Vector2 screenPos = gameObject.transform.getScreenPosition(parallaxFactor).add(offset.mul(GamePanel.WORLD_SCALE));
+        Vector2 screenPos = gameObject.getTransform().getScreenPosition(parallaxFactor).add(offset.mul(GamePanel.WORLD_SCALE));
 
         if (isVisible(screenPos)) {
-            int w = (int) (GamePanel.WORLD_SCALE * gameObject.transform.getScale().getX());
-            int h = (int) (GamePanel.WORLD_SCALE * gameObject.transform.getScale().getY());
+            int w = (int) (GamePanel.WORLD_SCALE * gameObject.getTransform().getScale().getX());
+            int h = (int) (GamePanel.WORLD_SCALE * gameObject.getTransform().getScale().getY());
 
             // Translate to the correct screen position first
             g2d.translate(screenPos.getX(), screenPos.getY());
@@ -77,8 +77,8 @@ public class SpriteRenderer extends Component {
     }
 
     private boolean isVisible(Vector2 screenPos) {
-        int w = (int) (GamePanel.WORLD_SCALE*gameObject.transform.getScale().getX());
-        int h = (int) (GamePanel.WORLD_SCALE*gameObject.transform.getScale().getY());
+        int w = (int) (GamePanel.WORLD_SCALE*gameObject.getTransform().getScale().getX());
+        int h = (int) (GamePanel.WORLD_SCALE*gameObject.getTransform().getScale().getY());
 
         return screenPos.getX() + w > 0 &&
                 screenPos.getY() + h > 0 &&

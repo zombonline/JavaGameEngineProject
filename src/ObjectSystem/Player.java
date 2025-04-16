@@ -3,7 +3,9 @@ package ObjectSystem;
 import Main.*;
 import Utility.Vector2;
 
+import javax.imageio.ImageIO;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ public class Player extends Component{
         this.keyHandler = keyHandler;
         this.speed = speed;
         setUpControls(keyHandler);
+
     }
     private void setUpControls(KeyHandler keyHandler) {
         leftKey = keyHandler.addKey(KeyEvent.VK_LEFT);
@@ -41,6 +44,7 @@ public class Player extends Component{
         rb = getComponent(Rigidbody.class);
         col = getComponent(Collider.class);
         animator = getComponent(SpriteAnimator.class);
+
     }
     public void update(){
         int xMovement= 0;
@@ -56,7 +60,7 @@ public class Player extends Component{
         }
         pressTimer-=GamePanel.getDeltaTime();
 
-        DebugText.logPermanently("Player Position", gameObject.transform.getPosition().toDp(2).toString());
+        DebugText.logPermanently("Player Position", gameObject.getTransform().getPosition().toDp(2).toString());
         DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.toDp(2).toString()));
 
     }

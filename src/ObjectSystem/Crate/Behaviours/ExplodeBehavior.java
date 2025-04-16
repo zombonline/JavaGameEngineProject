@@ -66,7 +66,7 @@ public class ExplodeBehavior implements CrateBehavior {
         notifyExplode();
         GameObject explosion = PrefabReader.getObject(Assets.Prefabs.EXPLOSION);
         explosion.getComponent(Explosion.class).setScale(explosionScale);
-        explosion.transform.setPosition(crate.getGameObject().transform.getPosition());
+        explosion.getTransform().setPosition(crate.getGameObject().getTransform().getPosition());
         GameObject.destroy(crate.getGameObject());
     }
 

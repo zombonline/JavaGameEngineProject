@@ -36,7 +36,7 @@ public class CameraFollow extends Component{
     @Override
     public void awake() {
 
-        transform = getGameObject().transform;
+        transform = getGameObject().getTransform();
         rb = getComponent(Rigidbody.class);
     }
     @Override

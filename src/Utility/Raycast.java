@@ -1,5 +1,6 @@
 package Utility;
 
+import Main.GamePanel;
 import ObjectSystem.Collider;
 import Main.Bounds;
 import Main.SpatialHashGrid;
@@ -57,7 +58,7 @@ public class Raycast {
 
     //I SHOULD PROBABLY MAKE A RAYCASTING CLASS AND STICK THIS IN THERE
     public Collider checkForColliderAtPoint(Vector2 point, ArrayList<CollisionLayer> mask){
-        List<Collider> nearbyColliders = SpatialHashGrid.getNearby(point, mask);
+        List<Collider> nearbyColliders = GamePanel.currentLevel.spatialHashGrid.getNearby(point, mask);
         Collider result = null;
         for (Collider nearbyCollider : nearbyColliders) {
             Bounds b = nearbyCollider.getBounds();

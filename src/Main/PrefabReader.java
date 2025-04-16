@@ -63,9 +63,9 @@ public class PrefabReader {
                     component = buildComponent(componentName, componentData);
                     if(component!= null){
                         if(component instanceof Transform){
-                            newObject.transform.setPosition(((Transform) component).getPosition());
-                            newObject.transform.setRotation(((Transform) component).getRotation());
-                            newObject.transform.setScale(((Transform) component).getScale());
+                            newObject.getTransform().setPosition(((Transform) component).getPosition());
+                            newObject.getTransform().setRotation(((Transform) component).getRotation());
+                            newObject.getTransform().setScale(((Transform) component).getScale());
                         } else {
                             newObject.addComponent(component);
                         }

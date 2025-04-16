@@ -7,17 +7,19 @@ import Utility.Vector2;
 
 
 public class SpatialHashGrid {
-    private static int cellSize = 8;
-    private static Map<Integer, List<Collider>> grid = new HashMap<>();;
+    private int cellSize = 8;
+    private Map<Integer, List<Collider>> grid = new HashMap<>();;
+    public SpatialHashGrid(int cellSize){
+        this.cellSize = cellSize;
+    }
 
-
-    public static int hash(Vector2 pos){
+    public int hash(Vector2 pos){
         int x = (int) Math.floor((pos.getX()/cellSize));
         int y = (int) Math.floor((pos.getY()/cellSize));
         return Objects.hash(x,y);
     }
 
-    public static void insert(Collider collider){
+    public void insert(Collider collider){
         int cellKey = hash(collider.getColliderPosition());
         List<Collider> cell = grid.computeIfAbsent(cellKey, k -> new ArrayList<>());
 
@@ -28,7 +30,7 @@ public class SpatialHashGrid {
 
     }
 
-    public static void remove(Collider collider, int cellKey){
+    public void remove(Collider collider, int cellKey){
         List<Collider> cell = grid.get(cellKey);
         if(cell==null){
             return;
@@ -39,7 +41,7 @@ public class SpatialHashGrid {
         }
     }
 
-    public static void remove(Collider collider){
+    public void remove(Collider collider){
         int cellKey = hash(collider.getColliderPosition());
         List<Collider> cell = grid.get(cellKey);
         if(cell==null){
@@ -52,11 +54,11 @@ public class SpatialHashGrid {
         }
     }
 
-    public static void clear(){
+    public void clear(){
         grid.clear();
     }
 
-    public static List<Collider> getNearby(Vector2 pos, ArrayList<CollisionLayer> layerMask) {
+    public List<Collider> getNearby(Vector2 pos, ArrayList<CollisionLayer> layerMask) {
         List<Collider> nearbyColliders = new ArrayList<>();
         for (Collider collider : getNearby(pos)) {
             if (layerMask.contains(collider.getCollisionLayer())) {
@@ -65,7 +67,7 @@ public class SpatialHashGrid {
         }
         return nearbyColliders;
     }
-    public static List<Collider> getNearby(Vector2 pos) {
+    public List<Collider> getNearby(Vector2 pos) {
         List<Collider> nearbyColliders = new ArrayList<>();
         int baseX = (int) Math.floor(pos.getX() / cellSize);
         int baseY = (int) Math.floor(pos.getY() / cellSize);

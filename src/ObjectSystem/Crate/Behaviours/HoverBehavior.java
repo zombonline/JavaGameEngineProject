@@ -22,17 +22,17 @@ public class HoverBehavior implements CrateBehavior{
     }
 
     public void awake(Crate crate){
-        initialPosition = crate.getGameObject().transform.getPosition();
+        initialPosition = crate.getGameObject().getTransform().getPosition();
     }
     @Override
     public void update(Crate crate) {
         if(!active){return;}
         GameObject crateGameObject = crate.getGameObject();
 
-        crateGameObject.transform.translate(dir.mul(hoverSpeed* GamePanel.getDeltaTime()));
+        crateGameObject.getTransform().translate(dir.mul(hoverSpeed* GamePanel.getDeltaTime()));
 
-        if(Vector2.dist(initialPosition, crateGameObject.transform.getPosition()) > hoverDistance){
-            crateGameObject.transform.setPosition(initialPosition.add(dir.mul(hoverDistance)));
+        if(Vector2.dist(initialPosition, crateGameObject.getTransform().getPosition()) > hoverDistance){
+            crateGameObject.getTransform().setPosition(initialPosition.add(dir.mul(hoverDistance)));
             dir = dir.invert();
         }
     }

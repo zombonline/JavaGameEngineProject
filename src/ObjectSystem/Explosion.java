@@ -1,45 +1,40 @@
 package ObjectSystem;
 
-import Main.DebugText;
 import ObjectSystem.Crate.Crate;
 import Utility.Vector2;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class Explosion extends Component{
-    float scale = 3.25f;
-    SpriteAnimator spriteAnimator;
-    SpriteAnimator.AnimatorListener animatorListener;
-    Collider collider;
-    ArrayList<GameObject> objectsInRange = new ArrayList<>();
+    private static final String DESTROY_EVENT_KEY = "destroy";
+
+    float scale;
+    private SpriteAnimator spriteAnimator;
+    private Collider collider;
+    private List<GameObject> affectedObjects = new ArrayList<>();
+
+    private SpriteAnimator.AnimatorListener animatorListener;
+    private Collider.CollisionListener collisionListener;
+
     @Override
     public void awake() {
-        super.awake();
-        collider = getComponent(Collider.class);
-        if(collider!=null){
-            Collider.CollisionListener listener = new Collider.CollisionListener() {
-                @Override
-                public void onCollisionEnter(Collider other) {
-                    objectsInRange.add(other.gameObject);
-                }
-                @Override
-                public void onCollisionExit(Collider other) {
-                    objectsInRange.remove(other.gameObject);
-                }
-                @Override
-                public void onCollisionStay(Collider other) {
-                }
-            };
-            collider.addListener(listener);
-        }
+        getRequiredComponentReferences();
+        setUpCollisionListener();
+        setUpAnimatorListener();
+    }
 
-        spriteAnimator = getComponent(SpriteAnimator.class);
+    @Override
+    protected void getRequiredComponentReferences() {
+        collider = fetchRequiredComponent(Collider.class);
+        spriteAnimator = fetchRequiredComponent(SpriteAnimator.class);
+    }
+
+    private void setUpAnimatorListener() {
         animatorListener = new SpriteAnimator.AnimatorListener() {
             @Override
             public void onAnimationEvent(String eventKey) {
-                if(eventKey.equals("destroy")) {
-                    DebugText.logTemporarily("Explosion destroying surrounding items");
+                if(eventKey.equals(DESTROY_EVENT_KEY)) {
                     destroyObjectsInRange();
                 }
             }
@@ -49,17 +44,41 @@ public class Explosion extends Component{
         };
         spriteAnimator.addListener(animatorListener);
     }
+
+    private void setUpCollisionListener() {
+        collisionListener = new Collider.CollisionListener() {
+            @Override
+            public void onCollisionEnter(Collider other) {
+                affectedObjects.add(other.gameObject);
+            }
+            @Override
+            public void onCollisionExit(Collider other) {
+                affectedObjects.remove(other.gameObject);
+            }
+            @Override
+            public void onCollisionStay(Collider other) {
+            }
+        };
+        collider.addListener(collisionListener);
+    }
+
     public void setScale(float scale){
         this.scale = scale;
-        gameObject.transform.setScale(Vector2.one.mul(scale));
+        gameObject.getTransform().setScale(Vector2.one.mul(scale));
     }
     private void destroyObjectsInRange(){
-        for (GameObject objectInRange : objectsInRange) {
-            DebugText.logTemporarily(gameObject.name + " in range of explosion");
-            if (objectInRange.getComponent(Crate.class) != null) {
-                objectInRange.getComponent(Crate.class).onExplosionNearby();
+        for (GameObject obj : affectedObjects) {
+            Crate crate = obj.getComponent(Crate.class);
+            if (crate!= null) {
+                crate.onExplosionNearby();
             }
         }
         GameObject.destroy(gameObject);
+    }
+
+    @Override
+    public void onDestroy() {
+        collider.removeListener(collisionListener);
+        spriteAnimator.removeListener(animatorListener);
     }
 }

@@ -50,7 +50,7 @@ public class LevelLoader {
                                     breakableCrates++;
                                 }
                             }
-                            newObject.transform.setPosition(new Vector2(x,y));
+                            newObject.getTransform().setPosition(new Vector2(x,y));
                             gameObjects.add(newObject);
                         }
                     }

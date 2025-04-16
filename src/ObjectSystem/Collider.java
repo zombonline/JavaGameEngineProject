@@ -32,13 +32,13 @@ public class Collider extends Component{
 
     private void handleCollisionLog(Collider other) {
         //check has codes so only one prints
-        if(gameObject.name.charAt(0) == other.gameObject.name.charAt(0)){
+        if(gameObject.getName().charAt(0) == other.gameObject.getName().charAt(0)){
             if (System.identityHashCode(this) < System.identityHashCode(other)) {
-                DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
+                DebugText.logTemporarily("COLLISION: " + gameObject.getName() + "(" + gameObject.getTransform().getPosition().toDp(2) + ") - " + other.gameObject.getName() + "(" + other.gameObject.getTransform().getPosition().toDp(2) + ")");
             }
         } else {
-            if(gameObject.name.charAt(0) < other.gameObject.name.charAt(0)){
-                DebugText.logTemporarily("COLLISION: " + gameObject.name + "(" + gameObject.transform.getPosition().toDp(2) + ") - " + other.gameObject.name + "(" + other.gameObject.transform.getPosition().toDp(2) + ")");
+            if(gameObject.getName().charAt(0) < other.gameObject.getName().charAt(0)){
+                DebugText.logTemporarily("COLLISION: " + gameObject.getName() + "(" + gameObject.getTransform().getPosition().toDp(2) + ") - " + other.gameObject.getName() + "(" + other.gameObject.getTransform().getPosition().toDp(2) + ")");
             }
         }
     }
@@ -75,31 +75,31 @@ public class Collider extends Component{
 
     @Override
     public void awake() {
-        colliderPosition = getGameObject().transform.getPosition().add(offset);
+        colliderPosition = getGameObject().getTransform().getPosition().add(offset);
         this.bounds = new Bounds(colliderPosition, size);
-        previousCellKey = SpatialHashGrid.hash(colliderPosition);
-        SpatialHashGrid.insert(this);
+        previousCellKey = GamePanel.currentLevel.spatialHashGrid.hash(colliderPosition);
+        GamePanel.currentLevel.spatialHashGrid.insert(this);
     }
     @Override
     public void update() {
         super.update();
         if(!isStatic){
-            this.colliderPosition = getGameObject().transform.getPosition().add(offset);
+            this.colliderPosition = getGameObject().getTransform().getPosition().add(offset);
         }
-        Vector2 scaledSize = size.mul(gameObject.transform.getScale());
+        Vector2 scaledSize = size.mul(gameObject.getTransform().getScale());
         this.bounds = new Bounds(colliderPosition, scaledSize);
         setSpatialHashGridCell();
         checkCollidersNearby();
     }
     @Override
     public void onDestroy(){
-        SpatialHashGrid.remove(this);
+        GamePanel.currentLevel.spatialHashGrid.remove(this);
         allCollisions.clear();
         allCollisionsLastFrame.clear();
     }
 
     private void checkCollidersNearby() {
-        List<Collider> nearbyColliders = SpatialHashGrid.getNearby(colliderPosition, collisionMask);
+        List<Collider> nearbyColliders = GamePanel.currentLevel.spatialHashGrid.getNearby(colliderPosition, collisionMask);
         List<Collider> colliding = new ArrayList<Collider>();
         for (Collider nearbyCollider : nearbyColliders) {
             if (nearbyCollider == this) {
@@ -153,10 +153,10 @@ public class Collider extends Component{
     }
 
     private void setSpatialHashGridCell() {
-        int newCellKey = SpatialHashGrid.hash(colliderPosition);
+        int newCellKey = GamePanel.currentLevel.spatialHashGrid.hash(colliderPosition);
         if (newCellKey != previousCellKey) { // Only update if the cell changes
-            SpatialHashGrid.remove(this, previousCellKey);    // Remove from old cell
-            SpatialHashGrid.insert(this);    // Insert into new cell
+            GamePanel.currentLevel.spatialHashGrid.remove(this, previousCellKey);    // Remove from old cell
+            GamePanel.currentLevel.spatialHashGrid.insert(this);    // Insert into new cell
             previousCellKey = newCellKey;    // Update last known cell
         }
     }
@@ -170,7 +170,7 @@ public class Collider extends Component{
         return colliderPosition;
     }
     public Vector2 getColliderSize(){
-        return size.mul(gameObject.transform.getScale());
+        return size.mul(gameObject.getTransform().getScale());
     }
     public Bounds getBounds(){
         return this.bounds;
@@ -183,8 +183,8 @@ public class Collider extends Component{
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
         g2d.setColor(new Color(255,0,0,100)); // Set color of the square
-        Vector2 scaledSize = size.mul(gameObject.transform.getScreenScale());
-        Vector2 drawPos = gameObject.transform.getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
+        Vector2 scaledSize = size.mul(gameObject.getTransform().getScreenScale());
+        Vector2 drawPos = gameObject.getTransform().getScreenPosition().add(offset.mul(GamePanel.WORLD_SCALE)).sub(scaledSize.div(2));
 //        g2d.fillRect((int) drawPos.getX(), (int) drawPos.getY(), (int)scaledSize.getX(), (int)scaledSize.getY());
     }
 

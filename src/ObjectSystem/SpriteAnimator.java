@@ -71,7 +71,7 @@ public class SpriteAnimator extends Component{
         super.awake();
         spriteRenderer = getComponent(SpriteRenderer.class);
         if(spriteRenderer == null){
-            System.out.println("Sprite Animator on " + getGameObject().name + " is missing a reference to Sprite Renderer.");
+            System.out.println("Sprite Animator on " + getGameObject().getName() + " is missing a reference to Sprite Renderer.");
         }
     }
     @Override

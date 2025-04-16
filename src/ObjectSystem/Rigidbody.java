@@ -64,7 +64,7 @@ public class Rigidbody extends Component{
         limitVelocity(Vector2.left);
         limitVelocity(Vector2.up);
         if(isKinematic){return;}
-        getGameObject().transform.translate(velocity.div(60));
+        getGameObject().getTransform().translate(velocity.div(60));
         if(isGrounded && velocity.getY() > 0){
             velocity.setY(0);
         }
@@ -89,7 +89,7 @@ public class Rigidbody extends Component{
 
     private void limitVelocity(Vector2 direction) {
         Vector2 halfSize = rbCollider.getColliderSize().div(2);
-        Vector2 pos = gameObject.transform.getPosition();
+        Vector2 pos = gameObject.getTransform().getPosition();
         float offsetAmount = direction.getX() != 0 ? halfSize.getX() : halfSize.getY();
         Vector2 rayOffset = direction.mul(offsetAmount);
         Vector2 perp = new Vector2(-direction.getY(), direction.getX()).mul(halfSize).mul(0.8f);
@@ -197,8 +197,8 @@ public class Rigidbody extends Component{
     }
 
     public void handleCollision(Collider other){
-        Vector2 thisPos = getGameObject().transform.getPosition();
-        Vector2 otherPos = other.getGameObject().transform.getPosition();
+        Vector2 thisPos = getGameObject().getTransform().getPosition();
+        Vector2 otherPos = other.getGameObject().getTransform().getPosition();
         Vector2 overlap = rbCollider.getOverlap(other);
         float dx = thisPos.getX() - otherPos.getX();
         float dy = thisPos.getY() - otherPos.getY();
@@ -229,7 +229,7 @@ public class Rigidbody extends Component{
                 thisPos.setY(thisPos.getY() - overlap.getY());
             }
         }
-        getGameObject().transform.setPosition(thisPos);
+        getGameObject().getTransform().setPosition(thisPos);
     }
     public void addForce(Vector2 force) {
         forces.add(force);  // Store forces instead of applying them immediately
