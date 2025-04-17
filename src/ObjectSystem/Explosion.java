@@ -1,5 +1,6 @@
 package ObjectSystem;
 
+import Main.GamePanel;
 import ObjectSystem.Crate.Crate;
 import Utility.Vector2;
 
@@ -68,9 +69,10 @@ public class Explosion extends Component{
     }
     private void destroyObjectsInRange(){
         for (GameObject obj : affectedObjects) {
-            Crate crate = obj.getComponent(Crate.class);
-            if (crate!= null) {
-                crate.onExplosionNearby();
+            for(Component c : obj.getAllComponents()){
+                if(c instanceof ExplosionListener){
+                    ((ExplosionListener) c).onTriggered();
+                }
             }
         }
         GameObject.destroy(gameObject);
@@ -80,5 +82,8 @@ public class Explosion extends Component{
     public void onDestroy() {
         collider.removeListener(collisionListener);
         spriteAnimator.removeListener(animatorListener);
+    }
+    public interface ExplosionListener{
+        void onTriggered();
     }
 }

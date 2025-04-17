@@ -27,7 +27,7 @@ public class Collider extends Component{
         for (CollisionListener listener : listeners) {
             listener.onCollisionEnter(other);
         }
-        handleCollisionLog(other);
+//        handleCollisionLog(other);
     }
 
     private void handleCollisionLog(Collider other) {
@@ -200,5 +200,6 @@ public class Collider extends Component{
         defaultValues.put("isTrigger", false);
         return defaultValues;
     }
+
 
 }

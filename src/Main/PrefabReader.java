@@ -10,7 +10,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.*;
@@ -28,17 +27,11 @@ public class PrefabReader {
      * @return a {@link GameObject} constructed based on the data from the JSON file,
      *         or null if the file is not found or an error occurs during parsing.
      */
-    public static GameObject getObject(String path)  {
+    public static GameObject getObject(InputStream input)  {
         ObjectMapper objectMapper = new ObjectMapper();
-        InputStream inputStream = PrefabReader.class.getResourceAsStream(path);
-
-        if (inputStream == null) {
-            System.out.println("DEBUG: Could not find " + path + " in resources.");
-            return null;
-        }
         JsonNode rootNode;
         try{
-            rootNode = objectMapper.readTree(inputStream);
+            rootNode = objectMapper.readTree(input);
         } catch (Exception e){
             return null;
         }
@@ -103,6 +96,7 @@ public class PrefabReader {
             case "playerAnimator" -> new PlayerAnimation();
             case "levelExit" -> new LevelExit();
             case "playerComboTracker" -> new PlayerComboTracker();
+            case "playerDeathHandler" -> new PlayerDeathHandler();
             default -> null;
         };
     }
@@ -138,7 +132,7 @@ public class PrefabReader {
      */
     private static SpriteRenderer buildSpriteRenderer(JsonNode values){
         Map<String,Object> defaultValues = SpriteRenderer.getDefaultValues();
-        BufferedImage spriteImage = getBufferedImageFromString ((values.has("spriteImage") ? values.get("spriteImage").asText() : defaultValues.get("spriteImage").toString()));
+        BufferedImage spriteImage = AssetLoader.getInstance().getImage((values.has("spriteImage") ? values.get("spriteImage").asText() : defaultValues.get("spriteImage").toString()));
         Vector2 offset = (Vector2) (values.has("offset") ? new Vector2(getFloatListFromJSONNode(values.get("offset"))) : defaultValues.get("offset"));
         return new SpriteRenderer(spriteImage, offset);
     }
@@ -204,7 +198,10 @@ public class PrefabReader {
     private static SpriteAnimator buildSpriteAnimator(JsonNode values){
         Map<String,Object> defaultValues = Rigidbody.getDefaultValues();
         String startingAnim = (values.has("startingAnim") ?  values.get("startingAnim").asText() : "");
-        return new SpriteAnimator(Assets.getAssetPath(startingAnim));
+        if(startingAnim.isEmpty()){
+            return new SpriteAnimator();
+        }
+        return new SpriteAnimator(AssetLoader.getInstance().getAnimation(startingAnim));
     }
     private static Rigidbody buildRigidbody(JsonNode values){
         Map<String,Object> defaultValues = Rigidbody.getDefaultValues();
@@ -238,15 +235,6 @@ public class PrefabReader {
     }
     public static Explosion buildExplosion(JsonNode values){
         return new Explosion();
-    }
-    private static BufferedImage getBufferedImageFromString(String val){
-        try {
-            System.out.println("Creating image from address: " + Assets.getAssetPath(val));
-            return ImageIO.read(PrefabReader.class.getResourceAsStream(Assets.getAssetPath(val)));
-        } catch (Exception e){
-            System.out.println("Couldn't create image from address: " + Assets.getAssetPath(val));
-            return null;
-        }
     }
     private static ArrayList<Float> getFloatListFromJSONNode(JsonNode node) {
         ObjectMapper mapper = new ObjectMapper();

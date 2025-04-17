@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Main.Animation;
-import Main.Assets;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import Main.AssetLoader;
 
-import javax.imageio.ImageIO;
 
 
 public class SpriteAnimator extends Component{
@@ -16,32 +14,18 @@ public class SpriteAnimator extends Component{
     int currentStepIndex = 0;
     Animation currentAnim;
 
-    public SpriteAnimator(String startingAnim){
-        if(startingAnim.equals("")){return;}
-        loadAnimation(startingAnim);
+    public SpriteAnimator(){
+
     }
 
-    public void loadAnimation(String animPath)  {
-        try{
-            ObjectMapper objectMapper = new ObjectMapper();
-            InputStream inputStream = getClass().getResourceAsStream(Assets.getAssetPath(animPath));
-            if (inputStream == null) {
-                System.out.println("DEBUG: Could not find " + animPath + " in resources.");
-            }
-            Animation animation = objectMapper.readValue(inputStream, Animation.class);
-            System.out.println("islooping: " + animation.isLooping);
-            for (Animation.AnimationStep step : animation.animationSteps) {
-                System.out.println("Image: " + step.imageAddress + ", Delay: " + step.delay);
-                step.loadImage();
-                System.out.println("image loaded");
-            }
-            currentAnim = animation;
-            frameTimer = animation.animationSteps.getFirst().delay;
-        }
-        catch (Exception e) {
-            System.out.println("Animation not loaded");
-            System.out.println(e);
-        }
+    public SpriteAnimator(Animation anim){
+        currentAnim = anim;
+        frameTimer = currentAnim.animationSteps.getFirst().getDelay();
+    }
+
+    public void loadAnimation(String animPath){
+        currentAnim = AssetLoader.getInstance().getAnimation(animPath);
+        frameTimer = currentAnim.animationSteps.getFirst().getDelay();
     }
 
     public interface AnimatorListener {
@@ -93,8 +77,8 @@ public class SpriteAnimator extends Component{
             if(eventKey!=null){
                 notifyAnimationEvent(eventKey);
             }
-            spriteRenderer.spriteImage = currentAnim.animationSteps.get(currentStepIndex).bufferedImage;
-            frameTimer = currentAnim.animationSteps.get(currentStepIndex).delay;
+            spriteRenderer.spriteImage = currentAnim.animationSteps.get(currentStepIndex).getImage();
+            frameTimer = currentAnim.animationSteps.get(currentStepIndex).getDelay();
         }
     }
 }

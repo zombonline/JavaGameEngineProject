@@ -16,7 +16,10 @@ public class GameObject {
     public GameObject(String name) {
         this.transform = new Transform();
         this.transform.setGameObject(this);
+        componentList.add(this.transform);
         this.name = (name == null || name.isBlank()) ? DEFAULT_NAME : name; // Default naming
+    }
+    public void initialize(){
         if(GamePanel.currentLevel != null){
             GamePanel.currentLevel.gameObjectsToAwake.add(this);
         }
@@ -80,5 +83,4 @@ public class GameObject {
     public String getName() {
         return name;
     }
-
 }

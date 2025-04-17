@@ -3,9 +3,7 @@ package ObjectSystem;
 import Main.*;
 import Utility.Vector2;
 
-import javax.imageio.ImageIO;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +13,8 @@ public class Player extends Component{
     Rigidbody rb;
     private Key leftKey, rightKey, aKey, dkey, jumpKey;
     Collider col;
+
+    private boolean canMove = true;
 
     SpriteAnimator animator;
     public float coyoteTime = 0.025f, coyoteTimer;
@@ -47,29 +47,40 @@ public class Player extends Component{
 
     }
     public void update(){
-        int xMovement= 0;
-        if(leftKey.isHeld() || aKey.isHeld()){xMovement-=1;}
-        if(rightKey.isHeld() || dkey.isHeld()){xMovement+=1;}
-        rb.addForce(new Vector2(xMovement, 0).mul(speed*GamePanel.getDeltaTime()));
-        if(rb.isGrounded()){coyoteTimer = coyoteTime;}
-        if(coyoteTimer>0 && pressTimer > 0 ){
-            rb.velocity.setY(0);
-            rb.addForce(Vector2.up.mul(16));
-            pressTimer = 0;
-            coyoteTimer = 0;
-        }
-        pressTimer-=GamePanel.getDeltaTime();
+        if(canMove) {
 
+
+            int xMovement = 0;
+            if (leftKey.isHeld() || aKey.isHeld()) {
+                xMovement -= 1;
+            }
+            if (rightKey.isHeld() || dkey.isHeld()) {
+                xMovement += 1;
+            }
+            rb.addForce(new Vector2(xMovement, 0).mul(speed * GamePanel.getDeltaTime()));
+            if (rb.isGrounded()) {
+                coyoteTimer = coyoteTime;
+            }
+            if (coyoteTimer > 0 && pressTimer > 0) {
+                rb.velocity.setY(0);
+                rb.addForce(Vector2.up.mul(16));
+                pressTimer = 0;
+                coyoteTimer = 0;
+            }
+            pressTimer -= GamePanel.getDeltaTime();
+            coyoteTimer -= GamePanel.getDeltaTime();
+        }
         DebugText.logPermanently("Player Position", gameObject.getTransform().getPosition().toDp(2).toString());
         DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.toDp(2).toString()));
-
     }
-
-
     public static Map<String,Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("keyHandler", new KeyHandler());
         defaultValues.put("speed",1);
         return defaultValues;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
     }
 }

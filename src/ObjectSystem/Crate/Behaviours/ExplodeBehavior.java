@@ -1,8 +1,8 @@
 package ObjectSystem.Crate.Behaviours;
 
 
+import Main.AssetLoader;
 import Main.Assets;
-import Main.PrefabReader;
 import ObjectSystem.Collider;
 import ObjectSystem.Crate.Crate;
 import ObjectSystem.Explosion;
@@ -64,7 +64,7 @@ public class ExplodeBehavior implements CrateBehavior {
 
     public void explode(Crate crate){
         notifyExplode();
-        GameObject explosion = PrefabReader.getObject(Assets.Prefabs.EXPLOSION);
+        GameObject explosion = AssetLoader.getInstance().getPrefab(Assets.Prefabs.EXPLOSION);
         explosion.getComponent(Explosion.class).setScale(explosionScale);
         explosion.getTransform().setPosition(crate.getGameObject().getTransform().getPosition());
         GameObject.destroy(crate.getGameObject());
@@ -91,4 +91,5 @@ public class ExplodeBehavior implements CrateBehavior {
             listener.onExplode();
         }
     }
+
 }

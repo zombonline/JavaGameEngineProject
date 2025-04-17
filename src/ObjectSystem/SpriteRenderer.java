@@ -30,6 +30,7 @@ public class SpriteRenderer extends Component {
         return defaultValues;
     }
     public void draw(Graphics2D g2d) {
+//        System.out.println("Running draw for SpriteRenderer component " + this.hashCode() + " for GameObject " + gameObject.getName()+ " " + gameObject.hashCode());
         if (this.spriteImage == null) {
             return;
         }

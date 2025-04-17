@@ -21,7 +21,6 @@ public class Transform extends Component{
     }
     public void setPosition(Vector2 newPosition){
         position = newPosition;
-        checkIfOutOfBounds();
     }
     public void translate(Vector2 translation) {
         if (translation.equals(Vector2.zero)){
@@ -58,10 +57,5 @@ public class Transform extends Component{
         return defaultValues;
     }
 
-    private void checkIfOutOfBounds(){
-        if(GamePanel.currentLevel == null){return;}
-        if(position.getX() < 0 || position.getX() > GamePanel.currentLevel.getWidth() || position.getY() < 0 || position.getY() > GamePanel.currentLevel.getHeight()){
-            Main.gamePanel.startGameThread(Assets.Levels.LEVEL_TEST_1);
-        }
-    }
+
 }

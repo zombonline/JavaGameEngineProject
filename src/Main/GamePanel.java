@@ -2,16 +2,11 @@ package Main;
 
 import ObjectSystem.*;
 import ObjectSystem.Component;
-import ObjectSystem.Image;
-import Utility.Vector2;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable{
-    public static final int WORLD_SCALE = 100;
+    public static final int WORLD_SCALE = Main.height/12;
     public static final int FPS = 60;
     private static double deltaTime = 0;
     Thread gameThread;
@@ -22,6 +17,7 @@ public class GamePanel extends JPanel implements Runnable{
     boolean paused = false;
     public void startGameThread(String level){
         currentLevel = LevelLoader.parse(level);
+        currentLevel.initGameObjects();
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -93,7 +89,7 @@ public class GamePanel extends JPanel implements Runnable{
             }
             currentLevel.gameObjectsToAwake.clear();
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
     }
     public void update(){
@@ -105,7 +101,7 @@ public class GamePanel extends JPanel implements Runnable{
                 gameObject.update();
             }
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
     }
     @Override
@@ -119,7 +115,7 @@ public class GamePanel extends JPanel implements Runnable{
             DebugText.drawDebugText(g);
             GameUI.drawUI(g2d);
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
     }
     public void destroyObjects(){
@@ -132,7 +128,7 @@ public class GamePanel extends JPanel implements Runnable{
             }
             currentLevel.gameObjectsToDestroy.clear();
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
     }
 }

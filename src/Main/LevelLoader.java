@@ -43,14 +43,22 @@ public class LevelLoader {
                             GameObject newObject = null;
                                 TileValue tileValue = TileValue.fromValue(value);
                                 if(tileValue==null){continue;}
-                                newObject = PrefabReader.getObject("/Resources/Prefabs/"+tileValue+".json");
-                            if (newObject == null){continue;}
+                                newObject = AssetLoader.getInstance().getPrefab("/Resources/Prefabs/" + tileValue + ".json");
+                            if (newObject == null){
+                                System.out.println("New Object IS NULL");
+                                continue;
+                            }
+
                             if(newObject.getComponent(Crate.class)!=null){
                                 if(newObject.getComponent(Crate.class).isBreakable()){
                                     breakableCrates++;
                                 }
                             }
                             newObject.getTransform().setPosition(new Vector2(x,y));
+                            System.out.println("New Object: " + newObject.getName());
+                            System.out.println("New Object Memory Location: " + newObject.hashCode());
+                            System.out.println("New Object Position: " + newObject.getTransform().getPosition());
+
                             gameObjects.add(newObject);
                         }
                     }
@@ -61,6 +69,6 @@ public class LevelLoader {
             System.out.println("Couldn't load level");
             e.printStackTrace();
         }
-        return new LevelData(gameObjects, breakableCrates, mapWidth, mapHeight);
+        return new LevelData(levelString, gameObjects, breakableCrates, mapWidth, mapHeight);
     }
 }

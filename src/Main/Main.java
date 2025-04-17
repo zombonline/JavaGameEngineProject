@@ -7,8 +7,8 @@ import java.awt.*;
 import java.io.IOException;
 
 public class Main {
-    public static final int width = 1864;
-    public static final int height = 1024;
+    public static final int width = (1864/10)*7;
+    public static final int height = (1024/10)*7;
     static JFrame frame = new JFrame(); // Main window
     public static GamePanel gamePanel = new GamePanel(); // Background game panel
     public static Camera camera = new Camera(gamePanel); // Camera system

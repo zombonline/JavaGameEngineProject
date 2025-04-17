@@ -5,11 +5,13 @@ import Main.GamePanel;
 import ObjectSystem.Collider;
 import ObjectSystem.Component;
 import ObjectSystem.Crate.Behaviours.CrateBehavior;
+import ObjectSystem.Crate.Behaviours.ExplodeBehavior;
+import ObjectSystem.Explosion;
 
 
 import java.util.List;
 
-public class Crate extends Component {
+public class Crate extends Component implements Explosion.ExplosionListener {
     Collider collider;
     Collider.CollisionListener listener;
     boolean breakable, destroyed;
@@ -40,10 +42,6 @@ public class Crate extends Component {
     public void update(){
         for(CrateBehavior b : behaviors) {b.update(Crate.this);}
 
-    }
-
-    public void onExplosionNearby(){
-        for(CrateBehavior b : behaviors) {b.onExplosionNearby(Crate.this);}
     }
 
     private void SetupCollisionEvents() {
@@ -86,5 +84,10 @@ public class Crate extends Component {
 
     public boolean isBreakable() {
         return breakable;
+    }
+
+    @Override
+    public void onTriggered() {
+        for(CrateBehavior b : behaviors) {b.onExplosionNearby(Crate.this);}
     }
 }

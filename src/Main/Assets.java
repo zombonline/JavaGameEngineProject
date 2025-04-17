@@ -20,14 +20,14 @@ public class Assets {
     }
 
     public static class Images {
-        public static final String EXPLOSION_SMALL = "/Resources\\Images\\effect_explosion_small.png";
-        public static final String EXPLOSION_MEDIUM = "/Resources\\Images\\effect_explosion_medium.png";
-        public static final String EXPLOSION_BIG = "/Resources\\Images\\effect_explosion_big.png";
+        public static final String EXPLOSION_SMALL = "/Resources/Images/effect_explosion_small.png";
+        public static final String EXPLOSION_MEDIUM = "/Resources/Images/effect_explosion_medium.png";
+        public static final String EXPLOSION_BIG = "/Resources/Images/effect_explosion_big.png";
 
-        public static final String CRATE_EXPLOSIVE = "/Resources\\Images\\Crates\\crate_explosive.png";
-        public static final String CRATE_EXPLOSIVE_TRIGGERED = "/Resources\\Images\\Crates\\crate_explosive_triggered.png";
+        public static final String CRATE_EXPLOSIVE = "/Resources/Images/Crates/crate_explosive.png";
+        public static final String CRATE_EXPLOSIVE_TRIGGERED = "/Resources/Images/Crates/crate_explosive_triggered.png";
 
-        public static final String CRATE_BASIC = "/Resources\\Images\\Crates\\crate_basic.png";
+        public static final String CRATE_BASIC = "/Resources/Images/Crates/crate_basic.png";
 
         public static final String CRATE_BACKGROUND = "/Resources/Images/Crates/crate_background.png";
 
@@ -44,7 +44,7 @@ public class Assets {
     }
 
     public static class Prefabs {
-        public static final String EXPLOSION = "/Resources\\Prefabs\\prefab_explosion.json";
+        public static final String EXPLOSION = "/Resources/Prefabs/prefab_explosion.json";
         public static final String CRATE_BACKGROUND = "/Resources/Prefabs/prefab_crate_background.json";
         public static final String DOOR = "/Resources/Prefabs/prefab_door.json";
     }

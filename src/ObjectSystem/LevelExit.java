@@ -8,6 +8,7 @@ import Main.Assets;
 public class LevelExit extends Component{
     Collider collider;
     boolean playerInRange = false;
+    boolean playerExited = false;
     @Override
     public void awake() {
         collider = getComponent(Collider.class);
@@ -16,12 +17,19 @@ public class LevelExit extends Component{
                     @Override
                     public void onCollisionEnter(Collider other) {
                         if(other.getComponent(Player.class) != null) {
+                            if(playerExited){return;}
+                            playerExited = true;
                             playerInRange = true;
                             DebugText.logTemporarily("Player in range of level exit");
-//                            Main.gamePanel.pauseGameThread();
-//                            Main.uiPanel.LoadPauseMenu();
-                            Main.gamePanel.startGameThread(Assets.Levels.LEVEL_TEST);
-                        }
+                            GameObject.destroy(other.gameObject);
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Main.gamePanel.startGameThread(Assets.Levels.LEVEL_TEST);
+                            }).start();                        }
                     }
 
                     @Override

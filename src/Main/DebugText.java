@@ -32,17 +32,21 @@ public class DebugText {
         g.fillRect(10, 0, width, height);
         g.setColor(Color.blue);
         g.setFont(new Font("Arial", Font.PLAIN, 10));
-        for (Map.Entry<String, String> entry : permanentInfo.entrySet()) {
-            i++;
-            String text = entry.getKey()+":"+entry.getValue();
-            if(text.length()>w){w=text.length();}
-            g.drawString(text, 10 ,11*i);
+        synchronized (permanentInfo) {
+            for (Map.Entry<String, String> entry : permanentInfo.entrySet()) {
+                i++;
+                String text = entry.getKey()+":"+entry.getValue();
+                if(text.length()>w){w=text.length();}
+                g.drawString(text, 10 ,11*i);
+            }
         }
         i+=2;
-        for(String entry : tempInfo){
-            i++;
-            if(entry.length()>w){w=entry.length();}
-            g.drawString(entry, 10, 11*i);
+        synchronized (tempInfo) {
+            for(String entry : tempInfo){
+                i++;
+                if(entry.length()>w){w=entry.length();}
+                g.drawString(entry, 10, 11*i);
+            }
         }
         width = Math.round(w*6.1f);
         height = (11*i)+5;

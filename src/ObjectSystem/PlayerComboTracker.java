@@ -46,7 +46,7 @@ public class PlayerComboTracker extends Component{
     }
 
     public void onCrateHit(){
-        SFXPlayer.playSound("hello", 1);
+        SFXPlayer.playSound("hello");
         comboCount++;
         comboDisplayTimer = comboDisplayTime;
         fontSize = startFontSize;

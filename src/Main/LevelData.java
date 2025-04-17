@@ -5,24 +5,33 @@ import ObjectSystem.GameObject;
 import java.util.ArrayList;
 
 public class LevelData {
+    public final String levelString;
+    public final ArrayList<GameObject> initialGameobjects = new ArrayList<>();
     public final ArrayList<GameObject> gameObjectsToAwake = new ArrayList<GameObject>();
     public final ArrayList<GameObject> activeGameObjects = new ArrayList<GameObject>();
     public final ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<GameObject>();
     public final SpatialHashGrid spatialHashGrid = new SpatialHashGrid(8);
-    int cratesToDestroy;
+    final int cratesToDestroy;
     int cratesDestroyed = 0;
     int currentCombo = 0;
     int highestCombo = 0;
-    int width;
-    int height;
+    final int width;
+    final int height;
 
-    public LevelData(ArrayList<GameObject> gameObjects, int cratesToDestroy, int mapWidth, int mapHeight){
-        this.gameObjectsToAwake.addAll(gameObjects);
+    public LevelData(String levelString, ArrayList<GameObject> gameObjects, int cratesToDestroy, int mapWidth, int mapHeight){
+        this.levelString = levelString;
+        this.initialGameobjects.addAll(gameObjects);
         this.cratesToDestroy = cratesToDestroy;
         this.width = mapWidth;
         this.height = mapHeight;
-        System.out.println("LevelData created: " + gameObjects.size() + " game objects, " + cratesToDestroy + " crates to destroy");
+        System.out.println("LevelData created: " + initialGameobjects.size() + " game objects, " + cratesToDestroy + " crates to destroy");
     }
+    public void initGameObjects(){
+        for(GameObject go : initialGameobjects){
+            go.initialize();
+        }
+    }
+
     public int getCratesToDestroy(){
         return cratesToDestroy;
     }

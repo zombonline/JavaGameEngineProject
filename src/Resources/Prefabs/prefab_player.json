@@ -38,6 +38,7 @@
       "maxFollowStrength": 0.065,
       "smoothingSpeed": 0.2
     },
-    "playerComboTracker": {}
+    "playerComboTracker": {},
+    "playerDeathHandler": {}
   }
 }

@@ -35,7 +35,6 @@ public class CameraFollow extends Component{
     }
     @Override
     public void awake() {
-
         transform = getGameObject().getTransform();
         rb = getComponent(Rigidbody.class);
     }
@@ -73,13 +72,11 @@ public class CameraFollow extends Component{
         Vector2 target = new Vector2(transform.getPosition().getX()+lookAhead,transform.getPosition().getY()).mul(GamePanel.WORLD_SCALE);
         DebugText.logPermanently("Left: ", Boolean.toString(target.getX() < cameraCentre.getX()));
 
-//        //There is some dodgy offset happening here, this is a dirty fix that I'll probably leave in :(
-//        if(target.getX()<cameraCentre.getX()){
-//            followStrength*=0.9375f;
-//        }
         DebugText.logPermanently("Camera Follow Strength", String.format("%.3f", followStrength));
         Vector2 smoothedPosition = Vector2.lerp(cameraCentre, target, followStrength);
-        camera.setPosition(smoothedPosition);
+        Vector2 clampedPosition = new Vector2(Math.clamp(smoothedPosition.getX(),0,GamePanel.currentLevel.getWidth()*GamePanel.WORLD_SCALE),Math.clamp(smoothedPosition.getY(),0,GamePanel.currentLevel.getHeight()*GamePanel.WORLD_SCALE));
+        DebugText.logPermanently("Camera Position", clampedPosition.toDp(2).toString());
+        camera.setPosition(clampedPosition);
         outOfBoundsLastFrame = outOfXBounds;
     }
     public static Map<String,Object> getDefaultValues() {

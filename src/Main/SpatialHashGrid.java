@@ -11,6 +11,7 @@ public class SpatialHashGrid {
     private Map<Integer, List<Collider>> grid = new HashMap<>();;
     public SpatialHashGrid(int cellSize){
         this.cellSize = cellSize;
+        DebugText.logTemporarily("New SpatialHashGrid with cellSize: " + cellSize);
     }
 
     public int hash(Vector2 pos){
