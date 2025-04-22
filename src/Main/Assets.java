@@ -29,8 +29,9 @@ public class Assets {
         public static final String CRATE_EXPLOSIVE = IMAGES_PATH +"Crates/crate_explosive.png";
         public static final String CRATE_EXPLOSIVE_TRIGGERED = IMAGES_PATH +"Crates/crate_explosive_triggered.png";
         public static final String CRATE_MOVING = IMAGES_PATH +"Crates/crate_moving.png";
-        public static final String CRATE_ORANGE_BITS = IMAGES_PATH +"crate_orange_bits.png";
+        public static final String CRATE_ORANGE_BITS = IMAGES_PATH +"Crates/crate_orange_bits.png";
         public static final String CRATE_REINFORCED = IMAGES_PATH +"Crates/crate_reinforced.png";
+        public static final String CRATE_TELEPORT = IMAGES_PATH +"Crates/crate_teleport.png";
 
         public static final String DOG_BONE = IMAGES_PATH +"dog_bone.png";
 
@@ -70,6 +71,7 @@ public class Assets {
         public static final String CRATE_MOVING = PREFABS_PATH +"prefab_crate_horizontal_moving.json";
         public static final String CRATE_ORANGE_BITS = PREFABS_PATH +"prefab_crate_orange_bits.json";
         public static final String CRATE_REINFORCED = PREFABS_PATH +"prefab_crate_reinforced.json";
+        public static final String CRATE_TELEPORT = PREFABS_PATH +"prefab_crate_teleport.json";
 
         public static final String DOG_BONE = PREFABS_PATH +"prefab_dog_bone.json";
 

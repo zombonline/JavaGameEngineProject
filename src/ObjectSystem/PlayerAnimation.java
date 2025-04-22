@@ -3,18 +3,30 @@ package ObjectSystem;
 import Main.Assets;
 
 public class PlayerAnimation extends Component{
-    Player player;
-    Rigidbody rb;
-    SpriteAnimator animator;
-    SpriteRenderer renderer;
-    String currentAnimation;
-    String prevAnimation;
+    // Component references
+    private Player player;
+    private Rigidbody rb;
+    private SpriteAnimator animator;
+    private SpriteRenderer renderer;
+
+    //Variables
+    private String currentAnimation;
+    private String prevAnimation;
     @Override
     public void awake() {
         player = getComponent(Player.class);
         rb = getComponent(Rigidbody.class);
         animator = getComponent(SpriteAnimator.class);
         renderer = getComponent(SpriteRenderer.class);
+    }
+
+    @Override
+    protected void getRequiredComponentReferences() {
+        player = fetchRequiredComponent(Player.class);
+        rb = fetchRequiredComponent(Rigidbody.class);
+        animator = fetchRequiredComponent(SpriteAnimator.class);
+        renderer = fetchRequiredComponent(SpriteRenderer.class);
+
     }
 
     @Override

@@ -27,6 +27,7 @@ public class Rigidbody extends Component{
         this.restitution = restitution;
         this.maxVelocity = maxVelocity;
         this.velocity = Vector2.zero;
+        this.velocityLastFrame = Vector2.zero;
         this.isKinematic = isKinematic;
     }
 

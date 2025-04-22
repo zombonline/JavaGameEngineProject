@@ -25,7 +25,7 @@ public class LevelLoader {
         mapHeight = -1;
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         try {
-            InputStream tileMapFile = LevelLoader.class.getResourceAsStream(Assets.Tilemaps.LEVEL_TEST);
+            InputStream tileMapFile = LevelLoader.class.getResourceAsStream(levelString);
             InputStream tileSetFile = LevelLoader.class.getResourceAsStream(Assets.Tilesets.TILES);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

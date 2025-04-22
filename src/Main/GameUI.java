@@ -23,8 +23,8 @@ public class GameUI {
     private int resultsCrates, resultsCombo;
 
     //DIALOGUE SCREEN
-    String dialogueName;
-    String dialogueContent;
+    String dialogueName = "Name";
+    String dialogueContent = "Dialogue";
 
     //GAME SCREEN
     private final BufferedImage crateIcon = AssetLoader.getInstance().getImage(Assets.Images.CRATE_BASIC);
@@ -75,25 +75,31 @@ public class GameUI {
     private void drawGameScreen(Graphics2D g2d) {
         if(SessionManager.getCurrentLevel()==null){return;}
         g2d.setColor(Color.white);
-        g2d.setFont(new Font("Arial", Font.PLAIN, 40));
+        g2d.setFont(new Font("Arial", Font.PLAIN, GamePanel.WORLD_SCALE));
         textSize = getTextSize(SessionManager.getCurrentLevel().getCratesDestroyed() + "/" + SessionManager.getCurrentLevel().getCratesToDestroy(), g2d);
-        g2d.drawString( SessionManager.getCurrentLevel().getCratesDestroyed() + "/" +SessionManager.getCurrentLevel().getCratesToDestroy(), Main.width-textSize.getX()*1.5f, Main.height/100+textSize.getY()*1.25f);
-        g2d.drawImage(crateIcon, (int) (Main.width/100*90),Main.height/100, Main.width/20, Main.width/20,null);
+        g2d.drawString( SessionManager.getCurrentLevel().getCratesDestroyed() + "/" +SessionManager.getCurrentLevel().getCratesToDestroy(), Main.width-textSize.getX(), Main.height/100+textSize.getY());
+        g2d.drawImage(crateIcon, (int) (Main.width-textSize.getX()-GamePanel.WORLD_SCALE),GamePanel.WORLD_SCALE/2, GamePanel.WORLD_SCALE, GamePanel.WORLD_SCALE,null);
     }
     private void drawDialogueScreen(Graphics2D g2d){
-        int w = Main.width/10*8;
-        int h = Main.height/10*2;
-        int x = Main.width/10;
-        int y = (int) (Main.height-(h*1.25f));
+        int w = GamePanel.WORLD_SCALE*10;
+        int h = (int) (GamePanel.WORLD_SCALE*2.75f);
+        int x = (int) (GamePanel.WORLD_SCALE*11.85f);
+        int y = (int) (GamePanel.WORLD_SCALE*0.15f);
         drawBoxWithOutline(x,y,w,h, g2d);
 
-        g2d.setFont(new Font("Arial", Font.BOLD, 50));
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
         textSize = getTextSize(dialogueName,g2d);
-        g2d.drawString(dialogueName, x+w/50, y+h/4);
+        g2d.drawString(dialogueName, x+GamePanel.WORLD_SCALE/10, y+textSize.getY()/1.5f);
 
-        g2d.setFont(new Font("Arial", Font.BOLD, 30));
-        textSize = getTextSize(dialogueContent,g2d);
-        g2d.drawString(dialogueContent, x+w/50, y+h/2);
+        String[] lines = dialogueContent.split("\n");
+        System.out.println("lines length: " + lines.length);
+        int yIncrement = 0;
+        for (String line : lines) {
+            g2d.setFont(new Font("Arial", Font.PLAIN, GamePanel.WORLD_SCALE/3));
+            textSize = getTextSize(line,g2d);
+            g2d.drawString(line, x+GamePanel.WORLD_SCALE/10, y+textSize.getY()*2+yIncrement);
+            yIncrement+=textSize.getY();
+        }
     }
     private void drawLevelCompleteScreen(Graphics2D g2d) {
         g2d.setColor(Color.white);
@@ -102,12 +108,12 @@ public class GameUI {
         int w = Main.width/10*8;
         int h = Main.height/10*8;
         drawBoxWithOutline(x,y,w,h,g2d);
-        g2d.setFont(new Font("Arial", Font.BOLD, 50));
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE));
         textSize = getTextSize("RESULTS",g2d);
         g2d.drawString("RESULTS",
                 x+(w/2)-(textSize.getX()/2),
                 y+(h/5)-(textSize.getY()/2));
-        g2d.setFont(new Font("Arial", Font.BOLD, 30));
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
 
         textSize = getTextSize("Crates Destroyed: " + resultsCrates,g2d);
         g2d.drawString("Crates Destroyed: " + resultsCrates,
@@ -131,15 +137,12 @@ public class GameUI {
         int w = Main.width/10*8;
         int h = Main.height/10*8;
         drawBoxWithOutline(x,y,w,h,g2d);
-        g2d.setFont(new Font("Arial", Font.BOLD, 50));
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE));
         textSize = getTextSize("THANK YOU FOR PLAYING!",g2d);
         g2d.drawString("THANK YOU FOR PLAYING!",
                 x+(w/2)-(textSize.getX()/2),
                 y+(h/2)-(textSize.getY()/2));
-        g2d.setFont(new Font("Arial", Font.BOLD, 30));
-
-        g2d.setFont(new Font("Arial", Font.BOLD, 30));
-
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
         textSize = getTextSize("Press Enter to Restart",g2d);
         g2d.drawString("Press Enter to Restart",
                 x+(w/2)-(textSize.getX()/2),
@@ -148,10 +151,10 @@ public class GameUI {
 
     private void drawBoxWithOutline(int x, int y, int width, int height, Graphics2D g2d) {
         g2d.setColor(Color.white);
-        g2d.fillRoundRect(x,y, width, height, 10, 10);
+        g2d.fillRoundRect(x,y, width, height, GamePanel.WORLD_SCALE/10, GamePanel.WORLD_SCALE/10);
         g2d.setStroke(new BasicStroke(3)); // Set the stroke size to 3
         g2d.setColor(Color.black);
-        g2d.drawRoundRect(x, y, width, height, 10, 10);
+        g2d.drawRoundRect(x, y, width, height, GamePanel.WORLD_SCALE/10, GamePanel.WORLD_SCALE/10);
     }
     private Vector2 getTextSize(String text, Graphics2D g2d) {
         FontMetrics metrics = g2d.getFontMetrics();

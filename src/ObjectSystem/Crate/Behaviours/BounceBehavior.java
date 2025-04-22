@@ -26,9 +26,9 @@ public class BounceBehavior implements CrateBehavior {
 
     @Override
     public void onTouchTop(Collider other, Crate crate) {
-        if(!active){return;}
-        if (!other.getGameObject().getName().equals("Player")) return;
-        if (other.getComponent(Rigidbody.class).velocityLastFrame.getY() < crate.requiredHitStrength) return;
+        assert active;
+        if(!other.hasComponent(Rigidbody.class)){return;}
+        if(!Crate.checkVelocityValidTop(other, crate)){return;}
         Rigidbody rb = other.getComponent(Rigidbody.class);
         rb.clearForces();
         rb.velocity.setY(0);
@@ -38,8 +38,8 @@ public class BounceBehavior implements CrateBehavior {
     @Override
     public void onTouchBottom(Collider other, Crate crate) {
         assert active;
-        if (!other.getGameObject().getName().equals("Player")) return;
-        if (other.getComponent(Rigidbody.class).velocityLastFrame.getY() > -crate.requiredHitStrength) return;
+        if(!other.hasComponent(Rigidbody.class)){return;}
+        if(!Crate.checkVelocityValidBottom(other, crate)){return;}
         Rigidbody rb = other.getComponent(Rigidbody.class);
         rb.clearForces();
         rb.velocity.setY(0);
@@ -50,4 +50,6 @@ public class BounceBehavior implements CrateBehavior {
     public void onExplosionNearby(Crate crate) {
 
     }
+
+
 }

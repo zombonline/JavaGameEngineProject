@@ -1,26 +1,44 @@
 package ObjectSystem;
 
+import Main.Main;
 import Main.DebugText;
 import Main.GamePanel;
-import Main.SFXPlayer;
 import Main.SessionManager;
 import ObjectSystem.Crate.Crate;
 import Utility.Vector2;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerComboTracker extends Component{
+    // Component references
+    private Rigidbody rb;
+
+    // Variables
     private int comboCount = 0;
-    Rigidbody rb;
     private float comboDisplayTimer;
-    private float comboDisplayTime = 1f;
-    private int startFontSize = 20;
-    private int fontSize;
-    private int fontSizeIncrement = 1;
+    private final float comboDisplayTime;
+    private float startFontSize;
+    private float fontSize;
+    private float fontSizeIncrement;
+
+    public PlayerComboTracker(float comboDisplayTime, float startFontSize, float fontSizeIncrement) {
+        this.comboDisplayTime = comboDisplayTime;
+        this.startFontSize = startFontSize;
+        this.fontSizeIncrement = fontSizeIncrement;
+    }
+
+
     @Override
     public void awake() {
         super.awake();
-        rb = getComponent(Rigidbody.class);
+        getRequiredComponentReferences();
+    }
+
+    @Override
+    protected void getRequiredComponentReferences() {
+        rb = fetchRequiredComponent(Rigidbody.class);
     }
 
     @Override
@@ -51,7 +69,7 @@ public class PlayerComboTracker extends Component{
             SessionManager.getCurrentLevel().setHighestCombo(comboCount);
         }
         comboDisplayTimer = comboDisplayTime;
-        fontSize = startFontSize;
+        fontSize = GamePanel.WORLD_SCALE*startFontSize;
     }
 
     @Override
@@ -60,11 +78,18 @@ public class PlayerComboTracker extends Component{
         Vector2 screenPos = gameObject.getTransform().getScreenPosition();
         Vector2 screenScale = gameObject.getTransform().getScreenScale();
         g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Arial", Font.BOLD, fontSize));
-        fontSize+=fontSizeIncrement;
+        g2d.setFont(new Font("Arial", Font.BOLD, Math.round(fontSize)));
+        fontSize += GamePanel.WORLD_SCALE*fontSizeIncrement;
         FontMetrics metrics = g2d.getFontMetrics();
         int textWidth = metrics.stringWidth(String.valueOf(comboCount));
         int textHeight = metrics.getHeight();
         g2d.drawString(String.valueOf(comboCount), screenPos.getX() - textWidth / 2, screenPos.getY() - screenScale.getY() / 2 + textHeight / 2);
+    }
+    public static Map<String, Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("comboDisplayTime", 1f);
+        defaultValues.put("startFontSize", .2f);
+        defaultValues.put("fontSizeIncrement", .01f);
+        return defaultValues;
     }
 }

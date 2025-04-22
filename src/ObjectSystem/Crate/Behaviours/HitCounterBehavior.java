@@ -33,13 +33,17 @@ public class HitCounterBehavior implements CrateBehavior {
     @Override
     public void onTouchTop(Collider other, Crate crate) {
         if(other.getComponent(Player.class)==null){return;}
-        if (other.getComponent(Rigidbody.class).velocityLastFrame.getY() < crate.requiredHitStrength) return;
+        if (!Crate.checkVelocityValidTop(other, crate)) {
+            return;
+        }
         takeHit(other);
     }
     @Override
     public void onTouchBottom(Collider other, Crate crate) {
         if(other.getComponent(Player.class)==null){return;}
-        if (other.getComponent(Rigidbody.class).velocityLastFrame.getY() > -crate.requiredHitStrength) return;
+        if(!Crate.checkVelocityValidBottom(other, crate)) {
+            return;
+        }
         takeHit(other);
     }
 

@@ -1,7 +1,7 @@
 {
-  "name": "Basic Crate",
+  "name": "Teleport Crate",
   "components": {
-    "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_basic.png"},
+    "spriteRenderer": {"spriteImage": "Images.CRATE_TELEPORT"},
     "collider": {},
     "crateBounce": {
       "bounceStrength":20

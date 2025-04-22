@@ -4,11 +4,22 @@ import Main.GameUI;
 import Main.GamePanel;
 
 public class LevelExit extends Component{
-    Collider collider;
-    boolean playerExited = false;
+    // Component references
+    private Collider collider;
+
+    // variables
+    private boolean playerExited = false;
+
     @Override
     public void awake() {
-        collider = getComponent(Collider.class);
+        getRequiredComponentReferences();
+        setUpColliderListener();
+    }
+    @Override
+    protected void getRequiredComponentReferences() {
+        collider = fetchRequiredComponent(Collider.class);
+    }
+    private void setUpColliderListener(){
         collider.addListener(
                 new Collider.CollisionListener() {
                     @Override
@@ -23,19 +34,11 @@ public class LevelExit extends Component{
                             GameObject.destroy(other.gameObject);
                             GamePanel.setGamePaused(true);
                         }
-
                     }
-
                     @Override
-                    public void onCollisionExit(Collider other) {
-                        if(other.getComponent(Player.class) != null) {
-                        }
-                    }
-
+                    public void onCollisionExit(Collider other) {}
                     @Override
-                    public void onCollisionStay(Collider other) {
-
-                    }
+                    public void onCollisionStay(Collider other) {}
                 }
         );
     }

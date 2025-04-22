@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable{
                 gameObject.draw(g2d);
             }
         }
-        DebugText.drawDebugText(g);
+//        DebugText.drawDebugText(g);
         GameUI.getInstance().drawUI(g2d);
     }
 
