@@ -5,7 +5,7 @@ import Utility.Vector2;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-
+import Main.Assets;
 
 public class GameUI {
     public enum Screen {
@@ -68,7 +68,7 @@ public class GameUI {
         }
         else if(currentScreen==Screen.GAME_COMPLETE){
             updateScreen(Screen.GAME);
-            SessionManager.LoadLevelByPath(Assets.Levels.LEVEL_TEST);
+            SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_TEST);
             GamePanel.setGamePaused(false);
         }
     }

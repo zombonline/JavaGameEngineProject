@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.LoadLevelByPath(Assets.Levels.LEVEL_TEST);
+        SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_TEST);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);

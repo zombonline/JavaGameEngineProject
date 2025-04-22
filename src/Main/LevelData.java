@@ -26,11 +26,6 @@ public class LevelData {
         this.height = mapHeight;
         System.out.println("LevelData created: " + initialGameobjects.size() + " game objects, " + cratesToDestroy + " crates to destroy");
     }
-    public void initGameObjects(){
-        for(GameObject go : initialGameobjects){
-            go.initialize();
-        }
-    }
 
     public int getCratesToDestroy(){
         return cratesToDestroy;

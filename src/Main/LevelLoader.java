@@ -26,7 +26,7 @@ public class LevelLoader {
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         try {
             InputStream tileMapFile = LevelLoader.class.getResourceAsStream(levelString);
-            InputStream tileSetFile = LevelLoader.class.getResourceAsStream("/Resources/Tilesets/Tiles.tsx");
+            InputStream tileSetFile = LevelLoader.class.getResourceAsStream(Assets.Tilesets.TILES);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document tileMapDocument = builder.parse(tileMapFile);
