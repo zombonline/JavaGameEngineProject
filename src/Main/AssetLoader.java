@@ -96,7 +96,6 @@ public class AssetLoader {
     public GameObject getPrefab(String path) {
         path = Assets.getAssetPath(path);
         CachedPrefab cachedPrefab;
-
         synchronized (cache) {
             if (cache.containsKey(path)) {
                 cachedPrefab = (CachedPrefab) cache.get(path);
@@ -108,7 +107,6 @@ public class AssetLoader {
                 }
             }
         }
-
         GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
         if (prefab == null) {
             System.err.println("[AssetLoader] Failed to parse prefab: " + path);
