@@ -26,7 +26,7 @@ public class LevelLoader {
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         try {
             InputStream tileMapFile = LevelLoader.class.getResourceAsStream(levelString);
-            InputStream tileSetFile = LevelLoader.class.getResourceAsStream("/Resources/Tilesets/Tiles.tsx");
+            InputStream tileSetFile = LevelLoader.class.getResourceAsStream(Assets.Tilesets.TILES);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document tileMapDocument = builder.parse(tileMapFile);
@@ -34,7 +34,9 @@ public class LevelLoader {
             Element mapElement = tileMapDocument.getDocumentElement();
             mapWidth = Integer.parseInt(mapElement.getAttribute("width"));
             mapHeight = Integer.parseInt(mapElement.getAttribute("height"));
+
             NodeList children = mapElement.getChildNodes();
+            System.out.println(tileSetFile);
             idToPrefabName = buildIDtoPrefabNameMap(builder, tileSetFile);
             System.out.println("ID to Prefab Name: " + idToPrefabName);
             for (int i = 0; i < children.getLength(); i++) {
@@ -64,13 +66,13 @@ public class LevelLoader {
 
     private static HashMap<Integer, String> buildIDtoPrefabNameMap(DocumentBuilder builder, InputStream tileSet) throws IOException, SAXException {
         HashMap<Integer, String> idToPrefabName = new HashMap<>();
+        System.out.println(tileSet);
         Document tileSetDocument = builder.parse(tileSet);
         tileSetDocument.getDocumentElement().normalize();
         NodeList tileNodes = tileSetDocument.getElementsByTagName("tile");
         for(int i = 0; i < tileNodes.getLength(); i++){
             Element tile = (Element) tileNodes.item(i);
             String tileId = tile.getAttribute("id");
-            String tileImage = tile.getElementsByTagName("image").item(0).getAttributes().getNamedItem("source").getNodeValue();
             String prefabName = "";
             NodeList propertyNodes = tile.getElementsByTagName("property");
             for (int j = 0; j < propertyNodes.getLength(); j++) {

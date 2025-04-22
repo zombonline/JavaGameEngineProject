@@ -10,4 +10,5 @@ public interface CrateBehavior {
     void onTouchTop(Collider other, Crate crate);
     void onTouchBottom(Collider other, Crate crate);
     void onExplosionNearby(Crate crate);
+
 }

@@ -93,7 +93,7 @@ public class PrefabReader {
             case "explosion" -> buildExplosion(values);
             case "playerAnimator" -> new PlayerAnimation();
             case "levelExit" -> new LevelExit();
-            case "playerComboTracker" -> new PlayerComboTracker();
+            case "playerComboTracker" -> buildPlayerComboTracker(values);
             case "playerDeathHandler" -> new PlayerDeathHandler();
             case "npcDialogueHandler" -> new NPCDialogueHandler();
             default -> null;
@@ -181,7 +181,9 @@ public class PrefabReader {
         Map<String,Object> defaultValues = Player.getDefaultValues();
         float speed = getFloat("speed", values, defaultValues);
         KeyHandler keyHandler = (KeyHandler) defaultValues.get("keyHandler");
-        return new Player(keyHandler, speed);
+        float jumpPressTime = getFloat("jumpPressTime", values, defaultValues);
+        float jumpCoyoteTime = getFloat("jumpCoyoteTime", values, defaultValues);
+        return new Player(keyHandler, speed, jumpPressTime, jumpCoyoteTime);
     }
 
     private static CameraFollow buildCameraFollow(JsonNode values){
@@ -253,6 +255,13 @@ public class PrefabReader {
             return null;
         }
         return mapper.convertValue(node, new TypeReference<ArrayList<Float>>() {});
+    }
+    private static PlayerComboTracker buildPlayerComboTracker(JsonNode values){
+        Map<String,Object> defaultValues = PlayerComboTracker.getDefaultValues();
+        float comboDisplayTime = getFloat("comboDisplayTime", values, defaultValues);
+        float startFontSize = getFloat("startFontSize", values, defaultValues);
+        float fontSizeIncrement = getFloat("fontSizeIncrement", values, defaultValues);
+        return new PlayerComboTracker(comboDisplayTime, startFontSize, fontSizeIncrement);
     }
     private static ArrayList<String> getStringListFromJSONNode(JsonNode node) {
         ObjectMapper mapper = new ObjectMapper();

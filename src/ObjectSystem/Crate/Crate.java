@@ -8,6 +8,7 @@ import ObjectSystem.Component;
 import ObjectSystem.Crate.Behaviours.CrateBehavior;
 import ObjectSystem.Crate.Behaviours.ExplodeBehavior;
 import ObjectSystem.Explosion;
+import ObjectSystem.Rigidbody;
 
 
 import java.util.List;
@@ -90,5 +91,23 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     @Override
     public void onTriggered() {
         for(CrateBehavior b : behaviors) {b.onExplosionNearby(Crate.this);}
+    }
+    public static boolean checkVelocityValidBottom(Collider other, Crate crate) {
+        boolean otherVelocityEnough = other.getComponent(Rigidbody.class).velocityLastFrame.getY() < -crate.requiredHitStrength;
+        boolean thisVelocityEnough = false;
+        if(crate.hasComponent(Rigidbody.class)){
+            thisVelocityEnough = crate.getComponent(Rigidbody.class).velocityLastFrame.getY() > crate.requiredHitStrength;
+        }
+        System.out.println("other moving enough: " + otherVelocityEnough + ", this moving enough: " + thisVelocityEnough);
+        return otherVelocityEnough || thisVelocityEnough;
+    }
+    public static boolean checkVelocityValidTop(Collider other, Crate crate) {
+        boolean otherVelocityEnough = other.getComponent(Rigidbody.class).velocityLastFrame.getY() > crate.requiredHitStrength;
+        boolean thisVelocityEnough = false;
+        if(crate.hasComponent(Rigidbody.class)) {
+            thisVelocityEnough = crate.getComponent(Rigidbody.class).velocityLastFrame.getY() < -crate.requiredHitStrength;
+        }
+        System.out.println("other moving enough: " + otherVelocityEnough + ", this moving enough: " + thisVelocityEnough);
+        return otherVelocityEnough || thisVelocityEnough;
     }
 }

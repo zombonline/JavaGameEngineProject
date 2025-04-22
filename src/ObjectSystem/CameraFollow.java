@@ -10,25 +10,23 @@ import Utility.Vector2;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 
 public class CameraFollow extends Component{
-    Camera camera;
+    // Component references
     Transform transform;
     Rigidbody rb;
-    float minFollowStrength, maxFollowStrength;
-    float smoothingSpeed;
-    float followStrength = 1f;
-    private Bounds bounds;
-    boolean outOfXBounds = false, outOfYBounds = false;
-    boolean outOfBoundsLastFrame = false;
-    float threshold = 0;
-    double lookAhead;
 
+    // Variables
+    private final float minFollowStrength;
+    private final float maxFollowStrength;
+    private final float smoothingSpeed;
+    private float followStrength = 1f;
+    private final Bounds bounds;
+    private boolean outOfBoundsLastFrame = false;
+    private double lookAhead;
 
     public CameraFollow(Bounds bounds, float minFollowStrength, float maxFollowStrength, float smoothingSpeed){
-        camera = Main.camera;
         this.bounds = bounds;
         this.minFollowStrength = minFollowStrength;
         this.maxFollowStrength = maxFollowStrength;
@@ -36,58 +34,55 @@ public class CameraFollow extends Component{
     }
     @Override
     public void awake() {
-        transform = getGameObject().getTransform();
-        rb = getComponent(Rigidbody.class);
+        getRequiredComponentReferences();
+    }
+
+    @Override
+    protected void getRequiredComponentReferences() {
+        transform = fetchRequiredComponent(Transform.class);
+        rb = fetchRequiredComponent(Rigidbody.class);
     }
     @Override
     public void update() {
-        float lookAheadTarget = rb.velocity.getX();
-        lookAhead = (lookAhead * (1.0 - 0.025f)) + (lookAheadTarget * 0.025f);
-        Vector2 playerPos = new Vector2(transform.getScreenPosition().getX()+(lookAhead*GamePanel.WORLD_SCALE),transform.getScreenPosition().getY());
+        lookAhead = calculateLookahead();
+        boolean outOfBounds = isOutOfBounds();
+        DebugText.logPermanently("Out of Bounds", String.valueOf(outOfBounds));
+
+        float smoothingFactor = (float) (smoothingSpeed * GamePanel.getDeltaTime());
+        followStrength += outOfBounds ? smoothingFactor : -smoothingFactor;
+
+        followStrength = Math.clamp(followStrength, minFollowStrength, maxFollowStrength);
+        Vector2 target = new Vector2(transform.getPosition().getX()+lookAhead,transform.getPosition().getY()).mul(GamePanel.WORLD_SCALE);
+
+        DebugText.logPermanently("Camera Follow Strength", String.format("%.3f", followStrength));
+        Vector2 cameraCentre = Main.camera.getCameraCentrePosition();
+        Vector2 smoothedPosition = Vector2.lerp(cameraCentre, target, followStrength);
+        Vector2 clampedPosition = clampToLevelBounds(smoothedPosition);
+        DebugText.logPermanently("Camera Position", clampedPosition.toDp(2).toString());
+        Main.camera.setPosition(clampedPosition);
+        outOfBoundsLastFrame = outOfBounds;
+    }
+
+    private float calculateLookahead(){
+        //get direction
+        float lookAheadDirection = rb.velocity.getX();
+        //lerp towards target direction
+        return (float) (lookAhead * (1.0 - 0.025f)) + (lookAheadDirection * 0.025f);
+    }
+
+    private boolean isOutOfBounds() {
+        Vector2 target = new Vector2(transform.getScreenPosition().getX()+(lookAhead*GamePanel.WORLD_SCALE),transform.getScreenPosition().getY());
         Bounds screenBounds = new Bounds(
                 (((float) Main.width /2) + bounds.minX),
                 (((float) Main.width /2) + bounds.maxX),
                 (((float) Main.height /2) + bounds.minY),
                 (((float) Main.height /2) + bounds.maxY));
 
-        if(outOfBoundsLastFrame){
-            threshold = 75;
-        } else{
-            threshold = 0;
-        }
-        outOfXBounds = playerPos.getX() < screenBounds.minX + threshold||
-                playerPos.getX() > screenBounds.maxX - threshold;
-        outOfYBounds = playerPos.getY() < screenBounds.minY+threshold || playerPos.getY() > screenBounds.maxY-threshold;
-        DebugText.logPermanently("Out of X Bounds", String.valueOf(outOfXBounds));
-        DebugText.logPermanently("Out of Y Bounds", String.valueOf(outOfYBounds));
-
-        if (outOfXBounds || outOfYBounds ) {
-            followStrength+=smoothingSpeed * GamePanel.getDeltaTime();
-        }
-        else{
-            followStrength-=smoothingSpeed * GamePanel.getDeltaTime();
-        }
-
-        Vector2 cameraCentre = camera.getCameraCentrePosition();
-        followStrength = Math.clamp(followStrength, 0, maxFollowStrength);
-        Vector2 target = new Vector2(transform.getPosition().getX()+lookAhead,transform.getPosition().getY()).mul(GamePanel.WORLD_SCALE);
-        DebugText.logPermanently("Left: ", Boolean.toString(target.getX() < cameraCentre.getX()));
-
-        DebugText.logPermanently("Camera Follow Strength", String.format("%.3f", followStrength));
-        Vector2 smoothedPosition = Vector2.lerp(cameraCentre, target, followStrength);
-        Vector2 clampedPosition = clampToLevelBounds(smoothedPosition);
-        DebugText.logPermanently("max x cam bounds", String.valueOf(SessionManager.getCurrentLevel().getWidth()*GamePanel.WORLD_SCALE));
-        DebugText.logPermanently("Camera Position", clampedPosition.toDp(2).toString());
-        camera.setPosition(clampedPosition);
-        outOfBoundsLastFrame = outOfXBounds;
-    }
-    public static Map<String,Object> getDefaultValues() {
-        Map<String,Object> defaultValues = new HashMap<>();
-        defaultValues.put("bounds" , new Bounds(-100,100,-100,100));
-        defaultValues.put("minFollowStrength", 0.01f);
-        defaultValues.put("maxFollowStrength", 0.08f);
-        defaultValues.put("smoothingSpeed", 1f);
-        return defaultValues;
+        float boundaryThreshold = outOfBoundsLastFrame ? 75 : 0;
+        return (target.getX() < screenBounds.minX + boundaryThreshold ||
+                target.getX() > screenBounds.maxX - boundaryThreshold ||
+                target.getY() < screenBounds.minY + boundaryThreshold ||
+                target.getY() > screenBounds.maxY - boundaryThreshold);
     }
 
     private static Vector2 clampToLevelBounds(Vector2 initialPosition){
@@ -118,4 +113,13 @@ public class CameraFollow extends Component{
 //                (int) (screenBounds.maxX - screenBounds.minX),
 //                (int) (screenBounds.maxY - screenBounds.minY));
     }
+    public static Map<String,Object> getDefaultValues() {
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("bounds" , new Bounds(-100,100,-100,100));
+        defaultValues.put("minFollowStrength", 0.01f);
+        defaultValues.put("maxFollowStrength", 0.08f);
+        defaultValues.put("smoothingSpeed", 1f);
+        return defaultValues;
+    }
+
 }

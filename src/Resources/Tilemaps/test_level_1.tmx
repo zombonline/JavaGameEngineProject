@@ -86,7 +86,7 @@
  <objectgroup id="9" name="Object Layer 1">
   <object id="1" gid="21" x="4096" y="7168" width="512" height="1024">
    <properties>
-    <property name="dialogue" value="Hey little dude, watch out for these crates, they're a little bit explosive..."/>
+    <property name="dialogue" value="Hey little dude, watch out for these crates,\nthey're a little bit explosive..."/>
    </properties>
   </object>
   <object id="2" gid="24" x="28160" y="6656" width="512" height="512">

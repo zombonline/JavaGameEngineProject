@@ -8,23 +8,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Component{
-    KeyHandler keyHandler;
-    public float speed;
-    Rigidbody rb;
-    private Key leftKey, rightKey, aKey, dkey, jumpKey;
-    Collider col;
+    //Component references
+    private Rigidbody rb;
+    private final KeyHandler keyHandler;
 
+    //Variables
+    private final float speed;
+    private Key leftKey, rightKey, aKey, dkey, jumpKey, rKey;
     private boolean canMove = true;
+    private final float jumpCoyoteTime;
+    private float jumpCoyoteTimer;
+    private final float jumpPressTime;
+    private float jumpPressTimer;
 
-    SpriteAnimator animator;
-    public float coyoteTime = 0.025f, coyoteTimer;
-    public float pressTime = 0.125f, pressTimer;
-
-    public Player(KeyHandler keyHandler, float speed){
+    public Player(KeyHandler keyHandler, float speed, float jumpCoyoteTime, float jumpPressTime){
         this.keyHandler = keyHandler;
         this.speed = speed;
+        this.jumpCoyoteTime = jumpCoyoteTime;
+        this.jumpPressTime = jumpPressTime;
+    }
+    @Override
+    public void awake() {
+        super.awake();
+        getRequiredComponentReferences();
         setUpControls(keyHandler);
+    }
 
+    @Override
+    protected void getRequiredComponentReferences() {
+        rb = fetchRequiredComponent(Rigidbody.class);
     }
     private void setUpControls(KeyHandler keyHandler) {
         leftKey = keyHandler.addKey(KeyEvent.VK_LEFT);
@@ -32,55 +44,67 @@ public class Player extends Component{
         aKey = keyHandler.addKey(KeyEvent.VK_A);
         dkey = keyHandler.addKey(KeyEvent.VK_D);
         jumpKey = keyHandler.addKey(KeyEvent.VK_SPACE,
-                this::jump,
+                this::jumpPress,
+                ()->{});
+        rKey = keyHandler.addKey(KeyEvent.VK_R,
+                this::resetPlayerPress,
                 ()->{});
     }
-    private void jump(){
-        pressTimer = pressTime;
-    }
-    @Override
-    public void awake() {
-        super.awake();
-        rb = getComponent(Rigidbody.class);
-        col = getComponent(Collider.class);
-        animator = getComponent(SpriteAnimator.class);
 
-    }
+    @Override
     public void update(){
         if(canMove) {
-
-
-            int xMovement = 0;
-            if (leftKey.isHeld() || aKey.isHeld()) {
-                xMovement -= 1;
-            }
-            if (rightKey.isHeld() || dkey.isHeld()) {
-                xMovement += 1;
-            }
-            rb.addForce(new Vector2(xMovement, 0).mul(speed * GamePanel.getDeltaTime()));
-            if (rb.isGrounded()) {
-                coyoteTimer = coyoteTime;
-            }
-            if (coyoteTimer > 0 && pressTimer > 0) {
-                rb.velocity.setY(0);
-                rb.addForce(Vector2.up.mul(16));
-                pressTimer = 0;
-                coyoteTimer = 0;
-            }
-            pressTimer -= GamePanel.getDeltaTime();
-            coyoteTimer -= GamePanel.getDeltaTime();
+            handleHorizontalMovement();
+            handleJump();
         }
         DebugText.logPermanently("Player Position", gameObject.getTransform().getPosition().toDp(2).toString());
         DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.toDp(2).toString()));
     }
+
+    private void jumpPress(){
+        jumpPressTimer = jumpPressTime;
+    }
+
+    private void resetPlayerPress(){
+        getComponent(PlayerDeathHandler.class).die();
+    }
+
+    private void handleJump() {
+        if (rb.isGrounded()) {
+            jumpCoyoteTimer = jumpCoyoteTime;
+        }
+        if (jumpCoyoteTimer > 0 && jumpPressTimer > 0) {
+            rb.velocity.setY(0);
+            rb.addForce(Vector2.up.mul(16));
+            jumpPressTimer = 0;
+            jumpCoyoteTimer = 0;
+        }
+        jumpPressTimer -= (float) GamePanel.getDeltaTime();
+        jumpCoyoteTimer -= (float) GamePanel.getDeltaTime();
+    }
+
+    private void handleHorizontalMovement() {
+        int xMovement = 0;
+        if (leftKey.isHeld() || aKey.isHeld()) {
+            xMovement -= 1;
+        }
+        if (rightKey.isHeld() || dkey.isHeld()) {
+            xMovement += 1;
+        }
+        rb.addForce(new Vector2(xMovement, 0).mul(speed * GamePanel.getDeltaTime()));
+    }
+
+    //SETTERS
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
     public static Map<String,Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("keyHandler", new KeyHandler());
         defaultValues.put("speed",1);
+        defaultValues.put("jumpCoyoteTime",0.025f);
+        defaultValues.put("jumpPressTime",0.125f);
         return defaultValues;
-    }
-
-    public void setCanMove(boolean canMove) {
-        this.canMove = canMove;
     }
 }

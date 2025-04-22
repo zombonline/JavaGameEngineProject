@@ -12,18 +12,19 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class AssetLoader {
-    private static final long MAX_UNUSED_TIME = 2 * 60 * 1000;
-    private static AssetLoader instance;
+    private static final long MAX_UNUSED_TIME_MS = 2 * 60 * 1000;
+    private static final int CACHE_CLEAN_INTERVAL_MS = 1000;
+    private static final AssetLoader instance = new AssetLoader();
     private final Map<String, CachedAsset> cache = new HashMap<>();
 
     private AssetLoader() {
-        new Thread(this::cleanCache).start();
+        Thread cleanerThread = new Thread(this::cleanCache);
+        //set this to daemon (a low priority background thread that doesn't interfere with program shutting down
+        cleanerThread.setDaemon(true);
+        cleanerThread.start();
     }
 
     public static AssetLoader getInstance(){
-        if(instance == null){
-            instance = new AssetLoader();
-        }
         return instance;
     }
 
@@ -36,18 +37,24 @@ public class AssetLoader {
                 return cachedImage.image;
             }
         }
-        try (InputStream input = getClass().getResourceAsStream(path)){
-            if(input == null){
-                System.err.println("Asset not found at: " + path);
+
+        BufferedImage image = loadImage(path);
+        if(image != null){
+            synchronized (cache) {
+                cache.put(path, new CachedImage(image));
+            }
+        }
+        return image;
+    }
+    private BufferedImage loadImage(String path) {
+        try (InputStream input = getClass().getResourceAsStream(path)) {
+            if (input == null) {
+                System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;
             }
-            BufferedImage image = ImageIO.read(input);
-            cache.put(path, new CachedImage(image));
-            System.out.println("Loaded image: " + path);
-            return image;
+            return ImageIO.read(input);
         } catch (Exception e){
-            System.err.println("Failed to load asset: " + path);
-            e.printStackTrace();
+            System.err.println("[AssetLoader] Failed to load asset: " + path);
             return null;
         }
     }
@@ -62,59 +69,70 @@ public class AssetLoader {
                 return cachedAnimation.animation;
             }
         }
+        Animation animation = loadAnimation(path);
+        if(animation != null){
+            synchronized (cache) {
+                cache.put(path, new CachedAnimation(animation));
+
+            }
+        }
+        return animation;
+    }
+    private Animation loadAnimation(String path){
         try(InputStream input = getClass().getResourceAsStream(path)){
             if(input == null){
-                System.err.println("Asset not found at: " + path);
+                System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;
             }
             ObjectMapper objectMapper = new ObjectMapper();
-            Animation animation = objectMapper.readValue(input, Animation.class);
-            cache.put(path, new CachedAnimation(animation));
-            System.out.println("Loaded animation: " + path);
-            return animation;
-
+            return objectMapper.readValue(input, Animation.class);
         } catch (Exception e){
-            System.err.println("Failed to load asset: " + path);
+            System.err.println("[AssetLoader] Failed to load asset: " + path);
             e.printStackTrace();
             return null;
         }
     }
 
-    public GameObject getPrefab(String path){
+    public GameObject getPrefab(String path) {
         path = Assets.getAssetPath(path);
+        CachedPrefab cachedPrefab;
         synchronized (cache) {
-            if(cache.containsKey(path)){
-                CachedPrefab cachedPrefab = (CachedPrefab) cache.get(path);
+            if (cache.containsKey(path)) {
+                cachedPrefab = (CachedPrefab) cache.get(path);
                 cachedPrefab.updateLastAccessTime();
-                GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
-                if(prefab == null ){
-                    System.err.println("Failed to load prefab: " + path);
+            } else {
+                cachedPrefab = loadAndCachePrefab(path);
+                if (cachedPrefab == null) {
                     return null;
                 }
-                prefab.initialize();
-                return prefab;
             }
         }
-        try(InputStream input = getClass().getResourceAsStream(path)){
-            if(input == null){
-                System.err.println("Asset not found at: " + path);
+        GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
+        if (prefab == null) {
+            System.err.println("[AssetLoader] Failed to parse prefab: " + path);
+            return null;
+        }
+        prefab.initialize();
+        return prefab;
+    }
+
+    private CachedPrefab loadAndCachePrefab(String path) {
+        try (InputStream input = getClass().getResourceAsStream(path)) {
+            if (input == null) {
+                System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;
             }
-            cache.put(path, new CachedPrefab(input));
-            CachedPrefab cachedPrefab = (CachedPrefab) cache.get(path);
-            GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
-            if(prefab == null ){
-                System.err.println("Failed to load prefab: " + path);
-                return null;
-            }
-            prefab.initialize();
-            return prefab;
-        } catch (Exception e){
-            System.err.println("Failed to load asset: " + path);
+            CachedPrefab cachedPrefab = new CachedPrefab(input);
+            cache.put(path, cachedPrefab);
+            System.out.println("[AssetLoader] Loaded prefab: " + path);
+            return cachedPrefab;
+        } catch (Exception e) {
+            System.err.println("[AssetLoader] Failed to load asset: " + path);
             e.printStackTrace();
             return null;
         }
     }
+
 
     private void cleanCache(){
         while(true){
@@ -123,16 +141,16 @@ public class AssetLoader {
                 long currentTime = System.currentTimeMillis();
                 while (iterator.hasNext()) {
                     Map.Entry<String, CachedAsset> entry = iterator.next();
-                    if (currentTime - entry.getValue().getLastAccessTime() > MAX_UNUSED_TIME) {
-                        System.out.println("Removing unused asset: " + entry.getKey());
+                    if (currentTime - entry.getValue().getLastAccessTime() > MAX_UNUSED_TIME_MS) {
+                        System.out.println("[AssetLoader] Removing unused asset: " + entry.getKey());
                         iterator.remove();
                     }
                 }
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(CACHE_CLEAN_INTERVAL_MS);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
                 break;
             }
         }
@@ -143,15 +161,12 @@ public class AssetLoader {
         public CachedAsset() {
             this.lastAccessTime = System.currentTimeMillis();
         }
-
         public void updateLastAccessTime() {
             this.lastAccessTime = System.currentTimeMillis();
         }
-
         public long getLastAccessTime() {
             return lastAccessTime;
         }
-
     }
     private static class CachedImage extends CachedAsset {
         BufferedImage image;
@@ -175,7 +190,7 @@ public class AssetLoader {
             try {
                 data = new String(prefabFile.readAllBytes(), StandardCharsets.UTF_8);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to read InputStream when storing prefab: ", e);
+                throw new RuntimeException("[AssetLoader] Failed to read InputStream when storing prefab: ", e);
             }
             this.jsonData = data;
         }

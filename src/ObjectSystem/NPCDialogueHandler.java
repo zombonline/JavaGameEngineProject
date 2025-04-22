@@ -14,6 +14,7 @@ public class NPCDialogueHandler extends Component{
         getRequiredComponentReferences();
         setUpColliderListener();
         dialogue = gameObject.getExtraData("dialogue").toString();
+        dialogue = dialogue.replace("\\n", "\n");
     }
     @Override
     protected void getRequiredComponentReferences() {

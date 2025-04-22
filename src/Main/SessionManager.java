@@ -9,8 +9,8 @@ public class SessionManager {
     private static int currentLevelIndex;
     private static ArrayList<String> levelList = new ArrayList<String>();
     static {
-        levelList.add(Assets.Levels.LEVEL_TEST);
-        levelList.add(Assets.Levels.LEVEL_TEST_1);
+        levelList.add(Assets.Tilemaps.LEVEL_TEST);
+        levelList.add(Assets.Tilemaps.LEVEL_TEST_1);
     }
 
     public static void LoadLevelByPath(String levelPath){
