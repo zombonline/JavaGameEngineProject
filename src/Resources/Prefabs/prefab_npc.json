@@ -1,0 +1,16 @@
+{
+  "name": "NPC",
+  "components": {
+    "transform": {
+      "scale": [1.0,2.0]
+    },
+    "spriteRenderer": {
+      "spriteImage": "Images.PLACEHOLDER_NPC",
+      "offset": [0.0, -0.5]
+    },
+    "collider": {
+      "isTrigger": true
+    },
+    "npcDialogueHandler": {}
+  }
+}

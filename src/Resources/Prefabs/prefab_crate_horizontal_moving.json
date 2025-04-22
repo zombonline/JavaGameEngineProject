@@ -1,0 +1,11 @@
+{
+  "name": "Moving Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_MOVING"},
+    "collider": {},
+    "crateHorizontalMoving": {
+      "direction": [1.0,0.0],
+      "moveSpeed": 1.5
+    }
+  }
+}

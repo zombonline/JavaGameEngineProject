@@ -1,25 +1,25 @@
 package Utility;
 
-public enum TileValue {
+public enum PrefabValue {
     prefab_crate_hover(1),
     prefab_crate_basic(2),
     prefab_crate_bounce(3),
     prefab_crate_explosive(4),
     prefab_crate_metal(5),
-    prefab_crate_background(10),
+    prefab_background_tile(10),
     prefab_door(11),
-    prefab_player(12);
+    prefab_player(13);
     private final int value;
 
-    TileValue(int value) {
+    PrefabValue(int value) {
         this.value = value;
     }
 
     public int getValue() {
         return value;
     }
-    public static TileValue fromValue(int value) {
-        for (TileValue d : values()) {
+    public static PrefabValue fromValue(int value) {
+        for (PrefabValue d : values()) {
             if (d.value == value) {
                 return d;
             }

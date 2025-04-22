@@ -15,7 +15,10 @@ public abstract class Component {
         return gameObject;
     }
     public <T extends Component> T getComponent(Class<T> type) {
-        return  gameObject.getComponent(type);
+        return gameObject.getComponent(type);
+    }
+    public <T extends Component> boolean hasComponent(Class<T> type) {
+        return gameObject.hasComponent(type);
     }
     public void awake() {}
     protected void getRequiredComponentReferences() {};

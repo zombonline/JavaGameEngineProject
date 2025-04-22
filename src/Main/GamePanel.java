@@ -2,8 +2,12 @@ package Main;
 
 import ObjectSystem.*;
 import ObjectSystem.Component;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_SCALE = Main.height/12;
@@ -11,18 +15,19 @@ public class GamePanel extends JPanel implements Runnable{
     private static double deltaTime = 0;
     Thread gameThread;
 
-    public static LevelData currentLevel;
-
-    boolean running = false;
-    boolean paused = false;
-    public void startGameThread(String level){
-        currentLevel = LevelLoader.parse(level);
-        currentLevel.initGameObjects();
+    BufferedImage texture;
+    static boolean running = false;
+    private static boolean gamePaused = false;
+    public void startGameThread(){
+        SessionManager.LoadLevelByPath(Assets.Levels.LEVEL_TEST);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
             gameThread.start();
         }
+    }
+    public static void setGamePaused(boolean val) {
+        gamePaused = val;
     }
     public static double getDeltaTime() {
         return deltaTime;
@@ -37,17 +42,8 @@ public class GamePanel extends JPanel implements Runnable{
         long timer = 0;
         int drawCount = 0;
         while (running) {
-            while (paused) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
             currentTime = System.nanoTime();
             //if thread has run for 5 seconds
-
-
             deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
             delta += (currentTime - lastTime) / drawInterval; // Accumulate time in terms of drawInterval
             timer += currentTime - lastTime;
@@ -82,51 +78,57 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void awake(){
-        try {
-            for (GameObject gameObject : currentLevel.gameObjectsToAwake) {
-                gameObject.awake();
-                currentLevel.activeGameObjects.add(gameObject);
-            }
-            currentLevel.gameObjectsToAwake.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
+        ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().gameObjectsToAwake);
+        for (GameObject gameObject : snapshot) {
+            gameObject.awake();
+            SessionManager.getCurrentLevel().activeGameObjects.add(gameObject);
         }
+        SessionManager.getCurrentLevel().gameObjectsToAwake.removeAll(snapshot);
     }
     public void update(){
-        try {
-            for (GameObject gameObject : currentLevel.activeGameObjects) {
-                if (!running) {
-                    return;
-                }
-                gameObject.update();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
+        ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().activeGameObjects);
+        for (GameObject gameObject : snapshot) {
+            gameObject.update();
         }
     }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        try {
-            for (GameObject gameObject : currentLevel.activeGameObjects) {
+        drawBackground(g2d);
+        if(SessionManager.getCurrentLevel()!=null) {
+            ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().activeGameObjects);
+            for (GameObject gameObject : snapshot) {
                 gameObject.draw(g2d);
             }
-            DebugText.drawDebugText(g);
-            GameUI.drawUI(g2d);
+        }
+        DebugText.drawDebugText(g);
+        GameUI.getInstance().drawUI(g2d);
+    }
+
+    private void drawBackground(Graphics2D g2d) {
+        try {
+            if(texture == null){
+                texture = ImageIO.read(getClass().getResource("/Resources/Images/background.png"));
+            }
+            g2d.drawImage(texture, 0, 0, getWidth(), getHeight(), null);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void destroyObjects(){
+        if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
         try {
-            for (GameObject gameObject :currentLevel.gameObjectsToDestroy) {
+            for (GameObject gameObject :SessionManager.getCurrentLevel().gameObjectsToDestroy) {
                 for (Component component : gameObject.getAllComponents()) {
                     component.onDestroy();
                 }
-                currentLevel.activeGameObjects.remove(gameObject);
+                SessionManager.getCurrentLevel().activeGameObjects.remove(gameObject);
             }
-            currentLevel.gameObjectsToDestroy.clear();
+            SessionManager.getCurrentLevel().gameObjectsToDestroy.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package ObjectSystem.Crate.Behaviours;
 
-import Main.GamePanel;
+
+import Main.SessionManager;
 import ObjectSystem.Collider;
 import ObjectSystem.Crate.Crate;
 import ObjectSystem.GameObject;
@@ -29,7 +30,7 @@ public class DestroyedByExplosionBehaviour implements CrateBehavior{
 
     @Override
     public void onExplosionNearby(Crate crate) {
-        GamePanel.currentLevel.getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
+        SessionManager.getCurrentLevel().getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
         GameObject.destroy(crate.getGameObject());
     }
 }

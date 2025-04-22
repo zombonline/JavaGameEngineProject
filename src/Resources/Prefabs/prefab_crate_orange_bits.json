@@ -1,0 +1,6 @@
+{
+  "name": "Crate Orange Bits",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_ORANGE_BITS"}
+  }
+}

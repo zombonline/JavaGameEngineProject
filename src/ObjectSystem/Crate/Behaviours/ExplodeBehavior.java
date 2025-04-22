@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ExplodeBehavior implements CrateBehavior {
     boolean triggered = false;
+    boolean exploded = false;
     public boolean active = true;
     float explosionScale;
     public ExplodeBehavior(float explosionScale) {
@@ -63,6 +64,8 @@ public class ExplodeBehavior implements CrateBehavior {
     }
 
     public void explode(Crate crate){
+        if(exploded){return;}
+        exploded=true;
         notifyExplode();
         GameObject explosion = AssetLoader.getInstance().getPrefab(Assets.Prefabs.EXPLOSION);
         explosion.getComponent(Explosion.class).setScale(explosionScale);
@@ -74,7 +77,7 @@ public class ExplodeBehavior implements CrateBehavior {
         void onTrigger();
         void onExplode();
     }
-    private List<ExplodeBehavior.ExplodeListener> listeners = new ArrayList<>();
+    private final List<ExplodeBehavior.ExplodeListener> listeners = new ArrayList<>();
     public void addListener(ExplodeBehavior.ExplodeListener listener) {
         listeners.add(listener);
     }

@@ -1,7 +1,5 @@
 package Main;
 
-import org.w3c.dom.Text;
-
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,8 +9,8 @@ import java.util.Map;
 
 public class DebugText {
 
-    private static Map<String,String> permanentInfo = new HashMap<>();
-    private static ArrayList<String> tempInfo = new ArrayList<>(10);
+    private static final Map<String,String> permanentInfo = new HashMap<>();
+    private static final ArrayList<String> tempInfo = new ArrayList<>(10);
     public static void logPermanently(String key, String value) {
         permanentInfo.put(key,value);
     }
@@ -21,7 +19,9 @@ public class DebugText {
     {
         tempInfo.add(LocalDateTime.now().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + ": " + info);
         if(tempInfo.size() > 10){
-            tempInfo = new ArrayList<>(tempInfo.subList(tempInfo.size() - 10, tempInfo.size()));
+            ArrayList<String> splicedTempInfo = new ArrayList<>(tempInfo.subList(tempInfo.size()-10,tempInfo.size()));
+            tempInfo.clear();
+            tempInfo.addAll(splicedTempInfo);
         }
     }
 

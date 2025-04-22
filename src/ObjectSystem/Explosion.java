@@ -41,6 +41,7 @@ public class Explosion extends Component{
             }
             @Override
             public void onAnimationComlete() {
+                GameObject.destroy(gameObject);
             }
         };
         spriteAnimator.addListener(animatorListener);
@@ -75,7 +76,6 @@ public class Explosion extends Component{
                 }
             }
         }
-        GameObject.destroy(gameObject);
     }
 
     @Override

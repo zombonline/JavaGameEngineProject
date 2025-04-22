@@ -3,10 +3,13 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Tilesets/test_level.tmx",
+    "activeFile": "src/Resources/Tilesets/test_level.tmx",
     "expandedProjectPaths": [
+        "Tilesets",
+        "src",
+        "src/Resources/Tilesets",
         ".",
-        "Tilesets"
+        "src/Resources"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -31,8 +34,14 @@
                 "y": 470.2665755297334
             }
         },
+        "src/Resources/Tilesets/BGTiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.0625,
+            "scaleInEditor": 0.25
+        },
         "src/Resources/Tilesets/Tiles.tsx": {
             "dynamicWrapping": true,
+            "scaleInDock": 0.0625,
             "scaleInEditor": 0.25
         },
         "src/Resources/Tilesets/Tiles1.tsx": {
@@ -41,19 +50,25 @@
             "scaleInEditor": 1
         },
         "src/Resources/Tilesets/test_level.tmx": {
-            "scale": 0.03125,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 0.125,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 11584,
-                "y": 6496
+                "x": 1956,
+                "y": 7816
             }
         },
         "src/Resources/Tilesets/test_level_1.tmx": {
-            "scale": 0.03125,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                9
+            ],
+            "scale": 0.125,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 4128,
-                "y": 11488
+                "x": 4244,
+                "y": 6032
             }
         }
     },
@@ -63,12 +78,17 @@
     "map.tileWidth": 512,
     "map.width": 100,
     "openFiles": [
-        "Tilesets/Tiles.tsx",
-        "Tilesets/test_level.tmx"
+        "src/Resources/Tilesets/test_level_1.tmx",
+        "src/Resources/Tilesets/Tiles.tsx",
+        "src/Resources/Tilesets/test_level.tmx",
+        "src/Resources/Tilesets/BGTiles.tsx"
     ],
     "project": "CGEDProject.tiled-project",
     "recentFiles": [
+        "src/Resources/Tilesets/test_level_1.tmx",
         "src/Resources/Tilesets/Tiles.tsx",
+        "src/Resources/Tilesets/BGTiles.tsx",
+        "src/Resources/Tilesets/test_level.tmx",
         "src/Resources/Tilesets/Tiles1.tsx",
         "Tilesets/Tiles.tsx",
         "Tilesets/test_level.tmx"

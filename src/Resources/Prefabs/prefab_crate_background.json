@@ -1,6 +1,0 @@
-{
-  "name": "Background Crate",
-  "components": {
-    "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_background.png"}
-  }
-}

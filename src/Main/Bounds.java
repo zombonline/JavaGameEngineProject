@@ -22,7 +22,7 @@ public class Bounds {
         this.minY = pos.getY()-halfHeight;
         this.maxY = pos.getY()+halfHeight;
     }
-    public Bounds(ArrayList vals){
+    public Bounds(ArrayList<Float> vals){
         this.minX = (float) (vals.getFirst());
         this.maxX = (float) (vals.get(1));
         this.minY = (float) (vals.get(2));

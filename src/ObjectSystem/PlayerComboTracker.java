@@ -3,6 +3,7 @@ package ObjectSystem;
 import Main.DebugText;
 import Main.GamePanel;
 import Main.SFXPlayer;
+import Main.SessionManager;
 import ObjectSystem.Crate.Crate;
 import Utility.Vector2;
 
@@ -11,7 +12,6 @@ import java.awt.*;
 public class PlayerComboTracker extends Component{
     private int comboCount = 0;
     Rigidbody rb;
-
     private float comboDisplayTimer;
     private float comboDisplayTime = 1f;
     private int startFontSize = 20;
@@ -46,8 +46,10 @@ public class PlayerComboTracker extends Component{
     }
 
     public void onCrateHit(){
-        SFXPlayer.playSound("hello");
         comboCount++;
+        if(comboCount> SessionManager.getCurrentLevel().getHighestCombo()){
+            SessionManager.getCurrentLevel().setHighestCombo(comboCount);
+        }
         comboDisplayTimer = comboDisplayTime;
         fontSize = startFontSize;
     }

@@ -1,5 +1,6 @@
 package Main;
 
+import ObjectSystem.Crate.Crate;
 import ObjectSystem.GameObject;
 
 import java.util.ArrayList;
@@ -13,15 +14,14 @@ public class LevelData {
     public final SpatialHashGrid spatialHashGrid = new SpatialHashGrid(8);
     final int cratesToDestroy;
     int cratesDestroyed = 0;
-    int currentCombo = 0;
     int highestCombo = 0;
     final int width;
     final int height;
 
-    public LevelData(String levelString, ArrayList<GameObject> gameObjects, int cratesToDestroy, int mapWidth, int mapHeight){
+    public LevelData(String levelString, ArrayList<GameObject> gameObjects, int mapWidth, int mapHeight){
         this.levelString = levelString;
         this.initialGameobjects.addAll(gameObjects);
-        this.cratesToDestroy = cratesToDestroy;
+        this.cratesToDestroy = countCratesToDestroy();
         this.width = mapWidth;
         this.height = mapHeight;
         System.out.println("LevelData created: " + initialGameobjects.size() + " game objects, " + cratesToDestroy + " crates to destroy");
@@ -51,5 +51,17 @@ public class LevelData {
     }
     public int getWidth(){return width;}
     public int getHeight(){return height;}
+    public int getHighestCombo(){return highestCombo;}
+    public void setHighestCombo(int val){highestCombo=val;}
 
+    private int countCratesToDestroy(){
+        int result = 0;
+        for(GameObject gameObject : initialGameobjects){
+            Crate crate = gameObject.getComponent(Crate.class);
+            if(crate!=null){
+                if(crate.isBreakable()){ result++;}
+            }
+        }
+        return result;
+    }
 }

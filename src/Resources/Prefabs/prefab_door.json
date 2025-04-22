@@ -2,11 +2,10 @@
   "name": "Door",
   "components": {
     "transform": {
-      "scale": [1.0,1.0]
+      "scale": [1.0,2.0]
     },
     "spriteRenderer": [
-      {"spriteImage": "Images.DOOR_TOP", "offset": [0.0, -1.0]},
-      {"spriteImage": "Images.DOOR_BOTTOM"}
+      {"spriteImage": "Images.DOOR", "offset": [0.0, -0.5]}
     ],
     "collider": {
       "isTrigger": true,

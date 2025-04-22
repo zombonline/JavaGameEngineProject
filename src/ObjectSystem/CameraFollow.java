@@ -1,6 +1,7 @@
 package ObjectSystem;
 
 import Main.Main;
+import Main.SessionManager;
 import Main.Bounds;
 import Main.DebugText;
 import Main.GamePanel;
@@ -74,7 +75,8 @@ public class CameraFollow extends Component{
 
         DebugText.logPermanently("Camera Follow Strength", String.format("%.3f", followStrength));
         Vector2 smoothedPosition = Vector2.lerp(cameraCentre, target, followStrength);
-        Vector2 clampedPosition = new Vector2(Math.clamp(smoothedPosition.getX(),0,GamePanel.currentLevel.getWidth()*GamePanel.WORLD_SCALE),Math.clamp(smoothedPosition.getY(),0,GamePanel.currentLevel.getHeight()*GamePanel.WORLD_SCALE));
+        Vector2 clampedPosition = clampToLevelBounds(smoothedPosition);
+        DebugText.logPermanently("max x cam bounds", String.valueOf(SessionManager.getCurrentLevel().getWidth()*GamePanel.WORLD_SCALE));
         DebugText.logPermanently("Camera Position", clampedPosition.toDp(2).toString());
         camera.setPosition(clampedPosition);
         outOfBoundsLastFrame = outOfXBounds;
@@ -86,6 +88,16 @@ public class CameraFollow extends Component{
         defaultValues.put("maxFollowStrength", 0.08f);
         defaultValues.put("smoothingSpeed", 1f);
         return defaultValues;
+    }
+
+    private static Vector2 clampToLevelBounds(Vector2 initialPosition){
+        return new Vector2(
+                Math.clamp(initialPosition.getX(),
+                        Main.width/2-GamePanel.WORLD_SCALE/2,
+                        SessionManager.getCurrentLevel().getWidth()*GamePanel.WORLD_SCALE),
+                Math.clamp(initialPosition.getY(),
+                        0 ,
+                        SessionManager.getCurrentLevel().getHeight()*GamePanel.WORLD_SCALE));
     }
 
     @Override

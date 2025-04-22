@@ -10,7 +10,8 @@ public class Animation {
         public String imageAddress;
         public int delay;
         public String eventKey=null;
-        //to be used by object mapper
+
+        //Both of these constructors are to be used by object mapper (Do not delete)
         public AnimationStep() {}
 
         public AnimationStep(String imageAddress, int delay, String eventKey) {

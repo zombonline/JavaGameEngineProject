@@ -75,9 +75,11 @@ public class Rigidbody extends Component{
         Vector2 rayOrigin2 = new Vector2(rbCollider.getBounds().maxX-0.1f, rbCollider.getBounds().maxY+0.001f);
         ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
         mask.add(CollisionLayer.DEFAULT);
-        Raycast raycast1 = new Raycast(rayOrigin1,.0001f,0,10, mask);
-        Raycast raycast2 = new Raycast(rayOrigin2,.0001f,0,10, mask);
+        Raycast raycast1 = new Raycast(rayOrigin1,.0001f,0,10, mask, true);
+        Raycast raycast2 = new Raycast(rayOrigin2,.0001f,0,10, mask, true);
         ArrayList<Collider> touching = new  ArrayList<Collider>();
+
+        //CHECK IF THESE ARE TRIGGERS
         if(raycast1.checkForCollision() != null){touching.add(raycast1.checkForCollision().getCollider());}
         if(raycast2.checkForCollision() != null){touching.add(raycast2.checkForCollision().getCollider());}
         groundedColliders.clear();
@@ -103,8 +105,8 @@ public class Rigidbody extends Component{
         float currentVel = (int) direction.getX() == 0 ? Math.abs(velocity.getY()) : Math.abs(velocity.getX());
         currentVel = currentVel / 60;
         ArrayList<Raycast> rays = new ArrayList<>();
-        rays.add(new Raycast(rayOrigin1, currentVel, angle, 50, rbCollider.getCollisionMask()));
-        rays.add(new Raycast(rayOrigin2, currentVel, angle, 50, rbCollider.getCollisionMask()));
+        rays.add(new Raycast(rayOrigin1, currentVel, angle, 50, rbCollider.getCollisionMask(), true));
+        rays.add(new Raycast(rayOrigin2, currentVel, angle, 50, rbCollider.getCollisionMask(), true));
 
         ArrayList<Raycast.Hit> hits = new ArrayList<>();
         for (Raycast ray : rays) {

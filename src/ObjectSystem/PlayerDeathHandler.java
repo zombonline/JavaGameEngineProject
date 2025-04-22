@@ -4,6 +4,7 @@ package ObjectSystem;
 import Main.Assets;
 import Main.GamePanel;
 import Main.Main;
+import Main.SessionManager;
 import Main.DebugText;
 import Utility.Vector2;
 
@@ -23,7 +24,7 @@ public class PlayerDeathHandler extends Component implements Explosion.Explosion
     public void update() {
         Vector2 position = transform.getPosition();
 
-        if(position.getX() < 0 || position.getX() > GamePanel.currentLevel.getWidth() || position.getY() < 0 || position.getY() > GamePanel.currentLevel.getHeight()) {
+        if(position.getX() < 0 || position.getX() > SessionManager.getCurrentLevel().getWidth() || position.getY() < 0 || position.getY() > SessionManager.getCurrentLevel().getHeight()) {
             die();
         }
 
@@ -40,7 +41,7 @@ public class PlayerDeathHandler extends Component implements Explosion.Explosion
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Main.gamePanel.startGameThread(GamePanel.currentLevel.levelString);
+           SessionManager.reloadCurrentLevel();
         }).start();
     }
 

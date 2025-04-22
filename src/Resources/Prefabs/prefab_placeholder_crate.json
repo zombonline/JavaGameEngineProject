@@ -1,0 +1,10 @@
+{
+  "name": "Basic Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.PLACEHOLDER_CRATE"},
+    "collider": {},
+    "crateBounce": {
+      "bounceStrength": 50
+    }
+  }
+}

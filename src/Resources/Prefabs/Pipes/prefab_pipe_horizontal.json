@@ -1,0 +1,6 @@
+{
+  "name": "Horizontal Pipe",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.PIPE_HORIZONTAL"}
+  }
+}

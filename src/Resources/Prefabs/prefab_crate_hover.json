@@ -6,6 +6,8 @@
       {"spriteImage": "/Resources/Images/Crates/crate_hover.png"}
     ],
     "collider": {},
-    "crateHover": {  }
+    "crateHover": {
+      "direction": [0.0,1.0]
+    }
   }
 }

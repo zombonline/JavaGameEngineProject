@@ -86,11 +86,20 @@ public class SpriteRenderer extends Component {
                 screenPos.getX() < gamePanel.getWidth() &&
                 screenPos.getY() < gamePanel.getHeight();
     }
-
+    public void setParallaxFactor(float parallaxFactor) {
+        this.parallaxFactor = parallaxFactor;
+    }
     public void setFlipHorizontally(boolean flipHorizontally) {
         this.flipHorizontally = flipHorizontally;
     }
     public void setFlipVertically(boolean flipVertically) {
         this.flipVertically = flipVertically;
     }
+    public boolean getFlipHorizontally(){
+        return flipHorizontally;
+    }
+    public boolean getFlipVertically(){
+        return flipVertically;
+    }
+
 }

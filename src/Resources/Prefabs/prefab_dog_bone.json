@@ -1,0 +1,7 @@
+{
+  "name": "Basic Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.DOG_BONE"},
+    "collider": {}
+  }
+}

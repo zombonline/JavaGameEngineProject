@@ -1,11 +1,11 @@
 package ObjectSystem;
 
 import Main.GamePanel;
+import Main.SessionManager;
 import Utility.Vector2;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 public class GameObject {
@@ -13,6 +13,9 @@ public class GameObject {
     private final Transform transform;
     private final List<Component> componentList = new ArrayList<>();
     private final String name;
+
+    private final HashMap extraDataMap = new HashMap<>();
+
     public GameObject(String name) {
         this.transform = new Transform();
         this.transform.setGameObject(this);
@@ -20,8 +23,8 @@ public class GameObject {
         this.name = (name == null || name.isBlank()) ? DEFAULT_NAME : name; // Default naming
     }
     public void initialize(){
-        if(GamePanel.currentLevel != null){
-            GamePanel.currentLevel.gameObjectsToAwake.add(this);
+        if(SessionManager.getCurrentLevel() != null){
+            SessionManager.getCurrentLevel().gameObjectsToAwake.add(this);
         }
     }
     public GameObject() {
@@ -45,6 +48,10 @@ public class GameObject {
         return type.cast(foundComponent);
     }
 
+    public <T extends Component> boolean hasComponent(Class<T> type){
+        return findComponent(type)!=null;
+    }
+
     public List<Component> getAllComponents() {
         return Collections.unmodifiableList(componentList); // Defensive copy with unmodifiable list
     }
@@ -65,7 +72,7 @@ public class GameObject {
         }
     }
     public static void destroy(GameObject object){
-        GamePanel.currentLevel.gameObjectsToDestroy.add(object);
+        SessionManager.getCurrentLevel().gameObjectsToDestroy.add(object);
     }
     private <T extends Component> Component findComponent(Class<T> type) {
         for (Component component : componentList) {
@@ -74,6 +81,15 @@ public class GameObject {
             }
         }
         return null; // No matching component
+    }
+
+    public void insertExtraData(Object key, Object value){
+        extraDataMap.put(key,value);
+        System.out.println("Extra data: " + key + ": " + value);
+    }
+
+    public Object getExtraData(String key){
+        return extraDataMap.getOrDefault(key, null);
     }
 
     public Transform getTransform() {

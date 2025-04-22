@@ -53,6 +53,7 @@ public class AssetLoader {
     }
 
     public Animation getAnimation(String path){
+        if(path.isEmpty()){return null;}
         path = Assets.getAssetPath(path);
         synchronized (cache) {
             if(cache.containsKey(path)){
@@ -88,6 +89,7 @@ public class AssetLoader {
                 GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
                 if(prefab == null ){
                     System.err.println("Failed to load prefab: " + path);
+                    return null;
                 }
                 prefab.initialize();
                 return prefab;
@@ -100,11 +102,13 @@ public class AssetLoader {
             }
             cache.put(path, new CachedPrefab(input));
             CachedPrefab cachedPrefab = (CachedPrefab) cache.get(path);
-            GameObject object = PrefabReader.getObject(cachedPrefab.getNewInputStream());
-            System.out.println("Loaded prefab: " + path);
-            object.initialize();
-            return object;
-
+            GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
+            if(prefab == null ){
+                System.err.println("Failed to load prefab: " + path);
+                return null;
+            }
+            prefab.initialize();
+            return prefab;
         } catch (Exception e){
             System.err.println("Failed to load asset: " + path);
             e.printStackTrace();
@@ -120,7 +124,7 @@ public class AssetLoader {
                 while (iterator.hasNext()) {
                     Map.Entry<String, CachedAsset> entry = iterator.next();
                     if (currentTime - entry.getValue().getLastAccessTime() > MAX_UNUSED_TIME) {
-                        System.out.println("Removing unused asset: " + entry.getKey() + "");
+                        System.out.println("Removing unused asset: " + entry.getKey());
                         iterator.remove();
                     }
                 }

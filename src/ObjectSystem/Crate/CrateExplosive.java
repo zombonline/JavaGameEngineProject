@@ -2,6 +2,7 @@ package ObjectSystem.Crate;
 
 
 import Main.GamePanel;
+import Main.SessionManager;
 import ObjectSystem.Crate.Behaviours.BounceBehavior;
 import ObjectSystem.Crate.Behaviours.ExplodeBehavior;
 import ObjectSystem.PlayerComboTracker;
@@ -27,7 +28,7 @@ public class CrateExplosive extends Crate {
 
                     @Override
                     public void onExplode() {
-                        GamePanel.currentLevel.getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
+                        SessionManager.getCurrentLevel().getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
                     }
                 }
         );

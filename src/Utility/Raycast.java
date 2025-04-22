@@ -1,6 +1,7 @@
 package Utility;
 
 import Main.GamePanel;
+import Main.SessionManager;
 import ObjectSystem.Collider;
 import Main.Bounds;
 import Main.SpatialHashGrid;
@@ -15,12 +16,14 @@ public class Raycast {
     private float rotation;
     private float checkFrequency;
     private ArrayList<CollisionLayer> mask;
-    public Raycast(Vector2 origin, float length, float rotation, float checkFrequency, ArrayList<CollisionLayer> mask){
+    private boolean ignoreTriggers;
+    public Raycast(Vector2 origin, float length, float rotation, float checkFrequency, ArrayList<CollisionLayer> mask, boolean ignoreTriggers){
         this.origin = origin;
         this.length = length;
         this.rotation = rotation;
         this.checkFrequency = checkFrequency;
         this.mask = mask;
+        this.ignoreTriggers = ignoreTriggers;
     }
 
     public class Hit {
@@ -55,12 +58,11 @@ public class Raycast {
         }
         return null;
     }
-
-    //I SHOULD PROBABLY MAKE A RAYCASTING CLASS AND STICK THIS IN THERE
     public Collider checkForColliderAtPoint(Vector2 point, ArrayList<CollisionLayer> mask){
-        List<Collider> nearbyColliders = GamePanel.currentLevel.spatialHashGrid.getNearby(point, mask);
+        List<Collider> nearbyColliders = SessionManager.getCurrentLevel().spatialHashGrid.getNearby(point, mask);
         Collider result = null;
         for (Collider nearbyCollider : nearbyColliders) {
+            if(nearbyCollider.isTrigger() && ignoreTriggers) {continue;}
             Bounds b = nearbyCollider.getBounds();
             if(point.getX() > b.minX && point.getX() < b.maxX && point.getY() > b.minY && point.getY() < b.maxY){
                 result = nearbyCollider;

@@ -2,6 +2,7 @@ package ObjectSystem.Crate;
 
 import Main.DebugText;
 import Main.GamePanel;
+import Main.SessionManager;
 import ObjectSystem.Collider;
 import ObjectSystem.Component;
 import ObjectSystem.Crate.Behaviours.CrateBehavior;
@@ -78,7 +79,7 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         if(destroyed) return;   
         if(isBreakable()){
             destroyed = true;
-            GamePanel.currentLevel.incrementCratesDestroyed();
+            SessionManager.getCurrentLevel().incrementCratesDestroyed();
         }
     }
 

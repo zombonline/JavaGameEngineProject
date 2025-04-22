@@ -1,7 +1,9 @@
 package ObjectSystem;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Main.Animation;
 import Main.AssetLoader;
@@ -19,6 +21,7 @@ public class SpriteAnimator extends Component{
     }
 
     public SpriteAnimator(Animation anim){
+        if(anim==null){return;}
         currentAnim = anim;
         frameTimer = currentAnim.animationSteps.getFirst().getDelay();
     }
@@ -80,5 +83,10 @@ public class SpriteAnimator extends Component{
             spriteRenderer.spriteImage = currentAnim.animationSteps.get(currentStepIndex).getImage();
             frameTimer = currentAnim.animationSteps.get(currentStepIndex).getDelay();
         }
+    }
+    public static Map<String, Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("startingAnim","");
+        return defaultValues;
     }
 }

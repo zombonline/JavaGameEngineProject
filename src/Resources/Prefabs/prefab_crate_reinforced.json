@@ -1,0 +1,10 @@
+{
+  "name": "Reinforced Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_REINFORCED"},
+    "collider": {},
+    "crateReinforced": {
+      "bounceStrength":20
+    }
+  }
+}

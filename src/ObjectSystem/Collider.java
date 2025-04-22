@@ -1,8 +1,5 @@
 package ObjectSystem;
-import Main.Bounds;
-import Main.DebugText;
-import Main.GamePanel;
-import Main.SpatialHashGrid;
+import Main.*;
 import Utility.CollisionLayer;
 import Utility.Vector2;
 
@@ -77,8 +74,8 @@ public class Collider extends Component{
     public void awake() {
         colliderPosition = getGameObject().getTransform().getPosition().add(offset);
         this.bounds = new Bounds(colliderPosition, size);
-        previousCellKey = GamePanel.currentLevel.spatialHashGrid.hash(colliderPosition);
-        GamePanel.currentLevel.spatialHashGrid.insert(this);
+        previousCellKey = SessionManager.getCurrentLevel().spatialHashGrid.hash(colliderPosition);
+        SessionManager.getCurrentLevel().spatialHashGrid.insert(this);
     }
     @Override
     public void update() {
@@ -93,13 +90,13 @@ public class Collider extends Component{
     }
     @Override
     public void onDestroy(){
-        GamePanel.currentLevel.spatialHashGrid.remove(this);
+        SessionManager.getCurrentLevel().spatialHashGrid.remove(this);
         allCollisions.clear();
         allCollisionsLastFrame.clear();
     }
 
     private void checkCollidersNearby() {
-        List<Collider> nearbyColliders = GamePanel.currentLevel.spatialHashGrid.getNearby(colliderPosition, collisionMask);
+        List<Collider> nearbyColliders = SessionManager.getCurrentLevel().spatialHashGrid.getNearby(colliderPosition, collisionMask);
         List<Collider> colliding = new ArrayList<Collider>();
         for (Collider nearbyCollider : nearbyColliders) {
             if (nearbyCollider == this) {
@@ -153,10 +150,10 @@ public class Collider extends Component{
     }
 
     private void setSpatialHashGridCell() {
-        int newCellKey = GamePanel.currentLevel.spatialHashGrid.hash(colliderPosition);
+        int newCellKey = SessionManager.getCurrentLevel().spatialHashGrid.hash(colliderPosition);
         if (newCellKey != previousCellKey) { // Only update if the cell changes
-            GamePanel.currentLevel.spatialHashGrid.remove(this, previousCellKey);    // Remove from old cell
-            GamePanel.currentLevel.spatialHashGrid.insert(this);    // Insert into new cell
+            SessionManager.getCurrentLevel().spatialHashGrid.remove(this, previousCellKey);    // Remove from old cell
+            SessionManager.getCurrentLevel().spatialHashGrid.insert(this);    // Insert into new cell
             previousCellKey = newCellKey;    // Update last known cell
         }
     }
