@@ -6,7 +6,7 @@
     },
     "player": {"speed": 50},
     "spriteRenderer": {
-      "spriteImage": "/Resources/Images/test_player_sprite.png",
+      "spriteImage": "IMAGES.PLAYER_IDLE",
       "offset": [0.0, -0.15]
     },
     "rigidbody": {
@@ -24,7 +24,7 @@
       "offset": [0.0,0.0]
     },
     "spriteAnimator": {
-      "startingAnim":"Animations.PLAYER_TEST_RUN"
+      "startingAnim":"Animations.PLAYER_IDLE"
     },
     "playerAnimator": {},
     "cameraFollow": {

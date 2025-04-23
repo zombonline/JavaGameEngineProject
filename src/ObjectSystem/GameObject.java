@@ -88,6 +88,10 @@ public class GameObject {
         System.out.println("Extra data: " + key + ": " + value);
     }
 
+    public boolean hasExtraData(Object key){
+        return extraDataMap.containsKey(key);
+    }
+
     public Object getExtraData(String key){
         return extraDataMap.getOrDefault(key, null);
     }

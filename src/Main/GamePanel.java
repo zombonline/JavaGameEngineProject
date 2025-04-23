@@ -10,11 +10,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
-    public static final int WORLD_SCALE = Main.height/12;
+    public static int WORLD_SCALE = (Main.width+Main.height)/48;
     public static final int FPS = 60;
     private static double deltaTime = 0;
     Thread gameThread;
-
     BufferedImage texture;
     static boolean running = false;
     private static boolean gamePaused = false;
@@ -43,7 +42,6 @@ public class GamePanel extends JPanel implements Runnable{
         int drawCount = 0;
         while (running) {
             currentTime = System.nanoTime();
-            //if thread has run for 5 seconds
             deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
             delta += (currentTime - lastTime) / drawInterval; // Accumulate time in terms of drawInterval
             timer += currentTime - lastTime;
@@ -62,7 +60,6 @@ public class GamePanel extends JPanel implements Runnable{
             }
             if (timer >= 1000000000) {
                 DebugText.logPermanently("FPS", String.valueOf(drawCount));
-
                 drawCount = 0;
                 timer = 0;
             }

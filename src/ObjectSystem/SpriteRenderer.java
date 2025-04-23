@@ -19,10 +19,15 @@ public class SpriteRenderer extends Component {
         this.spriteImage = spriteImage;
         this.offset = offset;
     }
-    public SpriteRenderer(BufferedImage spriteImage){
-        this.spriteImage = spriteImage;
-        this.offset = Vector2.zero;
+
+    @Override
+    public void awake() {
+        if(gameObject.hasExtraData("parallaxFactor")){
+            parallaxFactor = (float) gameObject.getExtraData("parallaxFactor");
+        }
     }
+
+
     public static Map<String,Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("spriteImage", null);
@@ -30,7 +35,6 @@ public class SpriteRenderer extends Component {
         return defaultValues;
     }
     public void draw(Graphics2D g2d) {
-//        System.out.println("Running draw for SpriteRenderer component " + this.hashCode() + " for GameObject " + gameObject.getName()+ " " + gameObject.hashCode());
         if (this.spriteImage == null) {
             return;
         }
@@ -39,7 +43,6 @@ public class SpriteRenderer extends Component {
             parallaxFactor = 0.7f;
         }
 
-        // Use a custom parallax factor (e.g., 0.5f for half-speed movement)
         Vector2 screenPos = gameObject.getTransform().getScreenPosition(parallaxFactor).add(offset.mul(GamePanel.WORLD_SCALE));
 
         if (isVisible(screenPos)) {
