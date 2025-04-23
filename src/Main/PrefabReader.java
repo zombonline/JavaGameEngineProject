@@ -96,7 +96,7 @@ public class PrefabReader {
             case "playerComboTracker" -> buildPlayerComboTracker(values);
             case "playerDeathHandler" -> new PlayerDeathHandler();
             case "npcDialogueHandler" -> new NPCDialogueHandler();
-            case "terrainTileManager" -> new TerrainTileManager();
+            case "subImageSpriteSetter" -> new SubImageSpriteSetter();
             default -> null;
         };
     }

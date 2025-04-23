@@ -1,19 +1,18 @@
 package ObjectSystem;
 
 import Main.GamePanel;
+import Main.Main;
 import Utility.Vector2;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import static Main.Main.gamePanel;
 
 public class SpriteRenderer extends Component {
-    public BufferedImage spriteImage;
-    public Vector2 offset;
+    private BufferedImage spriteImage;
+    private Vector2 offset;
     private float parallaxFactor = 1f;
     private boolean flipHorizontally = false, flipVertically = false;
-
 
     public SpriteRenderer(BufferedImage spriteImage, Vector2 offset){
         this.spriteImage = spriteImage;
@@ -27,25 +26,12 @@ public class SpriteRenderer extends Component {
         }
     }
 
-
-    public static Map<String,Object> getDefaultValues(){
-        Map<String,Object> defaultValues = new HashMap<>();
-        defaultValues.put("spriteImage", null);
-        defaultValues.put("offset", Vector2.zero);
-        return defaultValues;
-    }
     public void draw(Graphics2D g2d) {
-        if (this.spriteImage == null) {
-            return;
-        }
-
-        if (gameObject.getName().equals("Background Crate")) {
-            parallaxFactor = 0.7f;
-        }
+        if (this.spriteImage == null) {return;}
 
         Vector2 screenPos = gameObject.getTransform().getScreenPosition(parallaxFactor).add(offset.mul(GamePanel.WORLD_SCALE));
-
         if (isVisible(screenPos)) {
+
             int w = (int) (GamePanel.WORLD_SCALE * gameObject.getTransform().getScale().getX());
             int h = (int) (GamePanel.WORLD_SCALE * gameObject.getTransform().getScale().getY());
 
@@ -86,9 +72,13 @@ public class SpriteRenderer extends Component {
 
         return screenPos.getX() + w > 0 &&
                 screenPos.getY() + h > 0 &&
-                screenPos.getX() < gamePanel.getWidth() &&
-                screenPos.getY() < gamePanel.getHeight();
+                screenPos.getX() < Main.width &&
+                screenPos.getY() < Main.width;
     }
+    public void setSpriteImage(BufferedImage spriteImage){
+        this.spriteImage = spriteImage;
+    }
+    public void setOffset(Vector2 offset){this.offset = offset;}
     public void setParallaxFactor(float parallaxFactor) {
         this.parallaxFactor = parallaxFactor;
     }
@@ -104,5 +94,10 @@ public class SpriteRenderer extends Component {
     public boolean getFlipVertically(){
         return flipVertically;
     }
-
+    public static Map<String,Object> getDefaultValues(){
+        Map<String,Object> defaultValues = new HashMap<>();
+        defaultValues.put("spriteImage", null);
+        defaultValues.put("offset", Vector2.zero);
+        return defaultValues;
+    }
 }

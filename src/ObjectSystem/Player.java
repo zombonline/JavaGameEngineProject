@@ -73,7 +73,7 @@ public class Player extends Component{
         if (rb.isGrounded()) {
             jumpCoyoteTimer = jumpCoyoteTime;
         }
-        if (jumpCoyoteTimer > 0 && jumpPressTimer > 0) {
+        if (jumpCoyoteTimer > 0 && jumpPressTimer > 0 && rb.velocity.getY()>=0) {
             rb.velocity.setY(0);
             rb.addForce(Vector2.up.mul(16));
             jumpPressTimer = 0;

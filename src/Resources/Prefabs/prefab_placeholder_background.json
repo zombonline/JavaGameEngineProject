@@ -1,0 +1,7 @@
+{
+  "name": "Background Placeholder",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.PLACEHOLDER_BACKGROUND"},
+    "subImageSpriteSetter": {}
+  }
+}

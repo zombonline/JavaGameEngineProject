@@ -80,7 +80,7 @@ public class SpriteAnimator extends Component{
             if(eventKey!=null){
                 notifyAnimationEvent(eventKey);
             }
-            spriteRenderer.spriteImage = currentAnim.animationSteps.get(currentStepIndex).getImage();
+            spriteRenderer.setSpriteImage(currentAnim.animationSteps.get(currentStepIndex).getImage());
             frameTimer = currentAnim.animationSteps.get(currentStepIndex).getDelay();
         }
     }

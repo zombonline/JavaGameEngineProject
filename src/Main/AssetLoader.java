@@ -125,20 +125,8 @@ public class AssetLoader {
     }
 
     public GameObject getPrefab(String path) {
-        path = Assets.getAssetPath(path);
-        CachedPrefab cachedPrefab;
-        synchronized (cache) {
-            if (cache.containsKey(path)) {
-                cachedPrefab = (CachedPrefab) cache.get(path);
-                cachedPrefab.updateLastAccessTime();
-            } else {
-                cachedPrefab = loadAndCachePrefab(path);
-                if (cachedPrefab == null) {
-                    return null;
-                }
-            }
-        }
-        GameObject prefab = PrefabReader.getObject(cachedPrefab.getNewInputStream());
+        InputStream cachedPrefabFile = getInputStream(path);
+        GameObject prefab = PrefabReader.getObject(cachedPrefabFile);
         if (prefab == null) {
             System.err.println("[AssetLoader] Failed to parse prefab: " + path);
             return null;
@@ -146,17 +134,36 @@ public class AssetLoader {
         prefab.initialize();
         return prefab;
     }
-
-    private CachedPrefab loadAndCachePrefab(String path) {
+    public InputStream getInputStream(String path){
+        path = Assets.getAssetPath(path);
+        CachedInputStream cachedinputStream;
+        synchronized (cache) {
+            if (cache.containsKey(path)) {
+                cachedinputStream = (CachedInputStream) cache.get(path);
+                cachedinputStream.updateLastAccessTime();
+            } else {
+                cachedinputStream = loadAndCacheInputStream(path);
+                if (cachedinputStream == null) {
+                    return null;
+                }
+            }
+        }
+        if (cachedinputStream == null) {
+            System.err.println("[AssetLoader] Failed to get inputStream: " + path);
+            return null;
+        }
+        return cachedinputStream.getNewInputStream();
+    }
+    private CachedInputStream loadAndCacheInputStream(String path) {
         try (InputStream input = getClass().getResourceAsStream(path)) {
             if (input == null) {
                 System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;
             }
-            CachedPrefab cachedPrefab = new CachedPrefab(input);
-            cache.put(path, cachedPrefab);
-            System.out.println("[AssetLoader] Loaded prefab: " + path);
-            return cachedPrefab;
+            CachedInputStream cachedInputStream = new CachedInputStream(input);
+            cache.put(path, cachedInputStream);
+            System.out.println("[AssetLoader] Loaded input stream: " + path);
+            return cachedInputStream;
         } catch (Exception e) {
             System.err.println("[AssetLoader] Failed to load asset: " + path);
             e.printStackTrace();
@@ -213,20 +220,20 @@ public class AssetLoader {
             this.animation = animation;
         }
     }
-    private static class CachedPrefab extends CachedAsset {
-        private final String jsonData;
-        public CachedPrefab(InputStream prefabFile) {
+    private static class CachedInputStream extends CachedAsset {
+        private final String data;
+        public CachedInputStream(InputStream file) {
             super();
-            String data;
+            String newData;
             try {
-                data = new String(prefabFile.readAllBytes(), StandardCharsets.UTF_8);
+                newData = new String(file.readAllBytes(), StandardCharsets.UTF_8);
             } catch (Exception e) {
-                throw new RuntimeException("[AssetLoader] Failed to read InputStream when storing prefab: ", e);
+                throw new RuntimeException("[AssetLoader] Failed to read InputStream when storing file: ", e);
             }
-            this.jsonData = data;
+            this.data = newData;
         }
         public InputStream getNewInputStream(){
-            return new java.io.ByteArrayInputStream(jsonData.getBytes(StandardCharsets.UTF_8));
+            return new java.io.ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
         }
     }
 }

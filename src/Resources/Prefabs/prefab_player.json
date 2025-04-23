@@ -6,7 +6,7 @@
     },
     "player": {"speed": 50},
     "spriteRenderer": {
-      "spriteImage": "IMAGES.PLAYER_IDLE",
+      "spriteImage": "Images.PLAYER_IDLE",
       "offset": [0.0, -0.15]
     },
     "rigidbody": {

@@ -17,8 +17,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, IOException {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
-        width = screenSize.width/100*50;
-        height = screenSize.height/100*70;
+        width = screenSize.width/100*90;
+        height = screenSize.height/100*90;
 
         // Initialize JFrame properties
         frame.setSize(width, height);

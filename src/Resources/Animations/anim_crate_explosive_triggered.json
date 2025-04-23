@@ -3,7 +3,7 @@
   "animationSteps": [
     {
       "imageAddress": "Images.CRATE_EXPLOSIVE_TRIGGERED",
-      "delay": 10
+      "delay": 12
     },
     {
       "imageAddress": "Images.CRATE_EXPLOSIVE",

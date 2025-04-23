@@ -85,7 +85,6 @@ public class GameObject {
 
     public void insertExtraData(Object key, Object value){
         extraDataMap.put(key,value);
-        System.out.println("Extra data: " + key + ": " + value);
     }
 
     public boolean hasExtraData(Object key){

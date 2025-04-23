@@ -1,6 +1,0 @@
-{
-  "name": "Corner Pipe 4",
-  "components": {
-    "spriteRenderer": {"spriteImage": "Images.PIPE_CORNER_4"}
-  }
-}

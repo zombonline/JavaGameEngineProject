@@ -1,7 +1,7 @@
 {
   "name": "Explosive Crate",
   "components": {
-    "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_explosive.png"},
+    "spriteRenderer": {"spriteImage": "Images.CRATE_EXPLOSIVE"},
     "collider": {},
     "crateExplosive": {},
     "spriteAnimator": {}

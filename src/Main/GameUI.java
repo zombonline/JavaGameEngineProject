@@ -68,7 +68,7 @@ public class GameUI {
         }
         else if(currentScreen==Screen.GAME_COMPLETE){
             updateScreen(Screen.GAME);
-            SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_TEST);
+            SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_1);
             GamePanel.setGamePaused(false);
         }
     }

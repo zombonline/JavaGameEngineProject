@@ -1,7 +1,7 @@
 {
   "name": "Explosion",
   "components": {
-    "spriteRenderer": {"spriteImage": "/Resources/Images/effect_explosion_small.png"},
+    "spriteRenderer": {"spriteImage": "Images.EXPLOSION_SMALL"},
     "spriteAnimator": {"startingAnim":"Animations.EXPLOSION"},
     "collider": {
       "isTrigger": true

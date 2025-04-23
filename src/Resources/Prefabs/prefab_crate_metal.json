@@ -1,7 +1,7 @@
 {
   "name": "Metal Crate",
   "components": {
-    "spriteRenderer": {"spriteImage": "/Resources/Images/Crates/crate_metal.png"},
+    "spriteRenderer": {"spriteImage": "Images.CRATE_METAL"},
     "collider": {}
   }
 }

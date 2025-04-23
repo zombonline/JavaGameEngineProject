@@ -34,16 +34,16 @@ public class PlayerAnimation extends Component{
         if(Math.abs(rb.velocity.getX()) > 0.2){
             renderer.setFlipHorizontally(Math.signum(rb.velocity.getX()) == -1);
             if(Math.abs(rb.velocity.getX())<4f){
-                currentAnimation = Assets.Animations.PLAYER_TEST_WALK;
+                currentAnimation = Assets.Animations.PLAYER_WALK;
             } else {
-                currentAnimation = Assets.Animations.PLAYER_TEST_RUN;
+                currentAnimation = Assets.Animations.PLAYER_RUN;
             }
         }
         else {
             currentAnimation = Assets.Animations.PLAYER_IDLE;
         }
         if(!rb.isGrounded() && rb.velocity.getY()>1){
-            currentAnimation = Assets.Animations.PLAYER_TEST_FALL;
+            currentAnimation = Assets.Animations.PLAYER_FALL;
         }
 
         if(!currentAnimation.equals(prevAnimation)){

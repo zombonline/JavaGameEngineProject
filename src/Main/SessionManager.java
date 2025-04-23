@@ -3,15 +3,17 @@ package Main;
 import ObjectSystem.GameObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SessionManager {
     private static LevelData currentLevel;
     private static int currentLevelIndex;
-    private static ArrayList<String> levelList = new ArrayList<String>();
-    static {
-        levelList.add(Assets.Tilemaps.LEVEL_TEST);
-        levelList.add(Assets.Tilemaps.LEVEL_TEST_1);
-    }
+    private static ArrayList<String> levelList = new ArrayList<>(
+            Arrays.asList(
+                    Assets.Tilemaps.LEVEL_1
+            )
+    );
+
 
     public static void LoadLevelByPath(String levelPath){
         if(levelList.contains(levelPath)){

@@ -3,22 +3,21 @@ package Main;
 import ObjectSystem.*;
 import ObjectSystem.Component;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
-    public static int WORLD_SCALE = (Main.width+Main.height)/48;
+    public static int WORLD_SCALE = Math.min(Main.width,Main.height)/12;
     public static final int FPS = 60;
     private static double deltaTime = 0;
     Thread gameThread;
-    BufferedImage texture;
+    BufferedImage gamePanelBackground;
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_TEST);
+        SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_1);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -110,10 +109,10 @@ public class GamePanel extends JPanel implements Runnable{
 
     private void drawBackground(Graphics2D g2d) {
         try {
-            if(texture == null){
-                texture = ImageIO.read(getClass().getResource("/Resources/Images/background.png"));
+            if(gamePanelBackground == null){
+                gamePanelBackground = AssetLoader.getInstance().getImage(Assets.Images.BACKGROUND);
             }
-            g2d.drawImage(texture, 0, 0, getWidth(), getHeight(), null);
+            g2d.drawImage(gamePanelBackground, 0, 0, getWidth(), getHeight(), null);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -33,7 +33,7 @@ public class LevelLoader {
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             //load tilemap file
-            InputStream tileMapFile = LevelLoader.class.getResourceAsStream("/Resources/Tilesets/AutoTileTest.tmx");
+            InputStream tileMapFile = AssetLoader.getInstance().getInputStream(levelString);
             Document tileMapDocument = builder.parse(tileMapFile);
             tileMapDocument.getDocumentElement().normalize();
 
@@ -71,8 +71,8 @@ public class LevelLoader {
             Element element = (Element) node;
             switch (element.getTagName()) {
                 case "layer":
+                    //skip input layers, these are just there to create the output terrain with auto tiles
                     if(element.getAttribute("name").contains("Input")){
-                        System.out.println("Skipping input layer");
                         continue;
                     }
                     result.addAll(parseTileLayer(element));
@@ -96,7 +96,7 @@ public class LevelLoader {
             int firstgid = Integer.parseInt(tileSetElement.getAttribute("firstgid"));
             String source = tileSetElement.getAttribute("source");
             //load the tile set file the reference is referring to
-            InputStream tileSetFile = LevelLoader.class.getResourceAsStream("/Resources/Tilesets/"+source);
+            InputStream tileSetFile = AssetLoader.getInstance().getInputStream("/Resources/Tilesets/"+source);
             Document tileSetDocument = builder.parse(tileSetFile);
             tileSetDocument.getDocumentElement().normalize();
 
@@ -211,7 +211,6 @@ public class LevelLoader {
             float y = Float.parseFloat(item.getAttribute("y"))/512;
             newObject.getTransform().setPosition(new Vector2(x,y-1));
             for(Map.Entry entry : getPropertiesAsMap(item).entrySet()){
-                System.out.println("Object has " + entry.getKey());
                 newObject.insertExtraData(entry.getKey(),entry.getValue());
             }
             gameObjects.add(newObject);
