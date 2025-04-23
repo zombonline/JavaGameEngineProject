@@ -10,7 +10,7 @@ import java.util.Map;
 public class CrateReinforced extends Crate{
     public CrateReinforced(float bounceStrength) {
         super(true, List.of(
-                new BounceBehavior(bounceStrength),
+                new BounceBehavior(bounceStrength, false),
                 new DestroyedByExplosionBehaviour()
         ));
     }

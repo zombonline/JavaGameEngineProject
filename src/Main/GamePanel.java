@@ -81,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable{
         if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
         ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().gameObjectsToAwake);
         for (GameObject gameObject : snapshot) {
+            if(gameObject==null){continue;}
             gameObject.awake();
             SessionManager.getCurrentLevel().activeGameObjects.add(gameObject);
         }
@@ -90,6 +91,7 @@ public class GamePanel extends JPanel implements Runnable{
         if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
         ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().activeGameObjects);
         for (GameObject gameObject : snapshot) {
+            if(gameObject==null){continue;}
             gameObject.update();
         }
     }
@@ -101,6 +103,7 @@ public class GamePanel extends JPanel implements Runnable{
         if(SessionManager.getCurrentLevel()!=null) {
             ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().activeGameObjects);
             for (GameObject gameObject : snapshot) {
+                if(gameObject==null){continue;}
                 gameObject.draw(g2d);
             }
         }
@@ -123,6 +126,7 @@ public class GamePanel extends JPanel implements Runnable{
         if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
         try {
             for (GameObject gameObject :SessionManager.getCurrentLevel().gameObjectsToDestroy) {
+                if(gameObject==null){continue;}
                 for (Component component : gameObject.getAllComponents()) {
                     component.onDestroy();
                 }

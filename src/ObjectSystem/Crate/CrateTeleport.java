@@ -10,7 +10,7 @@ import java.util.List;
 public class CrateTeleport extends Crate{
     public CrateTeleport(float bounceStrength) {
         super(true, List.of(
-                new BounceBehavior(bounceStrength),
+                new BounceBehavior(bounceStrength, true),
                 new DestroyedByExplosionBehaviour()
         ));
     }

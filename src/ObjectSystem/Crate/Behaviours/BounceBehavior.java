@@ -3,15 +3,18 @@ package ObjectSystem.Crate.Behaviours;
 import Main.DebugText;
 import ObjectSystem.Collider;
 import ObjectSystem.Crate.Crate;
+import ObjectSystem.Player;
 import ObjectSystem.Rigidbody;
 import Utility.Vector2;
 
 public class BounceBehavior implements CrateBehavior {
-    float bounceStrength;
+    private float bounceStrength;
+    private boolean bouncePlayerOnly;
     public boolean active = true;
 
-    public BounceBehavior(float bounceStrength) {
+    public BounceBehavior(float bounceStrength, boolean bouncePlayerOnly) {
         this.bounceStrength = bounceStrength;
+        this.bouncePlayerOnly = bouncePlayerOnly;
     }
 
     @Override
@@ -27,6 +30,7 @@ public class BounceBehavior implements CrateBehavior {
     @Override
     public void onTouchTop(Collider other, Crate crate) {
         assert active;
+        if(bouncePlayerOnly && !other.hasComponent(Player.class)) {return;}
         if(!other.hasComponent(Rigidbody.class)){return;}
         if(!Crate.checkVelocityValidTop(other, crate)){return;}
         Rigidbody rb = other.getComponent(Rigidbody.class);
@@ -38,6 +42,7 @@ public class BounceBehavior implements CrateBehavior {
     @Override
     public void onTouchBottom(Collider other, Crate crate) {
         assert active;
+        if(bouncePlayerOnly && !other.hasComponent(Player.class)) {return;}
         if(!other.hasComponent(Rigidbody.class)){return;}
         if(!Crate.checkVelocityValidBottom(other, crate)){return;}
         Rigidbody rb = other.getComponent(Rigidbody.class);

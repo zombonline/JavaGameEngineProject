@@ -23,7 +23,7 @@ public class CrateHorizontalMoving extends Crate{
     public CrateHorizontalMoving(float bounceStrength, int hitsToDestroy, float moveSpeed, float moveDistance, Vector2 dir){
         super(true, List.of(
                 new MovementBehaviour(moveSpeed, moveDistance, dir),
-                new BounceBehavior(bounceStrength),
+                new BounceBehavior(bounceStrength, true),
                 new HitCounterBehavior(hitsToDestroy),
                 new DestroyedByExplosionBehaviour()
         ));

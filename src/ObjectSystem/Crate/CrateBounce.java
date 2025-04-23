@@ -15,7 +15,7 @@ import java.util.Map;
 public class CrateBounce extends Crate {
     public CrateBounce(float bounceStrength, int hitsToDestroy) {
         super(true, List.of(
-                new BounceBehavior(bounceStrength),
+                new BounceBehavior(bounceStrength, false),
                 new HitCounterBehavior(hitsToDestroy),
                 new DestroyedByExplosionBehaviour()
         ));

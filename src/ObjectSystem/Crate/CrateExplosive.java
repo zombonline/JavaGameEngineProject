@@ -14,7 +14,7 @@ import java.util.Map;
 public class CrateExplosive extends Crate {
     public CrateExplosive(float bounceStrength, float explosionScale) {
         super(true, List.of(
-                new BounceBehavior(bounceStrength),
+                new BounceBehavior(bounceStrength, true),
                 new ExplodeBehavior(explosionScale)
         ));
         getBehavior(ExplodeBehavior.class).addListener(

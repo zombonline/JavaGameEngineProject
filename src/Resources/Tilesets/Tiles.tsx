@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="Tiles" tilewidth="512" tileheight="1024" tilecount="20" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="Tiles" tilewidth="512" tileheight="1024" tilecount="19" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
@@ -35,7 +35,7 @@
   <properties>
    <property name="prefabName" value="CRATE_ORANGE_BITS"/>
   </properties>
-  <image source="../Images/crate_orange_bits.png"/>
+  <image source="../Images/Crates/crate_orange_bits.png" width="512" height="512"/>
  </tile>
  <tile id="12">
   <properties>
@@ -90,12 +90,6 @@
    <property name="prefabName" value="NPC"/>
   </properties>
   <image source="../Images/placeholder_npc.png" width="512" height="1024"/>
- </tile>
- <tile id="21">
-  <properties>
-   <property name="prefabName" value="PLACEHOLDER_CRATE"/>
-  </properties>
-  <image source="../Images/placeholder_crate.png"/>
  </tile>
  <tile id="22">
   <properties>

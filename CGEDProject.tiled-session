@@ -78,11 +78,11 @@
             "expandedObjectLayers": [
                 8
             ],
-            "scale": 0.0625,
-            "selectedLayer": 5,
+            "scale": 0.03125,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 11360,
-                "y": 8736
+                "x": 19424,
+                "y": 9504
             }
         },
         "src/Resources/Tilesets/BGTiles.tsx": {
