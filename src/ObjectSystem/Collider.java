@@ -96,6 +96,7 @@ public class Collider extends Component{
     }
 
     private void checkCollidersNearby() {
+        if(isStatic){return;}
         List<Collider> nearbyColliders = SessionManager.getCurrentLevel().spatialHashGrid.getNearby(colliderPosition, collisionMask);
         List<Collider> colliding = new ArrayList<Collider>();
         for (Collider nearbyCollider : nearbyColliders) {
@@ -117,6 +118,7 @@ public class Collider extends Component{
     }
 
     public void updateTouchingColliders() {
+        if(isStatic){return;}
         // Use a HashSet to eliminate duplicates without modifying the original list during iteration
         List<Collider> uniqueCollisions = new ArrayList<>(new HashSet<>(allCollisions));
 

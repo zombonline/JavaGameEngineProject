@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class AssetLoader {
-    private static final long MAX_UNUSED_TIME_MS = 2 * 60 * 1000;
+    private static final long MAX_UNUSED_TIME_MS = 5 * 60 * 1000;
     private static final int CACHE_CLEAN_INTERVAL_MS = 1000;
     private static final AssetLoader instance = new AssetLoader();
     private final Map<String, CachedAsset> cache = new HashMap<>();
@@ -26,6 +26,37 @@ public class AssetLoader {
 
     public static AssetLoader getInstance(){
         return instance;
+    }
+
+    public BufferedImage getSubImage(String path, int x, int y, int w, int h){
+        path = Assets.getAssetPath(path);
+        String subImagePath = path+x+y+w+h;
+        synchronized (cache) {
+            if(cache.containsKey(subImagePath)){
+                CachedImage cachedImage = (CachedImage) cache.get(subImagePath);
+                cachedImage.updateLastAccessTime();
+                return cachedImage.image;
+            }
+        }
+        BufferedImage image = loadSubImage(path,x,y,w,h);
+        if(image != null){
+            synchronized (cache) {
+                cache.put(subImagePath, new CachedImage(image));
+            }
+        }
+        return image;
+    }
+    public BufferedImage loadSubImage(String path, int x, int y, int w, int h){
+        try (InputStream input = getClass().getResourceAsStream(path)) {
+            if (input == null) {
+                System.err.println("[AssetLoader] Asset not found at: " + path);
+                return null;
+            }
+            return ImageIO.read(input).getSubimage(x,y,w,h);
+        } catch (Exception e){
+            System.err.println("[AssetLoader] Failed to load asset: " + path);
+            return null;
+        }
     }
 
     public BufferedImage getImage(String path){

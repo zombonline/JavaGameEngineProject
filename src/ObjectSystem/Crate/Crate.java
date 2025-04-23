@@ -98,7 +98,6 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         if(crate.hasComponent(Rigidbody.class)){
             thisVelocityEnough = crate.getComponent(Rigidbody.class).velocityLastFrame.getY() > crate.requiredHitStrength;
         }
-        System.out.println("other moving enough: " + otherVelocityEnough + ", this moving enough: " + thisVelocityEnough);
         return otherVelocityEnough || thisVelocityEnough;
     }
     public static boolean checkVelocityValidTop(Collider other, Crate crate) {
@@ -107,7 +106,6 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         if(crate.hasComponent(Rigidbody.class)) {
             thisVelocityEnough = crate.getComponent(Rigidbody.class).velocityLastFrame.getY() < -crate.requiredHitStrength;
         }
-        System.out.println("other moving enough: " + otherVelocityEnough + ", this moving enough: " + thisVelocityEnough);
         return otherVelocityEnough || thisVelocityEnough;
     }
 }

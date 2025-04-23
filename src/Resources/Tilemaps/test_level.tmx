@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="512" tileheight="512" infinite="0" nextlayerid="16" nextobjectid="7">
- <tileset firstgid="1" source="Tiles.tsx"/>
+ <tileset firstgid="1" source="../Tilesets/Tiles.tsx"/>
  <tileset firstgid="27" source="SpriteSheet.tsx"/>
  <layer id="2" name="Background" width="30" height="20">
   <properties>

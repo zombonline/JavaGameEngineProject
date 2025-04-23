@@ -4,7 +4,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import ObjectSystem.GameObject;
-import ObjectSystem.NPCDialogueHandler;
 import ObjectSystem.SpriteRenderer;
 import Utility.Vector2;
 import org.w3c.dom.*;
@@ -17,16 +16,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LevelLoader {
+    private static class PrefabReference{
+        public String prefabName = "";
+        public final HashMap<String,String> data = new HashMap<>();
+        public void setPrefabName(String name){this.prefabName=name;}
+        public void addData(String key,String val){data.put(key,val);}
+    }
+
     static int mapWidth = -1;
     static int mapHeight = -1;
-    static HashMap<Integer, String> idToPrefabName;
+    static HashMap<Integer, PrefabReference> idToPrefabName;
     public static LevelData parse(String levelString) {
         mapWidth = -1;
         mapHeight = -1;
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         try {
-            InputStream tileMapFile = LevelLoader.class.getResourceAsStream(levelString);
-            InputStream tileSetFile = LevelLoader.class.getResourceAsStream(Assets.Tilesets.TILES);
+            InputStream tileMapFile = LevelLoader.class.getResourceAsStream("/Resources/Tilesets/AutoTileTest.tmx");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document tileMapDocument = builder.parse(tileMapFile);
@@ -36,15 +41,22 @@ public class LevelLoader {
             mapHeight = Integer.parseInt(mapElement.getAttribute("height"));
 
             NodeList children = mapElement.getChildNodes();
-            System.out.println(tileSetFile);
-            idToPrefabName = buildIDtoPrefabNameMap(builder, tileSetFile);
-            System.out.println("ID to Prefab Name: " + idToPrefabName);
+
+            NodeList tileSetFiles = mapElement.getElementsByTagName("tileset");
+
+            idToPrefabName = buildIDtoPrefabNameMap(builder, tileSetFiles);
+
+            printIdToPrefabMap();
             for (int i = 0; i < children.getLength(); i++) {
                 Node node = children.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
                     switch (element.getTagName()) {
                         case "layer":
+                            if(element.getAttribute("name").contains("Input")){
+                                System.out.println("Skipping input layer");
+                                continue;
+                            }
                             gameObjects.addAll(parseTileLayer(element));
                             System.out.println("Parsing layer: " + element.getAttribute("name"));
                             break;
@@ -64,26 +76,48 @@ public class LevelLoader {
         return new LevelData(levelString, gameObjects, mapWidth, mapHeight);
     }
 
-    private static HashMap<Integer, String> buildIDtoPrefabNameMap(DocumentBuilder builder, InputStream tileSet) throws IOException, SAXException {
-        HashMap<Integer, String> idToPrefabName = new HashMap<>();
-        System.out.println(tileSet);
-        Document tileSetDocument = builder.parse(tileSet);
-        tileSetDocument.getDocumentElement().normalize();
-        NodeList tileNodes = tileSetDocument.getElementsByTagName("tile");
-        for(int i = 0; i < tileNodes.getLength(); i++){
-            Element tile = (Element) tileNodes.item(i);
-            String tileId = tile.getAttribute("id");
-            String prefabName = "";
-            NodeList propertyNodes = tile.getElementsByTagName("property");
-            for (int j = 0; j < propertyNodes.getLength(); j++) {
-                Element propertyElement = (Element) propertyNodes.item(j);
-                if ("prefabName".equals(propertyElement.getAttribute("name"))) {
-                    prefabName = propertyElement.getAttribute("value");
+    private static void printIdToPrefabMap() {
+        String printValue = "";
+        for(Map.Entry entry : idToPrefabName.entrySet()){
+            String prefabName = idToPrefabName.get(entry.getKey()).prefabName;
+            printValue+= entry.getKey()+"="+ prefabName +", ";
+        }
+
+        System.out.println("ID to Prefab Name: " + printValue);
+    }
+
+
+    private static HashMap<Integer, PrefabReference> buildIDtoPrefabNameMap(DocumentBuilder builder, NodeList tileSets) throws IOException, SAXException {
+
+        HashMap<Integer, PrefabReference> idToPrefabName = new HashMap<>();
+        for(int i = 0; i < tileSets.getLength(); i++) {
+            Element tileSetElement = (Element) tileSets.item(i);
+            int firstgid = Integer.parseInt(tileSetElement.getAttribute("firstgid"));
+            String source = tileSetElement.getAttribute("source");
+            System.out.println("Tileset: " + source +", " + firstgid);
+            InputStream tileSetFile = LevelLoader.class.getResourceAsStream("/Resources/Tilesets/"+source);
+            Document tileSetDocument = builder.parse(tileSetFile);
+            tileSetDocument.getDocumentElement().normalize();
+            NodeList tileNodes = tileSetDocument.getElementsByTagName("tile");
+            for (int j = 0; j < tileNodes.getLength(); j++) {
+                Element tile = (Element) tileNodes.item(j);
+                String tileId = tile.getAttribute("id");
+                NodeList propertyNodes = tile.getElementsByTagName("property");
+                PrefabReference prefabReference = new PrefabReference();
+                prefabReference.addData("tileId", tileId);
+                for (int k = 0; k < propertyNodes.getLength(); k++) {
+                    Element propertyElement = (Element) propertyNodes.item(k);
+                    if ("prefabName".equals(propertyElement.getAttribute("name"))) {
+                        prefabReference.setPrefabName(propertyElement.getAttribute("value"));
+                    } else {
+                        prefabReference.addData(propertyElement.getAttribute("name"), propertyElement.getAttribute("value"));
+                    }
                 }
+                idToPrefabName.put(Integer.parseInt(tileId) + firstgid, prefabReference);
             }
-            idToPrefabName.put(Integer.parseInt(tileId)+1, prefabName);
         }
         return idToPrefabName;
+
     }
 
     private static String getProperty(Element element, String propertyName){
@@ -129,20 +163,24 @@ public class LevelLoader {
                     int tileID = Integer.parseInt(values[y * mapWidth + x].trim());
                     if(tileID == 0){continue;}
                     GameObject newObject = null;
-                    String prefabName = idToPrefabName.get(tileID);
-                    if(prefabName == null){
-                        System.out.println("No prefab found for tile id: " + tileID);
-                    }
-                    if (prefabName == null) {
+                    PrefabReference prefabReference = idToPrefabName.get(tileID);
+                    if(prefabReference==null){
                         continue;
                     }
-                    newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabName);
+                    if(prefabReference.prefabName.isEmpty()){
+                        System.out.println("No prefab found for tile id: " + tileID);
+                        continue;
+                    }
+                    newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabReference.prefabName);
                     if (newObject == null) {
                         System.out.println("New Object IS NULL");
                         continue;
                     }
                     ApplyParallax(newObject, parallaxFactor);
                     newObject.getTransform().setPosition(new Vector2(x, y));
+                    for(Map.Entry entry : idToPrefabName.get(tileID).data.entrySet()){
+                        newObject.insertExtraData(entry.getKey(),entry.getValue());
+                    }
                     gameObjects.add(newObject);
                 }
             }
@@ -156,7 +194,7 @@ public class LevelLoader {
         for(int i = 0; i< dataNodes.getLength(); i++){
             Element item = (Element) dataNodes.item(i);
             int gid = Integer.parseInt(item.getAttribute("gid"));
-            String prefabName = idToPrefabName.get(gid);
+            String prefabName = idToPrefabName.get(gid).prefabName;
             GameObject newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabName);
             float x = Float.parseFloat(item.getAttribute("x"))/512;
             float y = Float.parseFloat(item.getAttribute("y"))/512;

@@ -38,9 +38,9 @@ public class CrateHover extends Crate{
     }
     public static Map<String, Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
-        defaultValues.put("bounceStrength", 10f);
-        defaultValues.put("hitsToDestroy",5);
-        defaultValues.put("moveSpeed", 0.4f);
+        defaultValues.put("bounceStrength", 20f);
+        defaultValues.put("hitsToDestroy",1);
+        defaultValues.put("moveSpeed", 0.6f);
         defaultValues.put("moveDistance", 0.5f);
         defaultValues.put("direction", Vector2.down);
         return defaultValues;

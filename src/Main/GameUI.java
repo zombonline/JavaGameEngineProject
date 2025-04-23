@@ -92,7 +92,6 @@ public class GameUI {
         g2d.drawString(dialogueName, x+GamePanel.WORLD_SCALE/10, y+textSize.getY()/1.5f);
 
         String[] lines = dialogueContent.split("\n");
-        System.out.println("lines length: " + lines.length);
         int yIncrement = 0;
         for (String line : lines) {
             g2d.setFont(new Font("Arial", Font.PLAIN, GamePanel.WORLD_SCALE/3));

@@ -57,6 +57,9 @@ public class Assets {
         public static final String PLAYER_TEST_RUN_2 = IMAGES_PATH +"test_player_run_2.png";
         public static final String PLAYER_TEST_RUN_3 = IMAGES_PATH +"test_player_run_3.png";
         public static final String PLAYER_TEST_RUN_4 = IMAGES_PATH +"test_player_run_4.png";
+
+        public static final String TERRAIN_PLACEHOLDER = IMAGES_PATH +"terrain_placeholder.png";
+        public static final String TERRAIN_STANDARD = IMAGES_PATH+"terrain_standard.png";
     }
 
     // PREFAB .JSON FILES
@@ -89,6 +92,8 @@ public class Assets {
         public static final String PIPE_VERTICAL = PREFABS_PATH +"Pipes/prefab_pipe_vertical.json";
 
         public static final String PLAYER = PREFABS_PATH +"prefab_player.json";
+
+        public static final String TERRAIN_PLACEHOLDER = PREFABS_PATH+"prefab_terrain_placeholder.json";
     }
 
     // TILEMAP .TMX FILES
@@ -101,7 +106,7 @@ public class Assets {
     // TILESET .TSX FILES
     public static class Tilesets {
         private static final String TILESETS_PATH = "/Resources/Tilesets/";
-        public static final String TILES = TILESETS_PATH + "tiles.tsx";
+        public static final String TILES = TILESETS_PATH + "TTiles.tsx";
     }
 
     private static final Map<String, String> assetMap = new HashMap<>();

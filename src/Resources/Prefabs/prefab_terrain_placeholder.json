@@ -1,0 +1,8 @@
+{
+  "name": "Terrain Placeholder",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.TERRAIN_PLACEHOLDER"},
+    "collider": {"isStatic": true},
+    "terrainTileManager": {}
+  }
+}

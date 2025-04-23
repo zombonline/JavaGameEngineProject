@@ -3,14 +3,14 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "src/Resources/Tilesets/untitled.tmx",
+    "activeFile": "src/Resources/Tilesets/AutoTileTest.tmx",
     "expandedProjectPaths": [
         "Tilesets",
-        "src/Resources/Tilesets",
-        "src/Resources/Tilesets/rules",
-        "src",
         ".",
-        "src/Resources"
+        "src/Resources/Tilesets/rules",
+        "src/Resources",
+        "src/Resources/Tilesets",
+        "src"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -38,12 +38,48 @@
                 "y": 470.2665755297334
             }
         },
-        "src/Resources/Tilesets/AutoTileTest.tmx": {
-            "scale": 0.125,
+        "src/Resources/Tilemaps/BGTiles.tsx": {
+            "scaleInDock": 1
+        },
+        "src/Resources/Tilemaps/Level_Test.tmx": {
+            "scale": 0.7392187499999999,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 4540,
-                "y": 21656
+                "x": 480.23673641936176,
+                "y": 320.60875079264434
+            }
+        },
+        "src/Resources/Tilemaps/SpriteSheet.tsx": {
+            "scaleInDock": 1
+        },
+        "src/Resources/Tilemaps/Tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "src/Resources/Tilemaps/Tileset 1.tsx": {
+            "scaleInDock": 1
+        },
+        "src/Resources/Tilemaps/test_level.tmx": {
+            "scale": 0.046201171874999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 7683.787782709788,
+                "y": 5129.7400126823095
+            }
+        },
+        "src/Resources/Tilemaps/test_level_1.tmx": {
+            "scale": 0.01729296875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 25617.34809125819,
+                "y": 13358.030268805061
+            }
+        },
+        "src/Resources/Tilesets/AutoTileTest.tmx": {
+            "scale": 0.03125,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 16016,
+                "y": 9504
             }
         },
         "src/Resources/Tilesets/BGTiles.tsx": {
@@ -69,14 +105,14 @@
         "src/Resources/Tilesets/rules/Terrain Standard.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 0.0625,
-            "scaleInEditor": 0.0625
+            "scaleInEditor": 0.125
         },
         "src/Resources/Tilesets/rules/autotile_rules.tmx": {
-            "scale": 0.25,
+            "scale": 0.03125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2254,
-                "y": 2140
+                "x": 21552,
+                "y": 5664
             }
         },
         "src/Resources/Tilesets/test_level.tmx": {
@@ -103,13 +139,14 @@
         },
         "src/Resources/Tilesets/untitled.tmx": {
             "scale": 0.0625,
-            "selectedLayer": -1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 7208,
+                "x": 5264,
                 "y": 3664
             }
         }
     },
+    "last.externalTilesetPath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Tilesets",
     "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images",
     "map.height": 50,
     "map.lastUsedFormat": "tmx",
@@ -124,22 +161,23 @@
         "src/Resources/Tilesets/SpriteSheet.tsx",
         "src/Resources/Tilesets/untitled.tmx",
         "src/Resources/Tilesets/rules/autotile_rules.tmx",
-        "src/Resources/Tilesets/rules/Terrain Standard.tsx"
+        "src/Resources/Tilesets/rules/Terrain Standard.tsx",
+        "src/Resources/Tilesets/AutoTileTest.tmx"
     ],
     "project": "CGEDProject.tiled-project",
     "recentFiles": [
-        "src/Resources/Tilesets/AutoTileTest.tmx",
-        "src/Resources/Tilesets/test_level_1.tmx",
         "src/Resources/Tilesets/Tiles.tsx",
+        "src/Resources/Tilesets/untitled.tmx",
+        "src/Resources/Tilemaps/test_level_1.tmx",
+        "src/Resources/Tilemaps/test_level.tmx",
+        "src/Resources/Tilemaps/Level_Test.tmx",
+        "src/Resources/Tilesets/test_level_1.tmx",
         "src/Resources/Tilesets/test_level.tmx",
         "src/Resources/Tilesets/BGTiles.tsx",
         "src/Resources/Tilesets/SpriteSheet.tsx",
-        "src/Resources/Tilesets/rules/Terrain Standard.tsx",
         "src/Resources/Tilesets/rules/autotile_rules.tmx",
-        "src/Resources/Tilesets/untitled.tmx",
-        "src/Resources/Tilesets/Tiles1.tsx",
-        "Tilesets/Tiles.tsx",
-        "Tilesets/test_level.tmx"
+        "src/Resources/Tilesets/rules/Terrain Standard.tsx",
+        "src/Resources/Tilesets/AutoTileTest.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
