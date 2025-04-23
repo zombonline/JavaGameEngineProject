@@ -141,7 +141,8 @@ public class LevelLoader {
             NodeList propertyNodes = element.getElementsByTagName("property");
             for (int j = 0; j < propertyNodes.getLength(); j++) {
                 Element propertyElement = (Element) propertyNodes.item(j);
-                map.put(propertyElement.getAttribute("name"), propertyElement.getAttribute("value"));
+                String value = !propertyElement.hasAttribute("value") ? propertyElement.getTextContent() : propertyElement.getAttribute("value");
+                map.put(propertyElement.getAttribute("name"), value);
             }
         } catch (Exception e){
             return null;
@@ -193,6 +194,10 @@ public class LevelLoader {
         NodeList dataNodes = objectGroup.getElementsByTagName("object");
         for(int i = 0; i< dataNodes.getLength(); i++){
             Element item = (Element) dataNodes.item(i);
+            if(!item.hasAttribute("gid")){
+                System.out.println("Item " + item.getTagName() + "doesn't have gid");
+                continue;
+            }
             int gid = Integer.parseInt(item.getAttribute("gid"));
             String prefabName = idToPrefabName.get(gid).prefabName;
             GameObject newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabName);

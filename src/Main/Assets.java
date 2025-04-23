@@ -67,6 +67,7 @@ public class Assets {
         private static final String PREFABS_PATH = "/Resources/Prefabs/";
 
         public static final String CRATE_BASIC = PREFABS_PATH +"prefab_crate_basic.json";
+        public static final String CRATE_BASIC_WITH_RB = PREFABS_PATH +"prefab_crate_basic_with_rb.json";
         public static final String CRATE_BOUNCE = PREFABS_PATH +"prefab_crate_bounce.json";
         public static final String CRATE_EXPLOSIVE = PREFABS_PATH +"prefab_crate_explosive.json";
         public static final String CRATE_HOVER = PREFABS_PATH +"prefab_crate_hover.json";

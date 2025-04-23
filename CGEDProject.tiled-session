@@ -75,11 +75,14 @@
             }
         },
         "src/Resources/Tilesets/AutoTileTest.tmx": {
-            "scale": 0.03125,
+            "expandedObjectLayers": [
+                8
+            ],
+            "scale": 0.0625,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 16016,
-                "y": 9504
+                "x": 11360,
+                "y": 8736
             }
         },
         "src/Resources/Tilesets/BGTiles.tsx": {
@@ -108,11 +111,11 @@
             "scaleInEditor": 0.125
         },
         "src/Resources/Tilesets/rules/autotile_rules.tmx": {
-            "scale": 0.03125,
+            "scale": 0.015625,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 21552,
-                "y": 5664
+                "x": 19136,
+                "y": 11520
             }
         },
         "src/Resources/Tilesets/test_level.tmx": {
@@ -147,7 +150,7 @@
         }
     },
     "last.externalTilesetPath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Tilesets",
-    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images",
+    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images/Crates",
     "map.height": 50,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 512,
@@ -179,6 +182,7 @@
         "src/Resources/Tilesets/rules/Terrain Standard.tsx",
         "src/Resources/Tilesets/AutoTileTest.tmx"
     ],
+    "textEdit.monospace": false,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 512,

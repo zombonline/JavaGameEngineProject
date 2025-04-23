@@ -77,8 +77,8 @@ public class GameUI {
         g2d.setColor(Color.white);
         g2d.setFont(new Font("Arial", Font.PLAIN, GamePanel.WORLD_SCALE));
         textSize = getTextSize(SessionManager.getCurrentLevel().getCratesDestroyed() + "/" + SessionManager.getCurrentLevel().getCratesToDestroy(), g2d);
-        g2d.drawString( SessionManager.getCurrentLevel().getCratesDestroyed() + "/" +SessionManager.getCurrentLevel().getCratesToDestroy(), Main.width-textSize.getX(), Main.height/100+textSize.getY());
-        g2d.drawImage(crateIcon, (int) (Main.width-textSize.getX()-GamePanel.WORLD_SCALE),GamePanel.WORLD_SCALE/2, GamePanel.WORLD_SCALE, GamePanel.WORLD_SCALE,null);
+        g2d.drawString( SessionManager.getCurrentLevel().getCratesDestroyed() + "/" +SessionManager.getCurrentLevel().getCratesToDestroy(), Main.gamePanel.getWidth()-textSize.getX(), GamePanel.WORLD_SCALE/2+textSize.getY()/2);
+        g2d.drawImage(crateIcon, (int) (Main.gamePanel.getWidth()-textSize.getX()-GamePanel.WORLD_SCALE),GamePanel.WORLD_SCALE/4, GamePanel.WORLD_SCALE, GamePanel.WORLD_SCALE,null);
     }
     private void drawDialogueScreen(Graphics2D g2d){
         int w = GamePanel.WORLD_SCALE*10;

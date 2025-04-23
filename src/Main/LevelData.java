@@ -24,6 +24,7 @@ public class LevelData {
         this.cratesToDestroy = countCratesToDestroy();
         this.width = mapWidth;
         this.height = mapHeight;
+        GameUI.getInstance().updateScreen(GameUI.Screen.GAME);
         System.out.println("LevelData created: " + initialGameobjects.size() + " game objects, " + cratesToDestroy + " crates to destroy");
     }
 
