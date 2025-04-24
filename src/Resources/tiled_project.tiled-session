@@ -14,8 +14,8 @@
             "scale": 0.0625,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 20008,
-                "y": 3216
+                "x": 19168,
+                "y": 7008
             }
         },
         "Tilemaps/SpriteSheet.tsx": {
@@ -32,7 +32,7 @@
             "scale": 0.016328125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 33041.14832535885,
+                "x": 33071.77033492824,
                 "y": 13841.148325358856
             }
         },
