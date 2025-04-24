@@ -152,10 +152,11 @@ public class LevelLoader {
         }
         return map;
     }
-
+//new Vector2(getFloatListFromJSONNode(values.get(propertyName)))
     private static ArrayList<GameObject> parseTileLayer(Element layer) {
         String parallaxFactorString = getProperty(layer, "parallax");
-        float parallaxFactor = parallaxFactorString.isEmpty() ? 1.0f : Float.parseFloat(parallaxFactorString);
+        Vector2 parallaxFactor = parallaxFactorString.isEmpty() ? Vector2.one : new Vector2(parallaxFactorString);
+        System.out.println("PARALLAX IS: " + parallaxFactor.toString());
 
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         NodeList dataNodes = layer.getElementsByTagName("data");

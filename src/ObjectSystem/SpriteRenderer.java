@@ -11,7 +11,7 @@ import java.util.Map;
 public class SpriteRenderer extends Component {
     private BufferedImage spriteImage;
     private Vector2 offset;
-    private float parallaxFactor = 1f;
+    private Vector2 parallaxFactor = Vector2.one;
     private boolean flipHorizontally = false, flipVertically = false;
 
     public SpriteRenderer(BufferedImage spriteImage, Vector2 offset){
@@ -22,7 +22,7 @@ public class SpriteRenderer extends Component {
     @Override
     public void awake() {
         if(gameObject.hasExtraData("parallaxFactor")){
-            parallaxFactor = (float) gameObject.getExtraData("parallaxFactor");
+            parallaxFactor = (Vector2) gameObject.getExtraData("parallaxFactor");
         }
     }
 
@@ -79,7 +79,7 @@ public class SpriteRenderer extends Component {
         this.spriteImage = spriteImage;
     }
     public void setOffset(Vector2 offset){this.offset = offset;}
-    public void setParallaxFactor(float parallaxFactor) {
+    public void setParallaxFactor(Vector2 parallaxFactor) {
         this.parallaxFactor = parallaxFactor;
     }
     public void setFlipHorizontally(boolean flipHorizontally) {

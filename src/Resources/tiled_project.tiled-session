@@ -1,21 +1,21 @@
 {
-    "activeFile": "Tilesets/tile_terrain.tsx",
+    "activeFile": "Tilemaps/LEVEL_1.tmx",
     "expandedProjectPaths": [
-        "Tilemaps/rules",
-        ".",
         "Tilemaps",
-        "Tilesets"
+        ".",
+        "Tilesets",
+        "Tilemaps/rules"
     ],
     "fileStates": {
         "Tilemaps/BACKGROUND_TILES.tsx": {
             "scaleInDock": 1
         },
         "Tilemaps/LEVEL_1.tmx": {
-            "scale": 0.03125,
-            "selectedLayer": 0,
+            "scale": 0.0625,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 19920,
-                "y": 9440
+                "x": 20008,
+                "y": 3216
             }
         },
         "Tilemaps/SpriteSheet.tsx": {
@@ -47,11 +47,12 @@
             "scaleInEditor": 0.125
         },
         "Tilesets/tiles_terrain.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 0.0625
         },
         "Tilesets/tileset_background.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 0.0625,
             "scaleInEditor": 0.125
         }
     },
@@ -60,15 +61,13 @@
     "openFiles": [
         "Tilemaps/LEVEL_1.tmx",
         "Tilesets/tiles_objects.tsx",
-        "Tilesets/tile_terrain.tsx",
-        "Tilemaps/rules/Terrain Standard.tsx",
         "Tilesets/tileset_background.tsx"
     ],
     "project": "tiled_project.tiled-project",
     "recentFiles": [
-        "Tilemaps/LEVEL_1.tmx",
-        "Tilesets/tiles_objects.tsx",
         "Tilesets/tileset_background.tsx",
+        "Tilesets/tiles_objects.tsx",
+        "Tilemaps/LEVEL_1.tmx",
         "Tilemaps/rules/Terrain Standard.tsx",
         "Tilesets/tile_terrain.tsx"
     ],

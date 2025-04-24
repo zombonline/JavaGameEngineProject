@@ -43,7 +43,7 @@ public class Transform extends Component{
     public  Vector2 getScreenPosition(){
         return position.add(scale.div(2)).mul(GamePanel.WORLD_SCALE).sub(getScreenScale().div(2)).sub(Main.camera.getPosition());
     }
-    public Vector2 getScreenPosition(float parallaxFactor) {
+    public Vector2 getScreenPosition(Vector2 parallaxFactor) {
         Vector2 adjustedCameraPos = Main.camera.getPosition().mul(parallaxFactor); // Scale camera movement
         return position.mul(GamePanel.WORLD_SCALE)
                 .sub(getScreenScale().div(2))
