@@ -200,6 +200,7 @@ public class PrefabReader {
     private static SpriteAnimator buildSpriteAnimator(JsonNode values){
         Map<String,Object> defaultValues = SpriteAnimator.getDefaultValues();
         String startingAnim = getString("startingAnim", values, defaultValues);
+        System.out.println("startingAnim " + startingAnim);
         return new SpriteAnimator(AssetLoader.getInstance().getAnimation(startingAnim));
     }
     private static Rigidbody buildRigidbody(JsonNode values){

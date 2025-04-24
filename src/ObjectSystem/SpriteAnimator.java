@@ -1,5 +1,4 @@
 package ObjectSystem;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,7 @@ public class SpriteAnimator extends Component{
     SpriteRenderer spriteRenderer;
     int frameTimer = 0;
     int currentStepIndex = 0;
-    Animation currentAnim;
+    private Animation currentAnim;
 
     public SpriteAnimator(){
 
@@ -22,18 +21,22 @@ public class SpriteAnimator extends Component{
 
     public SpriteAnimator(Animation anim){
         if(anim==null){return;}
+        currentStepIndex = 0;
         currentAnim = anim;
         frameTimer = currentAnim.animationSteps.getFirst().getDelay();
     }
 
     public void loadAnimation(String animPath){
+        currentStepIndex = 0;
         currentAnim = AssetLoader.getInstance().getAnimation(animPath);
         frameTimer = currentAnim.animationSteps.getFirst().getDelay();
+        spriteRenderer.setSpriteImage(currentAnim.animationSteps.get(currentStepIndex).getImage()); // Ensure image is set immediately
+
     }
 
     public interface AnimatorListener {
         void onAnimationEvent(String eventKey);
-        void onAnimationComlete();
+        void onAnimationComplete();
     }
     private List<SpriteAnimator.AnimatorListener> listeners = new ArrayList<>();
     public void addListener(SpriteAnimator.AnimatorListener listener) {
@@ -49,10 +52,9 @@ public class SpriteAnimator extends Component{
     }
     public void notifyAnimationComplete(){
         for(SpriteAnimator.AnimatorListener listener : listeners) {
-            listener.onAnimationComlete();
+            listener.onAnimationComplete();
         }
     }
-//    C:\Users\megaz\Documents\JavaGameEngineProject\src\Resources\test.json
     @Override
     public void awake() {
         super.awake();

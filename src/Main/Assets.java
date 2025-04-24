@@ -52,6 +52,7 @@ public class Assets {
 
 
         public static final String PLAYER_IDLE = IMAGES_PATH +"Player/player_idle.png";
+        public static final String PLAYER_IDLE_BLINK = IMAGES_PATH +"Player/player_idle_blink.png";
         public static final String PLAYER_FALL_1 = IMAGES_PATH +"Player/player_fall_1.png";
         public static final String PLAYER_FALL_2 = IMAGES_PATH +"Player/player_fall_2.png";
         public static final String PLAYER_RUN_1 = IMAGES_PATH +"Player/player_run_1.png";

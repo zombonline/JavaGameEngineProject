@@ -92,7 +92,9 @@ public class AssetLoader {
 
     public Animation getAnimation(String path){
         if(path.isEmpty()){return null;}
+
         path = Assets.getAssetPath(path);
+
         synchronized (cache) {
             if(cache.containsKey(path)){
                 CachedAnimation cachedAnimation = (CachedAnimation) cache.get(path);
@@ -115,6 +117,7 @@ public class AssetLoader {
                 System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;
             }
+
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(input, Animation.class);
         } catch (Exception e){

@@ -56,7 +56,7 @@ public class ExplodeBehavior implements CrateBehavior {
             public void onAnimationEvent(String eventKey) {}
 
             @Override
-            public void onAnimationComlete() {
+            public void onAnimationComplete() {
                 explode(crate);
             }
         });

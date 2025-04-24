@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset_background" tilewidth="512" tileheight="512" tilecount="24" columns="4">
- <image source="../Images/Sprite Sheets/spritesheet_background.png" width="2048" height="3072"/>
+<tileset version="1.10" tiledversion="1.11.2" name="tileset_background" tilewidth="512" tileheight="512" tilecount="30" columns="5">
+ <image source="../Images/Sprite Sheets/spritesheet_background.png" width="2560" height="3072"/>
  <tile id="0">
   <properties>
    <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
@@ -140,6 +140,42 @@
   </properties>
  </tile>
  <tile id="23">
+  <properties>
+   <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
+   <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>
+  </properties>
+ </tile>
+ <tile id="24">
+  <properties>
+   <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
+   <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>
+  </properties>
+ </tile>
+ <tile id="25">
+  <properties>
+   <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
+   <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>
+  </properties>
+ </tile>
+ <tile id="26">
+  <properties>
+   <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
+   <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>
+  </properties>
+ </tile>
+ <tile id="27">
+  <properties>
+   <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
+   <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>
+  </properties>
+ </tile>
+ <tile id="28">
+  <properties>
+   <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
+   <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>
+  </properties>
+ </tile>
+ <tile id="29">
   <properties>
    <property name="prefabName" value="PLACEHOLDER_BACKGROUND"/>
    <property name="spriteSheetName" value="SPRITESHEET_BACKGROUND"/>

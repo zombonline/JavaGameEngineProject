@@ -40,7 +40,7 @@ public class Explosion extends Component{
                 }
             }
             @Override
-            public void onAnimationComlete() {
+            public void onAnimationComplete() {
                 GameObject.destroy(gameObject);
             }
         };

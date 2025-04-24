@@ -3,7 +3,11 @@
   "animationSteps": [
     {
       "imageAddress": "Images.PLAYER_IDLE",
-      "delay": 10
+      "delay": 100
+    },
+    {
+      "imageAddress": "Images.PLAYER_IDLE_BLINK",
+      "delay": 5
     }
   ]
 }
