@@ -1,6 +1,7 @@
 package game.components;
 
 import core.ui.GameUI;
+import core.utils.Vector2;
 import main.GamePanel;
 import game.components.core.Component;
 import game.components.player.Player;
@@ -26,7 +27,7 @@ public class LevelExit extends Component {
         collider.addListener(
                 new Collider.CollisionListener() {
                     @Override
-                    public void onCollisionEnter(Collider other) {
+                    public void onCollisionEnter(Collider other, Vector2 contactNormal) {
                         if(other.getComponent(Player.class) != null) {
                             if (playerExited) {
                                 return;
@@ -39,9 +40,9 @@ public class LevelExit extends Component {
                         }
                     }
                     @Override
-                    public void onCollisionExit(Collider other) {}
+                    public void onCollisionExit(Collider other, Vector2 contactNormal) {}
                     @Override
-                    public void onCollisionStay(Collider other) {}
+                    public void onCollisionStay(Collider other, Vector2 contactNormal) {}
                 }
         );
     }

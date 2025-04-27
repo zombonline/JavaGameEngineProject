@@ -13,7 +13,8 @@ public class SessionManager {
     private static int currentLevelIndex;
     private static ArrayList<String> levelList = new ArrayList<>(
             Arrays.asList(
-                    Assets.Tilemaps.LEVEL_1
+                    Assets.Tilemaps.LEVEL_0,
+                    Assets.Tilemaps.LEVEL_1_NEW
             )
     );
 
@@ -31,7 +32,7 @@ public class SessionManager {
     }
 
     public static void LoadLevelByInt(int val){
-        if(0 < val && val < levelList.size()){
+        if(-1 < val && val < levelList.size()){
             currentLevelIndex = val;
             currentLevel = LevelLoader.parse(levelList.get(currentLevelIndex));
             for(GameObject gameObject : currentLevel.initialGameobjects){

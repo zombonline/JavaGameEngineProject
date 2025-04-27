@@ -3,6 +3,7 @@ package game.entities;
 import game.components.core.Component;
 import game.components.core.Transform;
 import core.scene.SessionManager;
+import main.GamePanel;
 
 import java.awt.*;
 import java.util.*;
@@ -61,6 +62,11 @@ public class GameObject {
             component.awake();
         }
     }
+    public void start(){
+        for (Component component :componentList){
+            component.start();
+        }
+    }
     public void update() {
         for (Component component : componentList) {
             component.update();
@@ -101,5 +107,24 @@ public class GameObject {
 
     public String getName() {
         return name;
+    }
+
+    public static <T extends Component> GameObject findFirstObjectByType(Class<T> type){
+        for(GameObject gameObject : SessionManager.getCurrentLevel().activeGameObjects){
+            if(gameObject.hasComponent(type)){
+                return gameObject;
+            }
+        }
+        System.out.println("Unable to find object with component: " + type.getName());
+        return null;
+    }
+    public static <T extends Component> ArrayList<GameObject> findAllObjectsByType(Class<T> type){
+        ArrayList<GameObject> gameObjects = new ArrayList<>();
+        for(GameObject gameObject : SessionManager.getCurrentLevel().activeGameObjects){
+            if(gameObject.hasComponent(type)){
+                gameObjects.add(gameObject);
+            }
+        }
+        return gameObjects;
     }
 }

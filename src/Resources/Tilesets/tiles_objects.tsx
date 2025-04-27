@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tilesset_objects" tilewidth="512" tileheight="1024" tilecount="11" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset_objects" tilewidth="512" tileheight="1024" tilecount="12" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
+ <properties>
+  <property name="tileWidth" value="512"/>
+ </properties>
  <tile id="0">
   <properties>
    <property name="prefabName" value="CRATE_HOVER"/>
@@ -66,5 +69,11 @@
    <property name="prefabName" value="CRATE_BASIC_WITH_RB"/>
   </properties>
   <image source="../Images/Tiled Icons (Not for use in game)/tilemap_crate_basic_with_rb.png" width="512" height="512"/>
+ </tile>
+ <tile id="27">
+  <properties>
+   <property name="prefabName" value="CRATE_TELEPORT"/>
+  </properties>
+  <image source="../Images/Crates/crate_teleport.png" width="512" height="512"/>
  </tile>
 </tileset>

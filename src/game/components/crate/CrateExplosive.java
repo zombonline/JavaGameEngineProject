@@ -1,9 +1,12 @@
 package game.components.crate;
 
 
+import core.asset.Assets;
+import core.audio.SFXPlayer;
 import core.scene.SessionManager;
 import game.components.crate.behaviours.BounceBehavior;
 import game.components.crate.behaviours.ExplodeBehavior;
+import game.components.crate.behaviours.HitCounterBehavior;
 import game.components.crate.core.Crate;
 import game.components.player.PlayerComboTracker;
 
@@ -23,6 +26,7 @@ public class CrateExplosive extends Crate {
                     @Override
                     public void onTrigger() {
                         System.out.println("DISABLING BOUNCE");
+//                        SFXPlayer.playSound(Assets.SFXClips.CRA);
                         getBehavior(BounceBehavior.class).active = false;
                     }
 

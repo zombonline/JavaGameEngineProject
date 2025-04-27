@@ -36,15 +36,15 @@ public class MovementBehaviour implements CrateBehavior {
     private void setUpColliderListener(){
         collider.addListener(new Collider.CollisionListener() {
             @Override
-            public void onCollisionEnter(Collider other) {}
+            public void onCollisionEnter(Collider other, Vector2 contactNormal) {}
 
             @Override
-            public void onCollisionExit(Collider other) {
+            public void onCollisionExit(Collider other, Vector2 contactNormal) {
                 objectsOnTop.remove(other.getGameObject());
             }
 
             @Override
-            public void onCollisionStay(Collider other) {}
+            public void onCollisionStay(Collider other, Vector2 contactNormal) {}
         });
     }
     @Override

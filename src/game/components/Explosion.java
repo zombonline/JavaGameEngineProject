@@ -1,5 +1,7 @@
 package game.components;
 
+import core.asset.Assets;
+import core.audio.SFXPlayer;
 import core.utils.Vector2;
 import game.components.core.Component;
 import game.components.rendering.SpriteAnimator;
@@ -24,6 +26,7 @@ public class Explosion extends Component {
         getRequiredComponentReferences();
         setUpCollisionListener();
         setUpAnimatorListener();
+        SFXPlayer.playSound(Assets.SFXClips.EXPLOSION);
     }
 
     @Override
@@ -51,15 +54,15 @@ public class Explosion extends Component {
     private void setUpCollisionListener() {
         collisionListener = new Collider.CollisionListener() {
             @Override
-            public void onCollisionEnter(Collider other) {
+            public void onCollisionEnter(Collider other, Vector2 contactNormal) {
                 affectedObjects.add(other.getGameObject());
             }
             @Override
-            public void onCollisionExit(Collider other) {
+            public void onCollisionExit(Collider other, Vector2 contactNormal) {
                 affectedObjects.remove(other.getGameObject());
             }
             @Override
-            public void onCollisionStay(Collider other) {
+            public void onCollisionStay(Collider other, Vector2 contactNormal) {
             }
         };
         collider.addListener(collisionListener);

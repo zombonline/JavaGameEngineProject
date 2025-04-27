@@ -23,8 +23,8 @@ public class SpriteRenderer extends Component {
 
     @Override
     public void awake() {
-        if(gameObject.hasExtraData("parallaxFactor")){
-            parallaxFactor = (Vector2) gameObject.getExtraData("parallaxFactor");
+        if(gameObject.hasExtraData("parallax")){
+            parallaxFactor = (Vector2) gameObject.getExtraData("parallax");
         }
     }
 

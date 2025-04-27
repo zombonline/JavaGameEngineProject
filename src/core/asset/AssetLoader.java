@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class AssetLoader {
-    private static final long MAX_UNUSED_TIME_MS = 5 * 60 * 1000;
+    private static final long MAX_UNUSED_TIME_MS = 2 * 60 * 1000;
     private static final int CACHE_CLEAN_INTERVAL_MS = 1000;
     private static final AssetLoader instance = new AssetLoader();
     private final Map<String, CachedAsset> cache = new HashMap<>();
@@ -52,12 +52,13 @@ public class AssetLoader {
     public BufferedImage loadSubImage(String path, int x, int y, int w, int h){
         try (InputStream input = getClass().getResourceAsStream(path)) {
             if (input == null) {
-                System.err.println("[AssetLoader] Asset not found at: " + path);
+                System.err.println("[AssetLoader] Image not found not found at: " + path);
                 return null;
             }
             return ImageIO.read(input).getSubimage(x,y,w,h);
         } catch (Exception e){
-            System.err.println("[AssetLoader] Failed to load asset: " + path);
+            System.err.println("[AssetLoader] Failed to load image for sub image at: " + path);
+            e.printStackTrace();
             return null;
         }
     }

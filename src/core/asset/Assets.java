@@ -1,5 +1,7 @@
 package core.asset;
 
+import core.audio.SFXPlayer;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +64,10 @@ public class Assets {
 
         public static final String SPRITESHEET_BACKGROUND = IMAGES_PATH+"Sprite Sheets/spritesheet_background.png";
         public static final String SPRITESHEET_TERRAIN = IMAGES_PATH+"Sprite Sheets/spritesheet_terrain.png";
+        public static final String SPRITESHEET_PANELS = IMAGES_PATH +"Sprite Sheets/spritesheet_panels.png";
+        public static final String SPRITESHEET_PANELS_2X2 = IMAGES_PATH +"Sprite Sheets/spritesheet_panels_2x2.png";
+        public static final String SPRITESHEET_PANELS_1X2 = IMAGES_PATH +"Sprite Sheets/spritesheet_panels_1x2.png";
+        public static final String SPRITESHEET_PANELS_2X1 = IMAGES_PATH +"Sprite Sheets/spritesheet_panels_2x1.png";
 
     }
 
@@ -91,18 +97,30 @@ public class Assets {
 
         public static final String PLACEHOLDER_TERRAIN = PREFABS_PATH+"prefab_placeholder_terrain.json";
         public static final String PLACEHOLDER_BACKGROUND = PREFABS_PATH+"prefab_placeholder_background.json";
-
+        public static final String PLACEHOLDER_PANELS = PREFABS_PATH +"prefab_placeholder_panels.json";
     }
 
     public static class SFXClips{
         private static final String SFX_PATH = "/Resources/SFX/";
-        public static final String TEST_SFX = SFX_PATH + "test_sfx.wav";
+        public static final String CRATE_BOUNCE = SFX_PATH + "crate_bounce.wav";
+        public static final String CRATE_DESTROYED = SFX_PATH +"crate_destroyed.wav";
+        public static final String CRATE_REINFORCED_DESTROYED = SFX_PATH +"crate_reinforced_destroyed.wav";
+        public static final String CRATE_REINFORCED_BOUNCE = SFX_PATH +"crate_reinforced_bounce.wav";
+
+        public static final String EXPLOSION = SFX_PATH +"explosion.wav";
+
+        public static final String PLAYER_RUN_1 = SFX_PATH +"player_run_1.wav";
+        public static final String PLAYER_RUN_2 = SFX_PATH +"player_run_2.wav";
+        public static final String PLAYER_JUMP = SFX_PATH +"player_jump.wav";
+
     }
 
     // TILEMAP .TMX FILES
     public static class Tilemaps {
         private static final String TILEMAPS_PATH = "/Resources/Tilemaps/";
         public static final String LEVEL_1 = TILEMAPS_PATH+"level_1.tmx";
+        public static final String LEVEL_0 = TILEMAPS_PATH+"level_0.tmx";
+        public static final String LEVEL_1_NEW = TILEMAPS_PATH +"level_1_new.tmx";
     }
 
     // TILESET .TSX FILES

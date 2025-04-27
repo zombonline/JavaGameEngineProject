@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="512" tileheight="512" infinite="0" nextlayerid="6" nextobjectid="1">
  <tileset firstgid="1" source="../../Tilesets/tiles_terrain.tsx"/>
- <layer id="4" name="input_terrainInput" width="100" height="20">
+ <layer id="4" name="input_terrainInput" width="100" height="20" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,49,49,49,0,0,0,0,0,0,0,0,0,0,0,0,0,14,14,0,0,49,0,0,14,14,0,0,14,14,14,0,0,49,0,0,0,49,0,0,0,14,14,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

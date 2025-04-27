@@ -1,5 +1,7 @@
 package game.components.player;
 
+import core.asset.Assets;
+import core.audio.SFXPlayer;
 import core.utils.DebugText;
 import core.utils.Vector2;
 import core.input.Key;
@@ -79,6 +81,7 @@ public class Player extends Component {
             jumpCoyoteTimer = jumpCoyoteTime;
         }
         if (jumpCoyoteTimer > 0 && jumpPressTimer > 0 && rb.velocity.getY()>=0) {
+            SFXPlayer.playSound(Assets.SFXClips.PLAYER_JUMP);
             rb.velocity.setY(0);
             rb.addForce(Vector2.up.mul(16));
             jumpPressTimer = 0;

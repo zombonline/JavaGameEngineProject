@@ -102,6 +102,7 @@ public class PrefabReader {
             case "crateHover" -> buildCrateHover(values);
             case "crateHorizontalMoving" -> buildCrateHorizontalMoving(values);
             case "crateExplosive" -> buildCrateExplosive(values);
+            case "crateTeleport" -> buildCrateTeleport(values);
             case "explosion" -> buildExplosion(values);
             case "playerAnimator" -> new PlayerAnimation();
             case "levelExit" -> new LevelExit();
@@ -259,6 +260,11 @@ public class PrefabReader {
         float moveDistance = getFloat("moveDistance", values, defaultValues);
         Vector2 direction = getVector2("direction", values, defaultValues);
         return new CrateHorizontalMoving(bounceStrength,hitsToDestroy,moveSpeed,moveDistance,direction);
+    }
+    public static CrateTeleport buildCrateTeleport(JsonNode values){
+        Map<String,Object> defaultValues = CrateBounce.getDefaultValues();
+        float bounceStrength = getFloat("bounceStrength", values, defaultValues);
+        return new CrateTeleport(bounceStrength);
     }
     public static Explosion buildExplosion(JsonNode values){
         return new Explosion();

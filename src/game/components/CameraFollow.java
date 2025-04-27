@@ -27,7 +27,8 @@ public class CameraFollow extends Component {
     private final Bounds bounds;
     private boolean outOfBoundsLastFrame = false;
     private double lookAhead;
-
+    Vector2 target;
+    private boolean snapping = false;
     public CameraFollow(Bounds bounds, float minFollowStrength, float maxFollowStrength, float smoothingSpeed){
         this.bounds = bounds;
         this.minFollowStrength = minFollowStrength;
@@ -54,17 +55,24 @@ public class CameraFollow extends Component {
         followStrength += outOfBounds ? smoothingFactor : -smoothingFactor;
 
         followStrength = Math.clamp(followStrength, minFollowStrength, maxFollowStrength);
-        Vector2 target = new Vector2(transform.getPosition().getX()+lookAhead,transform.getPosition().getY()).mul(GamePanel.WORLD_SCALE);
+        target = new Vector2(transform.getPosition().getX()+lookAhead,transform.getPosition().getY()).mul(GamePanel.WORLD_SCALE);
 
-        DebugText.logPermanently("Camera Follow Strength", String.format("%.3f", followStrength));
         Vector2 cameraCentre = Main.camera.getCameraCentrePosition();
-        Vector2 smoothedPosition = Vector2.lerp(cameraCentre, target, followStrength);
+        Vector2 smoothedPosition;
+        if(snapping){
+            smoothedPosition = target;
+            snapping = false;
+        } else {
+            smoothedPosition =  Vector2.lerp(cameraCentre, target, followStrength);
+        }
         Vector2 clampedPosition = clampToLevelBounds(smoothedPosition);
-        DebugText.logPermanently("Camera Position", clampedPosition.toDp(2).toString());
         Main.camera.setPosition(clampedPosition);
         outOfBoundsLastFrame = outOfBounds;
     }
 
+    public void snapToTarget(){
+        snapping = true;
+    }
     private double calculateLookahead(){
         //get direction
         double lookAheadDirection = rb.velocity.getX();

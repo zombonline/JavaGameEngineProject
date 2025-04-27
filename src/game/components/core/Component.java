@@ -22,6 +22,7 @@ public abstract class Component {
         return gameObject.hasComponent(type);
     }
     public void awake() {}
+    public void start() {}
     protected void getRequiredComponentReferences() {};
     public void update() {}
     public void draw(Graphics2D g2d) {}

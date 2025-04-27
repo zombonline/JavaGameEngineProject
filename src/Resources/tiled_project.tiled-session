@@ -1,21 +1,25 @@
 {
-    "activeFile": "Tilemaps/LEVEL_1.tmx",
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Tilemaps/level_1_new.tmx",
     "expandedProjectPaths": [
-        "Tilemaps",
         ".",
-        "Tilesets",
-        "Tilemaps/rules"
+        "Tilemaps",
+        "Tilemaps/rules",
+        "Tilesets"
     ],
     "fileStates": {
         "Tilemaps/BACKGROUND_TILES.tsx": {
             "scaleInDock": 1
         },
         "Tilemaps/LEVEL_1.tmx": {
-            "scale": 0.0625,
-            "selectedLayer": 1,
+            "scale": 0.015625,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 19168,
-                "y": 7008
+                "x": 25568,
+                "y": 12736
             }
         },
         "Tilemaps/SpriteSheet.tsx": {
@@ -24,17 +28,60 @@
         "Tilemaps/Tiles.tsx": {
             "scaleInDock": 1
         },
+        "Tilemaps/level_0.tmx": {
+            "expandedObjectLayers": [
+                5,
+                3,
+                12
+            ],
+            "scale": 0.03125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 22576,
+                "y": 6592
+            }
+        },
+        "Tilemaps/level_1.tmx": {
+            "expandedObjectLayers": [
+                8
+            ],
+            "scale": 0.03125,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 28464,
+                "y": 11520
+            }
+        },
+        "Tilemaps/level_1_new.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 0.015625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 14112,
+                "y": 9664
+            }
+        },
         "Tilemaps/rules/Terrain Standard.tsx": {
             "scaleInDock": 0.015625,
             "scaleInEditor": 0.015625
         },
         "Tilemaps/rules/autotile_rules.tmx": {
-            "scale": 0.016328125,
+            "scale": 0.03125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 33071.77033492824,
-                "y": 13841.148325358856
+                "x": 12528,
+                "y": 6496
             }
+        },
+        "Tilemaps/tileset_panels.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.03125
+        },
+        "Tilemaps/tileset_panels_1x2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.33
         },
         "Tilesets/tile_terrain.tsx": {
             "dynamicWrapping": false,
@@ -43,33 +90,77 @@
         },
         "Tilesets/tiles_objects.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 0.03125,
+            "scaleInDock": 0.0625,
             "scaleInEditor": 0.125
         },
         "Tilesets/tiles_terrain.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 0.0625
+            "scaleInDock": 0.0625,
+            "scaleInEditor": 0.125
         },
         "Tilesets/tileset_background.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 0.0625,
             "scaleInEditor": 0.125
+        },
+        "Tilesets/tileset_panels.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.0625,
+            "scaleInEditor": 0.25
+        },
+        "Tilesets/tileset_panels_1x2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.125,
+            "scaleInEditor": 0.25
+        },
+        "Tilesets/tileset_panels_2x1.tsx": {
+            "scaleInDock": 0.125,
+            "scaleInEditor": 0.25
+        },
+        "Tilesets/tileset_panels_2x2.tsx": {
+            "scaleInDock": 0.125,
+            "scaleInEditor": 0.25
         }
     },
     "last.externalTilesetPath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Tilesets",
     "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images/Sprite Sheets",
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 512,
+    "map.tileWidth": 512,
+    "map.width": 100,
     "openFiles": [
         "Tilemaps/LEVEL_1.tmx",
         "Tilesets/tiles_objects.tsx",
-        "Tilesets/tileset_background.tsx"
+        "Tilesets/tileset_background.tsx",
+        "Tilemaps/level_1.tmx",
+        "Tilesets/tileset_panels.tsx",
+        "Tilesets/tileset_panels_2x2.tsx",
+        "Tilesets/tileset_panels_1x2.tsx",
+        "Tilemaps/level_0.tmx",
+        "Tilesets/tileset_panels_2x1.tsx",
+        "Tilemaps/level_1_new.tmx"
     ],
     "project": "tiled_project.tiled-project",
+    "property.type": "string",
     "recentFiles": [
-        "Tilesets/tileset_background.tsx",
-        "Tilesets/tiles_objects.tsx",
         "Tilemaps/LEVEL_1.tmx",
-        "Tilemaps/rules/Terrain Standard.tsx",
-        "Tilesets/tile_terrain.tsx"
+        "Tilesets/tiles_objects.tsx",
+        "Tilesets/tileset_background.tsx",
+        "Tilemaps/level_1.tmx",
+        "Tilesets/tileset_panels.tsx",
+        "Tilesets/tileset_panels_2x2.tsx",
+        "Tilesets/tileset_panels_1x2.tsx",
+        "Tilemaps/level_0.tmx",
+        "Tilesets/tileset_panels_2x1.tsx",
+        "Tilemaps/level_1_new.tmx",
+        "Tilemaps/tileset_panels_1x2.tsx",
+        "Tilesets/tiles_terrain.tsx"
     ],
-    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 512,
+        "width": 512
+    }
 }

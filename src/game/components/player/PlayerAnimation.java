@@ -1,10 +1,13 @@
 package game.components.player;
 
 import core.asset.Assets;
+import core.audio.SFXPlayer;
 import game.components.Rigidbody;
 import game.components.rendering.SpriteAnimator;
 import game.components.rendering.SpriteRenderer;
 import game.components.core.Component;
+
+import java.util.Random;
 
 public class PlayerAnimation extends Component {
     // Component references
@@ -18,10 +21,8 @@ public class PlayerAnimation extends Component {
     private String prevAnimation;
     @Override
     public void awake() {
-        player = getComponent(Player.class);
-        rb = getComponent(Rigidbody.class);
-        animator = getComponent(SpriteAnimator.class);
-        renderer = getComponent(SpriteRenderer.class);
+        getRequiredComponentReferences();
+        setUpAnimatorListener();
     }
 
     @Override
@@ -33,10 +34,33 @@ public class PlayerAnimation extends Component {
 
     }
 
+    private void setUpAnimatorListener(){
+        animator.addListener(new SpriteAnimator.AnimatorListener() {
+            @Override
+            public void onAnimationEvent(String eventKey) {
+                switch(eventKey){
+                    case "sfx_step":
+                        double random = Math.random();
+                        if(random>0.5){
+                            SFXPlayer.playSound(Assets.SFXClips.PLAYER_RUN_1);
+                        } else {
+                            SFXPlayer.playSound(Assets.SFXClips.PLAYER_RUN_2);
+                        }
+                }
+            }
+
+            @Override
+            public void onAnimationComplete() {
+
+            }
+        });
+    }
+
     @Override
     public void update() {
-        if(Math.abs(rb.velocity.getX()) > 0.2){
-            renderer.setFlipHorizontally(Math.signum(rb.velocity.getX()) == -1);
+        renderer.setFlipHorizontally(Math.signum(rb.velocity.getX()) == -1);
+
+        if(Math.abs(rb.velocity.getX()) > 0.2 && rb.isGrounded()){
             if(Math.abs(rb.velocity.getX())<4f){
                 currentAnimation = Assets.Animations.PLAYER_WALK;
             } else {

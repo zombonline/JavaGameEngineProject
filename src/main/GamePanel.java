@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.LoadLevelByPath(Assets.Tilemaps.LEVEL_1);
+        SessionManager.LoadLevelByInt(1);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
             if (delta >= 1) {
                 try {
                     awake(); // Call awake (only new objects will run this)
+                    start();
                     update(); // Update game logic
                     repaint(); // Render the game
                     destroyObjects(); //Remove objects marked for destroy at end of frame
@@ -85,8 +86,18 @@ public class GamePanel extends JPanel implements Runnable{
             if(gameObject==null){continue;}
             gameObject.awake();
             SessionManager.getCurrentLevel().activeGameObjects.add(gameObject);
+            SessionManager.getCurrentLevel().gameObjectsToStart.add(gameObject);
         }
         SessionManager.getCurrentLevel().gameObjectsToAwake.removeAll(snapshot);
+    }
+    public void start(){
+        if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
+        ArrayList<GameObject> snapshot = new ArrayList<>(SessionManager.getCurrentLevel().gameObjectsToStart);
+        for (GameObject gameObject : snapshot) {
+            if(gameObject==null){continue;}
+            gameObject.start();
+        }
+        SessionManager.getCurrentLevel().gameObjectsToStart.removeAll(snapshot);
     }
     public void update(){
         if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
@@ -108,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable{
                 gameObject.draw(g2d);
             }
         }
-        DebugText.drawDebugText(g);
+//        DebugText.drawDebugText(g);
         GameUI.getInstance().drawUI(g2d);
     }
 

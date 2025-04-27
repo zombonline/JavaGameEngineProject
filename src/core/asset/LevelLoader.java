@@ -155,7 +155,6 @@ public class LevelLoader {
     private static ArrayList<GameObject> parseTileLayer(Element layer) {
         String parallaxFactorString = getProperty(layer, "parallax");
         Vector2 parallaxFactor = parallaxFactorString.isEmpty() ? Vector2.one : new Vector2(parallaxFactorString);
-        System.out.println("PARALLAX IS: " + parallaxFactor.toString());
 
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         NodeList dataNodes = layer.getElementsByTagName("data");
@@ -180,7 +179,7 @@ public class LevelLoader {
                         System.out.println("New Object IS NULL");
                         continue;
                     }
-                    newObject.insertExtraData("parallaxFactor", parallaxFactor);
+                    newObject.insertExtraData("parallax", parallaxFactor);
                     newObject.getTransform().setPosition(new Vector2(x, y));
                     for(Map.Entry entry : idToPrefabName.get(tileID).data.entrySet()){
                         newObject.insertExtraData(entry.getKey(),entry.getValue());
@@ -193,6 +192,9 @@ public class LevelLoader {
     }
 
     private static ArrayList<GameObject> parseObjectLayer(Element objectGroup){
+        String parallaxFactorString = getProperty(objectGroup, "parallax");
+        Vector2 parallaxFactor = parallaxFactorString.isEmpty() ? Vector2.one : new Vector2(parallaxFactorString);
+
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         NodeList dataNodes = objectGroup.getElementsByTagName("object");
         for(int i = 0; i< dataNodes.getLength(); i++){
@@ -202,6 +204,7 @@ public class LevelLoader {
                 continue;
             }
             int gid = Integer.parseInt(item.getAttribute("gid"));
+            if(idToPrefabName.get(gid)==null){continue;}
             String prefabName = idToPrefabName.get(gid).prefabName;
             if(prefabName.isEmpty()){
                 continue;
@@ -212,7 +215,13 @@ public class LevelLoader {
             newObject.getTransform().setPosition(new Vector2(x,y-1));
             for(Map.Entry entry : getPropertiesAsMap(item).entrySet()){
                 newObject.insertExtraData(entry.getKey(),entry.getValue());
+
             }
+            for(Map.Entry entry : idToPrefabName.get(gid).data.entrySet()){
+                newObject.insertExtraData(entry.getKey(),entry.getValue());
+                System.out.println("ADDED " + entry.getKey() + ": " + entry.getValue());
+            }
+            newObject.insertExtraData("parallax", parallaxFactor);
             gameObjects.add(newObject);
         }
         return gameObjects;

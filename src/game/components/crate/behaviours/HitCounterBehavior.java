@@ -18,15 +18,8 @@ public class HitCounterBehavior implements CrateBehavior {
         this.currentHitPoints = startingHitPoints;
     }
 
-    @Override
-    public void awake(Crate crate) {
-
-    }
-
-    @Override
-    public void update(Crate crate) {
-
-    }
+    @Override public void awake(Crate crate) {}
+    @Override public void update(Crate crate) {}
 
     @Override
     public void onTouchTop(Collider other, Crate crate) {
@@ -45,9 +38,7 @@ public class HitCounterBehavior implements CrateBehavior {
         takeHit(other);
     }
 
-    @Override
-    public void onExplosionNearby(Crate crate) {
-    }
+    @Override public void onExplosionNearby(Crate crate) {}
 
     private void takeHit(Collider other){
         if(!active){return;}

@@ -8,6 +8,7 @@
   <properties>
    <property name="prefabName" value="PLACEHOLDER_TERRAIN"/>
    <property name="spriteSheetName" value="SPRITESHEET_TERRAIN"/>
+   <property name="tileWidth" value="512"/>
   </properties>
  </tile>
  <tile id="1">

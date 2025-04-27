@@ -1,7 +1,10 @@
 package game.components.crate.core;
 
+import core.asset.Assets;
+import core.audio.SFXPlayer;
 import core.scene.SessionManager;
 import core.utils.DebugText;
+import core.utils.Vector2;
 import game.components.Collider;
 import game.components.core.Component;
 import game.components.crate.behaviours.core.CrateBehavior;
@@ -39,6 +42,10 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         for(CrateBehavior b : behaviors) {b.awake(Crate.this);}
     }
 
+    @Override
+    public void start(){}
+
+    @Override
     public void update(){
         for(CrateBehavior b : behaviors) {b.update(Crate.this);}
 
@@ -49,26 +56,31 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         if (collider != null) {
             listener = new Collider.CollisionListener() {
                 @Override
-                public void onCollisionEnter(Collider other) {
-                    double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
-                    double colliderTop = Math.floor(collider.getBounds().minY * 10) / 10;
-                    if (otherBottom <= colliderTop + 0.25f) {
+                public void onCollisionEnter(Collider other, Vector2 contactNormal) {
+//                    double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
+//                    double colliderTop = Math.floor(collider.getBounds().minY * 10) / 10;
+//                    if (otherBottom <= colliderTop + 0.25f) {
+//                        for (CrateBehavior b : behaviors) {b.onTouchTop(other, Crate.this);}
+//                    }
+                    if(contactNormal.getY() >0){
                         for (CrateBehavior b : behaviors) {b.onTouchTop(other, Crate.this);}
-                    }
-
-                    double playerTop = Math.floor(other.getBounds().minY * 10) / 10;
-                    double colliderBottom = Math.floor(collider.getBounds().maxY * 10) / 10;
-                    if (playerTop >= colliderBottom - 0.25f) {
+                    } else if(contactNormal.getY()<0) {
                         for (CrateBehavior b : behaviors) {b.onTouchBottom(other, Crate.this);}
                     }
+
+//                    double playerTop = Math.floor(other.getBounds().minY * 10) / 10;
+//                    double colliderBottom = Math.floor(collider.getBounds().maxY * 10) / 10;
+//                    if (playerTop >= colliderBottom - 0.25f) {
+//                        for (CrateBehavior b : behaviors) {b.onTouchBottom(other, Crate.this);}
+//                    }
                 }
 
                 @Override
-                public void onCollisionExit(Collider other) {
+                public void onCollisionExit(Collider other, Vector2 contactNormal) {
                 }
 
                 @Override
-                public void onCollisionStay(Collider other) {}
+                public void onCollisionStay(Collider other, Vector2 contactNormal) {}
             };
             collider.addListener(listener);
         }

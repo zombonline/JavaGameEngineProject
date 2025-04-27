@@ -7,7 +7,8 @@
     },
     {
       "imageAddress": "Images.PLAYER_RUN_2",
-      "delay": 4
+      "delay": 4,
+      "eventKey": "sfx_step"
     },
     {
       "imageAddress": "Images.PLAYER_RUN_3",
@@ -15,7 +16,8 @@
     },
     {
       "imageAddress": "Images.PLAYER_RUN_4",
-      "delay": 4
+      "delay": 4,
+      "eventKey": "sfx_step"
     }
   ]
 }

@@ -139,7 +139,8 @@ public class Rigidbody extends Component {
             }
         }
 
-        if (closestHit != null) {
+        if (closestHit != null ) {
+            if(closestHit.getCollider().hasComponent(Rigidbody.class)){return;}
 
             double adjustedVel = (float) (closestDistance / GamePanel.getDeltaTime());
 

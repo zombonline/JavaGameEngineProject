@@ -10,9 +10,10 @@ import java.util.ArrayList;
 public class LevelData {
     public final String levelString;
     public final ArrayList<GameObject> initialGameobjects = new ArrayList<>();
-    public final ArrayList<GameObject> gameObjectsToAwake = new ArrayList<GameObject>();
-    public final ArrayList<GameObject> activeGameObjects = new ArrayList<GameObject>();
-    public final ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<GameObject>();
+    public final ArrayList<GameObject> gameObjectsToAwake = new ArrayList<>();
+    public final ArrayList<GameObject> gameObjectsToStart = new ArrayList<>();
+    public final ArrayList<GameObject> activeGameObjects = new ArrayList<>();
+    public final ArrayList<GameObject> gameObjectsToDestroy = new ArrayList<>();
     public final SpatialHashGrid spatialHashGrid = new SpatialHashGrid(8);
     final int cratesToDestroy;
     int cratesDestroyed = 0;

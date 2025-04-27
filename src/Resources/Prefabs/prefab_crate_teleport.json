@@ -3,7 +3,7 @@
   "components": {
     "spriteRenderer": {"spriteImage": "Images.CRATE_TELEPORT"},
     "collider": {},
-    "crateBounce": {
+    "crateTeleport": {
       "bounceStrength":20
     },
     "rigidbody": {}

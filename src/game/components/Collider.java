@@ -13,9 +13,9 @@ import java.util.List;
 
 public class Collider extends Component {
     public interface CollisionListener {
-        void onCollisionEnter(Collider other);
-        void onCollisionExit(Collider other);
-        void onCollisionStay(Collider other);
+        void onCollisionEnter(Collider other, Vector2 contactNormal);
+        void onCollisionExit(Collider other, Vector2 contactNormal);
+        void onCollisionStay(Collider other, Vector2 contactNormal);
     }
     private List<CollisionListener> listeners = new ArrayList<>();
     public void addListener(CollisionListener listener) {
@@ -26,7 +26,7 @@ public class Collider extends Component {
     }
     public void notifyCollisionEnter(Collider other) {
         for (CollisionListener listener : listeners) {
-            listener.onCollisionEnter(other);
+            listener.onCollisionEnter(other, getContactNormal(other));
         }
 //        handleCollisionLog(other);
     }
@@ -46,12 +46,12 @@ public class Collider extends Component {
 
     public void notifyCollisionStay(Collider other){
         for (CollisionListener listener : listeners) {
-            listener.onCollisionStay(other);
+            listener.onCollisionStay(other, getContactNormal(other));
         }
     }
     public void notifyCollisionExit(Collider other){
         for (CollisionListener listener : listeners) {
-            listener.onCollisionExit(other);
+            listener.onCollisionExit(other, getContactNormal(other));
         }
     }
 
@@ -109,6 +109,7 @@ public class Collider extends Component {
                 continue;
             }
             Vector2 overlap = getOverlap(nearbyCollider);
+
             if (overlap.getY() <= 0 || overlap.getX() <= 0) {
                 continue;
             }
@@ -121,7 +122,30 @@ public class Collider extends Component {
             this.getGameObject().getComponent(Rigidbody.class).handleCollisions(colliding);
         }
     }
+    public Vector2 getContactNormal(Collider other) {
+        Bounds a = this.bounds;
+        Bounds b = other.getBounds();
 
+        // Centers
+        double dx = ((a.minX + a.maxX) / 2) - ((b.minX + b.maxX) / 2);
+        double dy = ((a.minY + a.maxY) / 2) - ((b.minY + b.maxY) / 2);
+
+        // Half-sizes
+        double halfWidthA = (a.maxX - a.minX) / 2;
+        double halfWidthB = (b.maxX - b.minX) / 2;
+        double halfHeightA = (a.maxY - a.minY) / 2;
+        double halfHeightB = (b.maxY - b.minY) / 2;
+
+        // Overlaps
+        double overlapX = (halfWidthA + halfWidthB) - Math.abs(dx);
+        double overlapY = (halfHeightA + halfHeightB) - Math.abs(dy);
+
+        if (overlapX < overlapY) {
+            return new Vector2(dx < 0 ? -1 : 1, 0); // Side collision
+        } else {
+            return new Vector2(0, dy < 0 ? -1 : 1); // Top or bottom
+        }
+    }
     public void updateTouchingColliders() {
         if(isStatic){return;}
 
