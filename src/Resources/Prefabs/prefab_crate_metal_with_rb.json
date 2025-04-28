@@ -1,0 +1,9 @@
+{
+  "name": "Metal Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_METAL"},
+    "collider": {},
+    "rigidbody": {},
+    "crate": {}
+  }
+}

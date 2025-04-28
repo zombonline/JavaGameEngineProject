@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="10" nextobjectid="66">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="11" nextobjectid="67">
  <tileset firstgid="1" source="../Tilesets/tiles_terrain.tsx"/>
  <tileset firstgid="50" source="../Tilesets/tiles_objects.tsx"/>
  <tileset firstgid="78" source="../Tilesets/tileset_panels_2x2.tsx"/>
  <tileset firstgid="102" source="../Tilesets/tileset_panels_2x1.tsx"/>
  <tileset firstgid="114" source="../Tilesets/tileset_panels_1x2.tsx"/>
  <tileset firstgid="126" source="../Tilesets/tileset_panels.tsx"/>
- <layer id="2" name="terrainInput" width="100" height="40" visible="0">
+ <layer id="2" name="terrainInput" width="100" height="40">
   <data encoding="csv">
 14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
 14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
@@ -97,7 +97,7 @@
 127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,128,131,96,97,130,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,126,129,130,128,128,131,131,129,127,129,130,130,129,130,127,130,126,127,131,130,131,131,131,129,131,131,130,130,127,130,131,126,127,129,127,127,127,127,127,127,127,127,127,127,127,127,127,127
 </data>
  </layer>
- <layer id="8" name="terrainOutput" width="100" height="40" visible="0">
+ <layer id="8" name="terrainOutput" width="100" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,
@@ -141,8 +141,7 @@
 0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,10,0,0,0,0,0,8,9,9,9,9,9,9,9,9,9,9,9,9,9,9,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,9,9,9,9,9,9,9,9,9,9,9,9,0
 </data>
  </layer>
- <objectgroup id="3" name="Object Layer 1" visible="0">
-  <object id="1" gid="62" x="7168" y="12800" width="512" height="512"/>
+ <objectgroup id="3" name="Items">
   <object id="17" gid="51" x="15872" y="13312" width="512" height="512"/>
   <object id="18" gid="51" x="16896" y="13312" width="512" height="512"/>
   <object id="24" gid="52" x="18944" y="12800" width="512" height="512"/>
@@ -182,5 +181,8 @@ give that crate a little shove for me?</property>
   <object id="62" gid="51" x="20992" y="14848" width="512" height="512"/>
   <object id="63" gid="51" x="21504" y="14848" width="512" height="512"/>
   <object id="64" gid="51" x="29184" y="7680" width="512" height="512"/>
+ </objectgroup>
+ <objectgroup id="10" name="Player Layer">
+  <object id="66" gid="62" x="7168" y="12800" width="512" height="512"/>
  </objectgroup>
 </map>

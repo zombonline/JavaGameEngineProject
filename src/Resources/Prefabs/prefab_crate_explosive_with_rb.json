@@ -1,0 +1,10 @@
+{
+  "name": "Explosive Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_EXPLOSIVE"},
+    "collider": {},
+    "crateExplosive": {},
+    "spriteAnimator": {},
+    "rigidbody": {}
+  }
+}

@@ -15,8 +15,11 @@ public class SpriteAnimator extends Component {
     int currentStepIndex = 0;
     private Animation currentAnim;
 
-    public SpriteAnimator(){
 
+
+    public SpriteAnimator(SpriteRenderer spriteRenderer, Animation anim){
+        this.spriteRenderer = spriteRenderer;
+        this(anim);
     }
 
     public SpriteAnimator(Animation anim){
@@ -58,9 +61,8 @@ public class SpriteAnimator extends Component {
     @Override
     public void awake() {
         super.awake();
-        spriteRenderer = getComponent(SpriteRenderer.class);
         if(spriteRenderer == null){
-            System.out.println("Sprite Animator on " + getGameObject().getName() + " is missing a reference to Sprite Renderer.");
+            spriteRenderer = getComponent(SpriteRenderer.class);
         }
     }
     @Override

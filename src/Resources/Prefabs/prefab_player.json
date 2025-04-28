@@ -12,7 +12,8 @@
     "rigidbody": {
       "drag": 7,
       "restitution": 0,
-      "maxVelocity": [6,200]
+      "maxVelocity": [6,200],
+      "mass": 3
     },
     "collider": {
       "isStatic": false,

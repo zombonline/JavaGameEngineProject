@@ -29,7 +29,7 @@ public class BounceBehavior implements CrateBehavior {
 
     @Override
     public void onTouchTop(Collider other, Crate crate) {
-        assert active;
+        if(!active){return;}
         if(bouncePlayerOnly && !other.hasComponent(Player.class)) {return;}
         if(!other.hasComponent(Rigidbody.class)){return;}
         if(!Crate.checkVelocityValidTop(other, crate)){return;}
@@ -41,7 +41,7 @@ public class BounceBehavior implements CrateBehavior {
 
     @Override
     public void onTouchBottom(Collider other, Crate crate) {
-        assert active;
+        if(!active){return;}
         if(bouncePlayerOnly && !other.hasComponent(Player.class)) {return;}
         if(!other.hasComponent(Rigidbody.class)){return;}
         if(!Crate.checkVelocityValidBottom(other, crate)){return;}

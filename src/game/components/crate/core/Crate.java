@@ -1,30 +1,35 @@
 package game.components.crate.core;
 
+import core.asset.AssetLoader;
 import core.asset.Assets;
-import core.audio.SFXPlayer;
 import core.scene.SessionManager;
-import core.utils.DebugText;
 import core.utils.Vector2;
 import game.components.Collider;
 import game.components.core.Component;
 import game.components.crate.behaviours.core.CrateBehavior;
 import game.components.Explosion;
 import game.components.Rigidbody;
+import game.entities.GameObject;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Crate extends Component implements Explosion.ExplosionListener {
     Collider collider;
     Collider.CollisionListener listener;
     boolean breakable, destroyed;
-    public static float requiredHitStrength = 0.1f;
+    public static float requiredHitStrength = 0.2f;
 
     protected List<CrateBehavior> behaviors;
 
     public Crate(boolean breakable, List<CrateBehavior> behaviors) {
         this.breakable = breakable;
         this.behaviors = behaviors;
+    }
+    public Crate(){
+        this.breakable = false;
+        this.behaviors = new ArrayList<>();
     }
 
     public <T extends CrateBehavior> T getBehavior(Class<T> type) {
@@ -40,6 +45,9 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     public void awake() {
         SetupCollisionEvents();
         for(CrateBehavior b : behaviors) {b.awake(Crate.this);}
+        if(hasComponent(Rigidbody.class)){
+            displayInteractableSprite();
+        }
     }
 
     @Override
@@ -49,6 +57,14 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     public void update(){
         for(CrateBehavior b : behaviors) {b.update(Crate.this);}
 
+    }
+
+    private void displayInteractableSprite(){
+        if(hasComponent(Rigidbody.class)){
+            GameObject glow = AssetLoader.getInstance().getPrefab(Assets.Prefabs.CRATE_INTERACTABLE_GLOW);
+            glow.getTransform().setPosition(getGameObject().getTransform().getPosition());
+            gameObject.getTransform().addChild(glow.getTransform());
+        }
     }
 
     private void SetupCollisionEvents() {
@@ -104,6 +120,7 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         for(CrateBehavior b : behaviors) {b.onExplosionNearby(Crate.this);}
     }
     public static boolean checkVelocityValidBottom(Collider other, Crate crate) {
+        if(!other.hasComponent(Rigidbody.class)){return false;}
         boolean otherVelocityEnough = other.getComponent(Rigidbody.class).velocityLastFrame.getY() < -requiredHitStrength;
         boolean thisVelocityEnough = false;
         if(crate.hasComponent(Rigidbody.class)){
@@ -112,6 +129,7 @@ public class Crate extends Component implements Explosion.ExplosionListener {
         return otherVelocityEnough || thisVelocityEnough;
     }
     public static boolean checkVelocityValidTop(Collider other, Crate crate) {
+        if(!other.hasComponent(Rigidbody.class)){return false;}
         boolean otherVelocityEnough = other.getComponent(Rigidbody.class).velocityLastFrame.getY() > requiredHitStrength;
         boolean thisVelocityEnough = false;
         if(crate.hasComponent(Rigidbody.class)) {

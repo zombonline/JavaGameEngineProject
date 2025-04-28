@@ -21,8 +21,9 @@ public class Rigidbody extends Component {
     private boolean isKinematic;
     private boolean isGrounded = false;
     private ArrayList<Collider> groundedColliders = new ArrayList<>();
+    private float mass;
 
-    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity, boolean isKinematic) {
+    public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity, boolean isKinematic, float mass) {
         this.drag = drag;
         this.gravityScale = gravityScale;
         this.restitution = restitution;
@@ -30,6 +31,7 @@ public class Rigidbody extends Component {
         this.velocity = Vector2.zero;
         this.velocityLastFrame = Vector2.zero;
         this.isKinematic = isKinematic;
+        this.mass = mass;
     }
 
     @Override
@@ -186,6 +188,7 @@ public class Rigidbody extends Component {
         defaultValues.put("gravityScale", 1f);
         defaultValues.put("maxVelocity", null);
         defaultValues.put("isKinematic", false);
+        defaultValues.put("mass", 1f);
         return defaultValues;
     }
 
@@ -205,39 +208,47 @@ public class Rigidbody extends Component {
     }
 
     public void handleCollision(Collider other){
-        Vector2 thisPos = getGameObject().getTransform().getPosition();
+        //clone the position so overlap can be resolved then setpos can be called at the end
+        Vector2 thisPosCopy = new Vector2(getGameObject().getTransform().getPosition());
         Vector2 otherPos = other.getGameObject().getTransform().getPosition();
         Vector2 overlap = rbCollider.getOverlap(other);
-        double dx = thisPos.getX() - otherPos.getX();
-        double dy = thisPos.getY() - otherPos.getY();
+        double dx = thisPosCopy.getX() - otherPos.getX();
+        double dy = thisPosCopy.getY() - otherPos.getY();
+
+        float moveFraction = 1;
+        if(other.hasComponent(Rigidbody.class)){
+            float otherMass = other.getGameObject().getComponent(Rigidbody.class).getMass();
+            float totalMass = mass + otherMass;
+            moveFraction = otherMass /totalMass;
+        }
+
         if (overlap.getX() < overlap.getY()) {
             // X-axis collision (left/right)
+            double resolution = overlap.getX() * moveFraction;
             if (dx > 0) {
-//                left.add(other);
                 // Player is to the right of the object
                 if(isKinematic){return;}
-                thisPos.setX(thisPos.getX() + overlap.getX());
+                thisPosCopy.setX(thisPosCopy.getX() + resolution);
             } else {
-//                right.add(other);
                 // Player is to the left of the object
                 if(isKinematic){return;}
-                thisPos.setX(thisPos.getX() - overlap.getX());
+                thisPosCopy.setX(thisPosCopy.getX() - resolution);
             }
         } else {
             // Y-axis collision (top/bottom)
+            double resolution = overlap.getY() * moveFraction;
+
             if (dy > 0) {
-//                above.add(other);
                 // Player is below the object
                 if(isKinematic){return;}
-                thisPos.setY(thisPos.getY() + overlap.getY());
+                thisPosCopy.setY(thisPosCopy.getY() + resolution);
             } else {
-//                below.add(other);
                 // Player is above the object (standing on it)
                 if(isKinematic){return;}
-                thisPos.setY(thisPos.getY() - overlap.getY());
+                thisPosCopy.setY(thisPosCopy.getY() - resolution);
             }
         }
-        getGameObject().getTransform().setPosition(thisPos);
+        getGameObject().getTransform().setPosition(thisPosCopy);
     }
     public void addForce(Vector2 force) {
         forces.add(force);  // Store forces instead of applying them immediately
@@ -255,6 +266,8 @@ public class Rigidbody extends Component {
     public boolean isGrounded() {
         return isGrounded;
     }
-
+    public float getMass(){
+        return mass;
+    }
 
 }

@@ -17,6 +17,7 @@ public class GameObject {
 
     private final HashMap extraDataMap = new HashMap<>();
 
+
     public GameObject(String name) {
         this.transform = new Transform();
         this.transform.setGameObject(this);
@@ -58,17 +59,22 @@ public class GameObject {
     }
 
     public void awake(){
-        for(Component component : componentList){
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for(Component component : snapshot){
             component.awake();
+
         }
+
     }
     public void start(){
-        for (Component component :componentList){
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for (Component component :snapshot){
             component.start();
         }
     }
     public void update() {
-        for (Component component : componentList) {
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for (Component component : snapshot) {
             component.update();
         }
     }
@@ -78,6 +84,9 @@ public class GameObject {
         }
     }
     public static void destroy(GameObject object){
+        for(Transform child : object.getTransform().getChildren()){
+            SessionManager.getCurrentLevel().gameObjectsToDestroy.add(child.getGameObject());
+        }
         SessionManager.getCurrentLevel().gameObjectsToDestroy.add(object);
     }
     private <T extends Component> Component findComponent(Class<T> type) {
@@ -127,4 +136,5 @@ public class GameObject {
         }
         return gameObjects;
     }
+
 }

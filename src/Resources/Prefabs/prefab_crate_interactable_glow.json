@@ -1,0 +1,7 @@
+{
+  "name": "Crate Glow Effect",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_INTERACTABLE_GLOW_1"},
+    "spriteAnimator": {"startingAnim":"Animations.CRATE_INTERACTABLE_GLOW"}
+  }
+}

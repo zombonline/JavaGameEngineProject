@@ -34,11 +34,13 @@ public class ExplodeBehavior implements CrateBehavior {
 
     @Override
     public void onTouchTop(Collider other, Crate crate) {
+        if(!Crate.checkVelocityValidTop(other,crate)) {return;}
         trigger(crate);
     }
 
     @Override
     public void onTouchBottom(Collider other, Crate crate) {
+        if(!Crate.checkVelocityValidBottom(other,crate)) {return;}
         trigger(crate);
     }
     @Override

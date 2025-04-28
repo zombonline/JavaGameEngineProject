@@ -14,7 +14,8 @@ public class SessionManager {
     private static ArrayList<String> levelList = new ArrayList<>(
             Arrays.asList(
                     Assets.Tilemaps.LEVEL_0,
-                    Assets.Tilemaps.LEVEL_1_NEW
+                    Assets.Tilemaps.LEVEL_1_NEW,
+                    Assets.Tilemaps.LEVEL_2
             )
     );
 

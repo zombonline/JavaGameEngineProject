@@ -19,6 +19,10 @@ public class Vector2 {
         this.x = x;
         this.y = y;
     }
+    public Vector2(Vector2 originalVector2){
+        this.x = originalVector2.getX();
+        this.y = originalVector2.getY();
+    }
     public Vector2(String vals){
         try {
             String[] parts = vals.split(",");

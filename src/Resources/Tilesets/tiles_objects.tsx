@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset_objects" tilewidth="512" tileheight="1024" tilecount="12" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset_objects" tilewidth="512" tileheight="1024" tilecount="14" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <properties>
   <property name="tileWidth" value="512"/>
@@ -75,5 +75,17 @@
    <property name="prefabName" value="CRATE_TELEPORT"/>
   </properties>
   <image source="../Images/Crates/crate_teleport.png" width="512" height="512"/>
+ </tile>
+ <tile id="28">
+  <properties>
+   <property name="prefabName" value="CRATE_EXPLOSIVE_WITH_RB"/>
+  </properties>
+  <image source="../Images/Crates/Crate PDN Files (Not for use in game)/crate_explosive_rigidbody.png" width="512" height="512"/>
+ </tile>
+ <tile id="29">
+  <properties>
+   <property name="prefabName" value="CRATE_METAL_WITH_RB"/>
+  </properties>
+  <image source="../Images/Crates/Crate PDN Files (Not for use in game)/crate_metal_rigidbody.png" width="512" height="512"/>
  </tile>
 </tileset>

@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.Main;
 import core.utils.Vector2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ public class Transform extends Component {
     private Vector2 position;
     private Vector2 rotation;
     private Vector2 scale;
+    private ArrayList<Transform> children = new ArrayList<>();
     public Transform(Vector2 position, Vector2 rotation, Vector2 scale){
         this.position = position;
         this.rotation = rotation;
@@ -20,6 +22,13 @@ public class Transform extends Component {
         this(Vector2.zero, Vector2.zero, Vector2.one);
     }
     public void setPosition(Vector2 newPosition){
+
+        Vector2 delta = newPosition.sub(position); // How much the parent moves
+        for (Transform child : children) {
+            System.out.println(getPosition() + ", " + newPosition);
+            System.out.println("mobing child by: " + delta);
+            child.setPosition(child.getPosition().add(delta)); // Move each child by same delta
+        }
         position = newPosition;
     }
     public void translate(Vector2 translation) {
@@ -56,6 +65,14 @@ public class Transform extends Component {
         defaultValues.put("scale", Vector2.one);
         return defaultValues;
     }
-
+    public void addChild(Transform child){
+        children.add(child);
+    }
+    public void removeChild(Transform child){
+        children.remove(child);
+    }
+    public ArrayList<Transform> getChildren(){
+        return children;
+    }
 
 }

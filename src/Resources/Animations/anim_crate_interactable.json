@@ -1,0 +1,37 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_1",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_2",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_3",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_4",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_5",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_4",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_3",
+      "delay": 8
+    },
+    {
+      "imageAddress": "Images.CRATE_INTERACTABLE_GLOW_2",
+      "delay": 8
+    }
+  ]
+}

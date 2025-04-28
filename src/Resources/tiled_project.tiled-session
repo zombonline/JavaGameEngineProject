@@ -18,8 +18,8 @@
             "scale": 0.015625,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 25568,
-                "y": 12736
+                "x": 25600,
+                "y": 12768
             }
         },
         "Tilemaps/SpriteSheet.tsx": {
@@ -30,15 +30,15 @@
         },
         "Tilemaps/level_0.tmx": {
             "expandedObjectLayers": [
-                5,
+                12,
                 3,
-                12
+                5
             ],
             "scale": 0.03125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 22576,
-                "y": 6592
+                "x": 22432,
+                "y": 7568
             }
         },
         "Tilemaps/level_1.tmx": {
@@ -48,19 +48,28 @@
             "scale": 0.03125,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 28464,
-                "y": 11520
+                "x": 25600,
+                "y": 12816
             }
         },
         "Tilemaps/level_1_new.tmx": {
             "expandedObjectLayers": [
-                3
+                3,
+                10
             ],
-            "scale": 0.015625,
+            "scale": 0.03125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 14112,
-                "y": 9664
+                "x": 24336,
+                "y": 10016
+            }
+        },
+        "Tilemaps/level_2.tmx": {
+            "scale": 0.03125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 23120,
+                "y": 11744
             }
         },
         "Tilemaps/rules/Terrain Standard.tsx": {
@@ -118,12 +127,13 @@
             "scaleInEditor": 0.25
         },
         "Tilesets/tileset_panels_2x2.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.125,
             "scaleInEditor": 0.25
         }
     },
     "last.externalTilesetPath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Tilesets",
-    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images/Sprite Sheets",
+    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images/Crates/Crate PDN Files (Not for use in game)",
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 512,

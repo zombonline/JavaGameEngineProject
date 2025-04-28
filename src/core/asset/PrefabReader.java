@@ -1,6 +1,7 @@
 package core.asset;
 
 import core.utils.Bounds;
+import game.components.crate.core.Crate;
 import game.enums.CollisionLayer;
 import core.utils.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -110,6 +111,7 @@ public class PrefabReader {
             case "playerDeathHandler" -> new PlayerDeathHandler();
             case "npcDialogueHandler" -> new NPCDialogueHandler();
             case "subImageSpriteSetter" -> new SubImageSpriteSetter();
+            case "crate" -> new Crate();
             default -> null;
         };
     }
@@ -223,8 +225,8 @@ public class PrefabReader {
         float gravityScale = getFloat("gravityScale", values, defaultValues);
         Vector2 maxVelocity = getVector2("maxVelocity", values, defaultValues);
         boolean isKinematic = getBool("isKinematic", values, defaultValues);
-
-        return new Rigidbody(drag,gravityScale,restitution,maxVelocity,isKinematic);
+        float mass = getFloat("mass",values,defaultValues);
+        return new Rigidbody(drag,gravityScale,restitution,maxVelocity,isKinematic, mass);
     }
     public static CrateBounce buildCrateBounce(JsonNode values){
         Map<String,Object> defaultValues = CrateBounce.getDefaultValues();

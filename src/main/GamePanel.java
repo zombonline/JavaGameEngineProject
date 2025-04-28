@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.LoadLevelByInt(1);
+        SessionManager.LoadLevelByInt(2);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
