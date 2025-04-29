@@ -101,7 +101,7 @@ public class PrefabReader {
             case "crateBounce" -> buildCrateBounce(values);
             case "crateReinforced" -> buildCrateReinforced(values);
             case "crateHover" -> buildCrateHover(values);
-            case "crateHorizontalMoving" -> buildCrateHorizontalMoving(values);
+            case "crateMoving" -> buildCrateMoving(values);
             case "crateExplosive" -> buildCrateExplosive(values);
             case "crateTeleport" -> buildCrateTeleport(values);
             case "explosion" -> buildExplosion(values);
@@ -111,7 +111,10 @@ public class PrefabReader {
             case "playerDeathHandler" -> new PlayerDeathHandler();
             case "npcDialogueHandler" -> new NPCDialogueHandler();
             case "subImageSpriteSetter" -> new SubImageSpriteSetter();
+            case "crateScaffold" -> new CrateScaffold();
             case "crate" -> new Crate();
+            case "crateMetalMoving" -> buildCrateMetalMoving(values);
+
             default -> null;
         };
     }
@@ -254,14 +257,27 @@ public class PrefabReader {
         Vector2 direction = getVector2("direction", values, defaultValues);
         return new CrateHover(bounceStrength,hitsToDestroy,moveSpeed, moveDistance, direction);
     }
-    public static CrateHorizontalMoving buildCrateHorizontalMoving(JsonNode values){
-        Map<String,Object> defaultValues = CrateHorizontalMoving.getDefaultValues();
+    public static CrateMoving buildCrateMoving(JsonNode values){
+        Map<String,Object> defaultValues = CrateMoving.getDefaultValues();
         float bounceStrength = getFloat("bounceStrength", values, defaultValues);
         int hitsToDestroy = getInt("hitsToDestroy", values, defaultValues);
         float moveSpeed = getFloat("moveSpeed", values, defaultValues);
         float moveDistance = getFloat("moveDistance", values, defaultValues);
         Vector2 direction = getVector2("direction", values, defaultValues);
-        return new CrateHorizontalMoving(bounceStrength,hitsToDestroy,moveSpeed,moveDistance,direction);
+        BufferedImage horizontalSprite = getImage("horizontalSprite",values,defaultValues);
+        BufferedImage verticalSprite = getImage("verticalSprite",values,defaultValues);
+        return new CrateMoving(bounceStrength,hitsToDestroy,moveSpeed,moveDistance,direction,horizontalSprite,verticalSprite);
+    }
+    public static CrateMetalMoving buildCrateMetalMoving(JsonNode values){
+        Map<String,Object> defaultValues = CrateMoving.getDefaultValues();
+        float bounceStrength = getFloat("bounceStrength", values, defaultValues);
+        int hitsToDestroy = getInt("hitsToDestroy", values, defaultValues);
+        float moveSpeed = getFloat("moveSpeed", values, defaultValues);
+        float moveDistance = getFloat("moveDistance", values, defaultValues);
+        Vector2 direction = getVector2("direction", values, defaultValues);
+        BufferedImage horizontalSprite = getImage("horizontalSprite",values,defaultValues);
+        BufferedImage verticalSprite = getImage("verticalSprite",values,defaultValues);
+        return new CrateMetalMoving(moveSpeed,moveDistance,direction,horizontalSprite,verticalSprite);
     }
     public static CrateTeleport buildCrateTeleport(JsonNode values){
         Map<String,Object> defaultValues = CrateBounce.getDefaultValues();
@@ -307,6 +323,9 @@ public class PrefabReader {
     }
     private static String getString(String propertyName, JsonNode values, Map<String,Object> defaultValues) {
         return  (values.has(propertyName) ? values.get(propertyName).asText() : defaultValues.get(propertyName).toString());
+    }
+    private static BufferedImage getImage(String propertyName, JsonNode values, Map<String,Object> defaultValues){
+        return AssetLoader.getInstance().getImage(values.has(propertyName) ? values.get(propertyName).asText() : defaultValues.get(propertyName).toString());
     }
 }
 

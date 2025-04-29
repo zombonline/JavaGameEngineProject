@@ -26,7 +26,7 @@ public class Collider extends Component {
     }
     public void notifyCollisionEnter(Collider other) {
         for (CollisionListener listener : listeners) {
-            listener.onCollisionEnter(other, getContactNormal(other));
+            listener.onCollisionEnter(other, getContactNormal(this, other));
         }
 //        handleCollisionLog(other);
     }
@@ -46,12 +46,12 @@ public class Collider extends Component {
 
     public void notifyCollisionStay(Collider other){
         for (CollisionListener listener : listeners) {
-            listener.onCollisionStay(other, getContactNormal(other));
+            listener.onCollisionStay(other, getContactNormal(this, other));
         }
     }
     public void notifyCollisionExit(Collider other){
         for (CollisionListener listener : listeners) {
-            listener.onCollisionExit(other, getContactNormal(other));
+            listener.onCollisionExit(other, getContactNormal(this, other));
         }
     }
 
@@ -103,12 +103,14 @@ public class Collider extends Component {
     private void checkCollidersNearby() {
         if(isStatic){return;}
         List<Collider> nearbyColliders = SessionManager.getCurrentLevel().spatialHashGrid.getNearby(colliderPosition, collisionMask);
+
         List<Collider> colliding = new ArrayList<Collider>();
         for (Collider nearbyCollider : nearbyColliders) {
             if (nearbyCollider == this) {
                 continue;
             }
             Vector2 overlap = getOverlap(nearbyCollider);
+
 
             if (overlap.getY() <= 0 || overlap.getX() <= 0) {
                 continue;
@@ -117,24 +119,27 @@ public class Collider extends Component {
             allCollisions.add(nearbyCollider);
         }
         allCollisions.removeIf(collider -> !colliding.contains(collider));
+
+
+
         updateTouchingColliders();
         if(this.getGameObject().getComponent(Rigidbody.class)!=null){
             this.getGameObject().getComponent(Rigidbody.class).handleCollisions(colliding);
         }
     }
-    public Vector2 getContactNormal(Collider other) {
-        Bounds a = this.bounds;
-        Bounds b = other.getBounds();
+    public static Vector2 getContactNormal(Collider a, Collider b) {
+        Bounds aBounds = a.bounds;
+        Bounds bBounds = b.getBounds();
 
         // Centers
-        double dx = ((a.minX + a.maxX) / 2) - ((b.minX + b.maxX) / 2);
-        double dy = ((a.minY + a.maxY) / 2) - ((b.minY + b.maxY) / 2);
+        double dx = ((aBounds.minX + aBounds.maxX) / 2) - ((bBounds.minX + bBounds.maxX) / 2);
+        double dy = ((aBounds.minY + aBounds.maxY) / 2) - ((bBounds.minY + bBounds.maxY) / 2);
 
         // Half-sizes
-        double halfWidthA = (a.maxX - a.minX) / 2;
-        double halfWidthB = (b.maxX - b.minX) / 2;
-        double halfHeightA = (a.maxY - a.minY) / 2;
-        double halfHeightB = (b.maxY - b.minY) / 2;
+        double halfWidthA = (aBounds.maxX - aBounds.minX) / 2;
+        double halfWidthB = (bBounds.maxX - bBounds.minX) / 2;
+        double halfHeightA = (aBounds.maxY - aBounds.minY) / 2;
+        double halfHeightB = (bBounds.maxY - bBounds.minY) / 2;
 
         // Overlaps
         double overlapX = (halfWidthA + halfWidthB) - Math.abs(dx);
@@ -235,7 +240,8 @@ public class Collider extends Component {
         defaultValues.put("isTrigger", false);
         return defaultValues;
     }
-
-
+    public void setIsTrigger(boolean val){
+        isTrigger = val;
+    }
 
 }

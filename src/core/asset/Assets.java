@@ -37,8 +37,14 @@ public class Assets {
         public static final String CRATE_HOVER = IMAGES_PATH +"Crates/crate_hover.png";
         public static final String CRATE_HOVER_EFFECT = IMAGES_PATH +"Crates/crate_hover_effect.png";
         public static final String CRATE_METAL = IMAGES_PATH +"Crates/crate_metal.png";
+        public static final String CRATE_METAL_MOVING_HORIZONTAL = IMAGES_PATH +"Crates/crate_metal_moving_horizontal.png";
+        public static final String CRATE_METAL_MOVING_VERTICAL = IMAGES_PATH +"Crates/crate_moving_horizontal.png";
+
         public static final String CRATE_MOVING = IMAGES_PATH +"Crates/crate_moving.png";
+        public static final String CRATE_MOVING_HORIZONTAL = IMAGES_PATH +"Crates/crate_moving_horizontal.png";
+        public static final String CRATE_MOVING_VERTICAL = IMAGES_PATH +"Crates/crate_moving_vertical.png";
         public static final String CRATE_REINFORCED = IMAGES_PATH +"Crates/crate_reinforced.png";
+        public static final String CRATE_SCAFFOLD = IMAGES_PATH +"Crates/crate_scaffold.png";
         public static final String CRATE_TELEPORT = IMAGES_PATH +"Crates/crate_teleport.png";
 
         public static final String CRATE_INTERACTABLE_GLOW_1 = IMAGES_PATH +"Crates/crate_interactable_glow.png";
@@ -88,10 +94,12 @@ public class Assets {
         public static final String CRATE_EXPLOSIVE_WITH_RB = PREFABS_PATH +"prefab_crate_explosive_with_rb.json";
         public static final String CRATE_HOVER = PREFABS_PATH +"prefab_crate_hover.json";
         public static final String CRATE_METAL = PREFABS_PATH +"prefab_crate_metal.json";
+        public static final String CRATE_METAL_MOVING = PREFABS_PATH +"prefab_crate_metal_moving.json";
         public static final String CRATE_METAL_WITH_RB = PREFABS_PATH +"prefab_crate_metal_with_rb.json";
-        public static final String CRATE_MOVING = PREFABS_PATH +"prefab_crate_horizontal_moving.json";
+        public static final String CRATE_MOVING = PREFABS_PATH +"prefab_crate_moving.json";
         public static final String CRATE_ORANGE_BITS = PREFABS_PATH +"prefab_crate_orange_bits.json";
         public static final String CRATE_REINFORCED = PREFABS_PATH +"prefab_crate_reinforced.json";
+        public static final String CRATE_SCAFFOLD = PREFABS_PATH +"prefab_crate_scaffold.json";
         public static final String CRATE_TELEPORT = PREFABS_PATH +"prefab_crate_teleport.json";
 
         public static final String CRATE_INTERACTABLE_GLOW = PREFABS_PATH +"prefab_crate_interactable_glow.json";
@@ -132,6 +140,7 @@ public class Assets {
         public static final String LEVEL_0 = TILEMAPS_PATH+"level_0.tmx";
         public static final String LEVEL_1_NEW = TILEMAPS_PATH +"level_1_new.tmx";
         public static final String LEVEL_2 = TILEMAPS_PATH +"level_2.tmx";
+        public static final String LEVEL_3 = TILEMAPS_PATH +"level_3.tmx";
     }
 
     // TILESET .TSX FILES

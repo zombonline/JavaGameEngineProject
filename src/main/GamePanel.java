@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.LoadLevelByInt(2);
+        SessionManager.LoadLevelByInt(3);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -119,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable{
                 gameObject.draw(g2d);
             }
         }
-//        DebugText.drawDebugText(g);
+        DebugText.drawDebugText(g);
         GameUI.getInstance().drawUI(g2d);
     }
 

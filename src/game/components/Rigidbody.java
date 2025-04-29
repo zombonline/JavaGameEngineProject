@@ -20,8 +20,8 @@ public class Rigidbody extends Component {
     private List<Vector2> forces = new ArrayList<>();
     private boolean isKinematic;
     private boolean isGrounded = false;
-    private ArrayList<Collider> groundedColliders = new ArrayList<>();
-    private float mass;
+    private final ArrayList<Collider> groundedColliders = new ArrayList<>();
+    private final float mass;
 
     public Rigidbody(float drag, float gravityScale, float restitution, Vector2 maxVelocity, boolean isKinematic, float mass) {
         this.drag = drag;
@@ -77,10 +77,9 @@ public class Rigidbody extends Component {
     public void groundCheck(){
         Vector2 rayOrigin1 = new Vector2(rbCollider.getBounds().minX+0.1f,rbCollider.getBounds().maxY+0.001f);
         Vector2 rayOrigin2 = new Vector2(rbCollider.getBounds().maxX-0.1f, rbCollider.getBounds().maxY+0.001f);
-        ArrayList<CollisionLayer> mask = new ArrayList<CollisionLayer>();
-        mask.add(CollisionLayer.DEFAULT);
-        Raycast raycast1 = new Raycast(rayOrigin1,.00000001f,0,100, mask, true);
-        Raycast raycast2 = new Raycast(rayOrigin2,.00000001f,0,100, mask, true);
+
+        Raycast raycast1 = new Raycast(rayOrigin1,.00000001f,0,100, rbCollider.getCollisionMask(), true);
+        Raycast raycast2 = new Raycast(rayOrigin2,.00000001f,0,100, rbCollider.getCollisionMask(), true);
         ArrayList<Collider> touching = new  ArrayList<Collider>();
 
         //CHECK IF THESE ARE TRIGGERS
@@ -93,7 +92,6 @@ public class Rigidbody extends Component {
         }
         isGrounded = !groundedColliders.isEmpty();
         DebugText.logPermanently("Player Rigidbody Grounded", Boolean.toString(isGrounded));
-
     }
 
     private void limitVelocity(Vector2 direction) {
@@ -114,7 +112,6 @@ public class Rigidbody extends Component {
         ArrayList<Raycast> rays = new ArrayList<>();
         rays.add(new Raycast(rayOrigin1, currentVel, angle, 50, rbCollider.getCollisionMask(), true));
         rays.add(new Raycast(rayOrigin2, currentVel, angle, 50, rbCollider.getCollisionMask(), true));
-
         ArrayList<Raycast.Hit> hits = new ArrayList<>();
         for (Raycast ray : rays) {
             Raycast.Hit hit = ray.checkForCollision();
@@ -125,7 +122,6 @@ public class Rigidbody extends Component {
         if (hits.isEmpty()) { return; }
         Raycast.Hit closestHit = null;
         double closestDistance = currentVel;
-
         for (Raycast.Hit hit : hits) {
             double distance = switch (angleInt) {
                 case 0 -> hit.getHitPoint().getX() - rayOrigin1.getX();
@@ -140,7 +136,6 @@ public class Rigidbody extends Component {
                 closestHit = hit;
             }
         }
-
         if (closestHit != null ) {
             if(closestHit.getCollider().hasComponent(Rigidbody.class)){return;}
 
@@ -170,9 +165,6 @@ public class Rigidbody extends Component {
             }
         }
     }
-
-
-
     private boolean isInlist(Collider hit, ArrayList<Collider> hits) {
         if (!hits.contains(hit)) {
             hits.add(hit);
@@ -180,7 +172,6 @@ public class Rigidbody extends Component {
         }
         return true;
     }
-
     public static Map<String, Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("drag",0.9f);
@@ -191,7 +182,6 @@ public class Rigidbody extends Component {
         defaultValues.put("mass", 1f);
         return defaultValues;
     }
-
     public void handleCollisions(List<Collider> colliders){
         colliders.removeIf(Collider::isTrigger);
         if(colliders.isEmpty()){return;}
@@ -221,7 +211,6 @@ public class Rigidbody extends Component {
             float totalMass = mass + otherMass;
             moveFraction = otherMass /totalMass;
         }
-
         if (overlap.getX() < overlap.getY()) {
             // X-axis collision (left/right)
             double resolution = overlap.getX() * moveFraction;
@@ -256,18 +245,14 @@ public class Rigidbody extends Component {
     public void clearForces(){
         forces.clear();
     }
-
-
     //Getters
     public ArrayList<Collider> getGroundedColliders() {
         return groundedColliders;
     }
-
     public boolean isGrounded() {
         return isGrounded;
     }
     public float getMass(){
         return mass;
     }
-
 }

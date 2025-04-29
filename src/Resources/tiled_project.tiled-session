@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Tilemaps/level_1_new.tmx",
+    "activeFile": "Tilemaps/level_3.tmx",
     "expandedProjectPaths": [
-        ".",
         "Tilemaps",
+        "Tilesets",
         "Tilemaps/rules",
-        "Tilesets"
+        "."
     ],
     "fileStates": {
         "Tilemaps/BACKGROUND_TILES.tsx": {
@@ -30,15 +30,15 @@
         },
         "Tilemaps/level_0.tmx": {
             "expandedObjectLayers": [
-                12,
                 3,
-                5
+                5,
+                12
             ],
-            "scale": 0.03125,
-            "selectedLayer": 1,
+            "scale": 0.0625,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 22432,
-                "y": 7568
+                "x": 24528,
+                "y": 7592
             }
         },
         "Tilemaps/level_1.tmx": {
@@ -60,16 +60,39 @@
             "scale": 0.03125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 24336,
-                "y": 10016
+                "x": 25600,
+                "y": 10224
             }
         },
         "Tilemaps/level_2.tmx": {
+            "expandedObjectLayers": [
+                3,
+                10
+            ],
             "scale": 0.03125,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 23120,
-                "y": 11744
+                "x": 25600,
+                "y": 10224
+            }
+        },
+        "Tilemaps/level_3.tmx": {
+            "scale": 0.03125,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 22432,
+                "y": 10144
+            }
+        },
+        "Tilemaps/level_template.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 0.015625,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 25600,
+                "y": 7648
             }
         },
         "Tilemaps/rules/Terrain Standard.tsx": {
@@ -123,6 +146,7 @@
             "scaleInEditor": 0.25
         },
         "Tilesets/tileset_panels_2x1.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.125,
             "scaleInEditor": 0.25
         },
@@ -133,7 +157,7 @@
         }
     },
     "last.externalTilesetPath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Tilesets",
-    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images/Crates/Crate PDN Files (Not for use in game)",
+    "last.imagePath": "C:/Users/megaz/Documents/GOLDSMITHS/Creative Game Engine Development/src/Resources/Images/Crates",
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 512,
@@ -149,7 +173,10 @@
         "Tilesets/tileset_panels_1x2.tsx",
         "Tilemaps/level_0.tmx",
         "Tilesets/tileset_panels_2x1.tsx",
-        "Tilemaps/level_1_new.tmx"
+        "Tilemaps/level_1_new.tmx",
+        "Tilemaps/level_2.tmx",
+        "Tilemaps/level_template.tmx",
+        "Tilemaps/level_3.tmx"
     ],
     "project": "tiled_project.tiled-project",
     "property.type": "string",
@@ -164,8 +191,8 @@
         "Tilemaps/level_0.tmx",
         "Tilesets/tileset_panels_2x1.tsx",
         "Tilemaps/level_1_new.tmx",
-        "Tilemaps/tileset_panels_1x2.tsx",
-        "Tilesets/tiles_terrain.tsx"
+        "Tilemaps/level_2.tmx",
+        "Tilemaps/level_template.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

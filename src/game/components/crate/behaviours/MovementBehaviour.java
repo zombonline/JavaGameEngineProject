@@ -13,7 +13,7 @@ public class MovementBehaviour implements CrateBehavior {
     Collider collider;
 
     Vector2 initialPosition;
-    Vector2 dir;
+    Vector2 moveDirection;
     float moveSpeed;
     float moveDistance;
     public boolean active = true;
@@ -24,7 +24,7 @@ public class MovementBehaviour implements CrateBehavior {
     public MovementBehaviour(float moveSpeed, float moveDistance, Vector2 dir){
         this.moveSpeed = moveSpeed;
         this.moveDistance = moveDistance;
-        this.dir = dir;
+        this.moveDirection = dir;
     }
 
     public void awake(Crate crate){
@@ -52,14 +52,14 @@ public class MovementBehaviour implements CrateBehavior {
         if(!active){return;}
         GameObject crateGameObject = crate.getGameObject();
 
-        crateGameObject.getTransform().translate(dir.mul(moveSpeed * main.GamePanel.getDeltaTime()));
+        crateGameObject.getTransform().translate(moveDirection.mul(moveSpeed * main.GamePanel.getDeltaTime()));
         for(GameObject object : objectsOnTop){
-            object.getTransform().translate(dir.mul(moveSpeed * main.GamePanel.getDeltaTime()));
+            object.getTransform().translate(moveDirection.mul(moveSpeed * main.GamePanel.getDeltaTime()));
         }
 
         if(Vector2.dist(initialPosition, crateGameObject.getTransform().getPosition()) > moveDistance){
-            crateGameObject.getTransform().setPosition(initialPosition.add(dir.mul(moveDistance)));
-            dir = dir.invert();
+            crateGameObject.getTransform().setPosition(initialPosition.add(moveDirection.mul(moveDistance)));
+            moveDirection = moveDirection.invert();
             notifyChangeDirection();
         }
     }
@@ -82,7 +82,7 @@ public class MovementBehaviour implements CrateBehavior {
     public void setMoveDistance(float moveDistance){
         this.moveDistance = moveDistance;
     }
-
+    public void setMoveDirection(Vector2 moveDirection){this.moveDirection = moveDirection;}
     public interface MovementListener
     {
         void onChangeDirection(Vector2 newDirection);
@@ -96,7 +96,7 @@ public class MovementBehaviour implements CrateBehavior {
     }
     public void notifyChangeDirection() {
         for (MovementBehaviour.MovementListener listener : listeners) {
-            listener.onChangeDirection(dir);
+            listener.onChangeDirection(moveDirection);
         }
     }
 

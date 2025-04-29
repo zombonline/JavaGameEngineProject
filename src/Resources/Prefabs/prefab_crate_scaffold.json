@@ -1,0 +1,12 @@
+{
+  "name": "Scaffold Crate",
+  "components": {
+    "spriteRenderer": {"spriteImage": "Images.CRATE_SCAFFOLD"},
+    "collider": {"collisionLayer": "PLATFORM",
+      "collisionMask": [
+        "PLATFORM"
+      ]
+    },
+    "crateScaffold": {}
+  }
+}

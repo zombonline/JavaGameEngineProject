@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public enum CollisionLayer {
     DEFAULT,
-    WORLD;
+    PLATFORM;
 
     public static ArrayList<CollisionLayer> fromStringList(ArrayList<String> strings) {
         return (ArrayList<CollisionLayer>) strings.stream()
