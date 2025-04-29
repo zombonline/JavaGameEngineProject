@@ -20,9 +20,12 @@ public class Player extends Component {
     private final KeyHandler keyHandler;
 
     //Variables
-    private final float speed;
-    private Key leftKey, rightKey, aKey, dkey, jumpKey, rKey;
+    private Key leftKey, rightKey, aKey, dKey, jumpKey, rKey;
+
     private boolean canMove = true;
+
+    private final float speed;
+
     private final float jumpCoyoteTime;
     private float jumpCoyoteTimer;
     private final float jumpPressTime;
@@ -45,18 +48,7 @@ public class Player extends Component {
     protected void getRequiredComponentReferences() {
         rb = fetchRequiredComponent(Rigidbody.class);
     }
-    private void setUpControls(KeyHandler keyHandler) {
-        leftKey = keyHandler.addKey(KeyEvent.VK_LEFT);
-        rightKey = keyHandler.addKey(KeyEvent.VK_RIGHT);
-        aKey = keyHandler.addKey(KeyEvent.VK_A);
-        dkey = keyHandler.addKey(KeyEvent.VK_D);
-        jumpKey = keyHandler.addKey(KeyEvent.VK_SPACE,
-                this::jumpPress,
-                ()->{});
-        rKey = keyHandler.addKey(KeyEvent.VK_R,
-                this::resetPlayerPress,
-                ()->{});
-    }
+
 
     @Override
     public void update(){
@@ -68,6 +60,20 @@ public class Player extends Component {
         DebugText.logPermanently("Player Velocity", (getComponent(Rigidbody.class).velocity.toDp(2).toString()));
     }
 
+    private void setUpControls(KeyHandler keyHandler) {
+        leftKey = keyHandler.addKey(KeyEvent.VK_LEFT);
+        rightKey = keyHandler.addKey(KeyEvent.VK_RIGHT);
+        aKey = keyHandler.addKey(KeyEvent.VK_A);
+        dKey = keyHandler.addKey(KeyEvent.VK_D);
+        jumpKey = keyHandler.addKey(KeyEvent.VK_SPACE,
+                this::jumpPress,
+                ()->{});
+        rKey = keyHandler.addKey(KeyEvent.VK_R,
+                this::resetPlayerPress,
+                ()->{});
+    }
+
+    //region Jump and movement logic
     private void jumpPress(){
         jumpPressTimer = jumpPressTime;
     }
@@ -96,11 +102,12 @@ public class Player extends Component {
         if (leftKey.isHeld() || aKey.isHeld()) {
             xMovement -= 1;
         }
-        if (rightKey.isHeld() || dkey.isHeld()) {
+        if (rightKey.isHeld() || dKey.isHeld()) {
             xMovement += 1;
         }
         rb.addForce(new Vector2(xMovement, 0).mul(speed * GamePanel.getDeltaTime()));
     }
+    //endregion
 
     //SETTERS
     public void setCanMove(boolean canMove) {

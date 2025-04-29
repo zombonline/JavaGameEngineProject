@@ -7,8 +7,11 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Animation {
+    //public to allow object mapper to access
     public boolean isLooping;
     public List<AnimationStep> animationSteps;
+
+
     public static class AnimationStep {
         public String imageAddress;
         public int delay;
@@ -24,9 +27,6 @@ public class Animation {
         }
         public BufferedImage getImage() {
             return AssetLoader.getInstance().getImage(Assets.getAssetPath(imageAddress));
-        }
-        public int getDelay() {
-            return delay;
         }
     }
 }

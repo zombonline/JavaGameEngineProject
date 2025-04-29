@@ -1,7 +1,5 @@
 package core.asset;
 
-import core.audio.SFXPlayer;
-
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -136,17 +134,11 @@ public class Assets {
     // TILEMAP .TMX FILES
     public static class Tilemaps {
         private static final String TILEMAPS_PATH = "/Resources/Tilemaps/";
-        public static final String LEVEL_1 = TILEMAPS_PATH+"level_1.tmx";
         public static final String LEVEL_0 = TILEMAPS_PATH+"level_0.tmx";
-        public static final String LEVEL_1_NEW = TILEMAPS_PATH +"level_1_new.tmx";
+        public static final String LEVEL_1= TILEMAPS_PATH +"level_1_new.tmx";
         public static final String LEVEL_2 = TILEMAPS_PATH +"level_2.tmx";
         public static final String LEVEL_3 = TILEMAPS_PATH +"level_3.tmx";
-    }
-
-    // TILESET .TSX FILES
-    public static class Tilesets {
-        private static final String TILESETS_PATH = "/Resources/Tilesets/";
-        public static final String TILES = TILESETS_PATH + "Tiles.tsx";
+        public static final String LEVEL_4 = TILEMAPS_PATH +"level_4.tmx";
     }
 
     private static final Map<String, String> assetMap = new HashMap<>();
@@ -156,7 +148,6 @@ public class Assets {
         addAssetsFromClass("Images", Images.class);
         addAssetsFromClass("Prefabs", Prefabs.class);
         addAssetsFromClass("Tilemaps", Tilemaps.class);
-        addAssetsFromClass("Tilesets", Tilesets.class);
     }
 
     private static void addAssetsFromClass(String prefix, Class<?> clazz) {

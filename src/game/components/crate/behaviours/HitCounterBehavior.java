@@ -43,16 +43,16 @@ public class HitCounterBehavior implements CrateBehavior {
     private void takeHit(Collider other){
         if(!active){return;}
         currentHitPoints--;
-        notifyHitTaken();
+        notifyHitTaken(other);
         if(currentHitPoints<=0){
-            notifyHitsReachedZero();
+            notifyHitsReachedZero(other);
         }
     }
 
     public interface HitCounterListener
     {
-        void onHit(int current, int start);
-        void onHitsReachedZero();
+        void onHit(int current, int start, Collider other);
+        void onHitsReachedZero(Collider other);
     }
     private List<HitCounterBehavior.HitCounterListener> listeners = new ArrayList<>();
     public void addListener(HitCounterBehavior.HitCounterListener listener) {
@@ -61,14 +61,14 @@ public class HitCounterBehavior implements CrateBehavior {
     public void removeListener(HitCounterBehavior.HitCounterListener listener) {
         listeners.remove(listener);
     }
-    public void notifyHitTaken() {
+    public void notifyHitTaken(Collider other) {
         for (HitCounterBehavior.HitCounterListener listener : listeners) {
-            listener.onHit(currentHitPoints,startingHitPoints);
+            listener.onHit(currentHitPoints,startingHitPoints,other);
         }
     }
-    public void notifyHitsReachedZero(){
+    public void notifyHitsReachedZero(Collider other) {
         for(HitCounterBehavior.HitCounterListener listener : listeners) {
-            listener.onHitsReachedZero();
+            listener.onHitsReachedZero(other);
         }
     }
 

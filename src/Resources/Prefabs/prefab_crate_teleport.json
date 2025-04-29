@@ -5,7 +5,6 @@
     "collider": {},
     "crateTeleport": {
       "bounceStrength":20
-    },
-    "rigidbody": {}
+    }
   }
 }

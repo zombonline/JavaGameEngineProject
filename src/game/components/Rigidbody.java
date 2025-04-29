@@ -1,4 +1,5 @@
 package game.components;
+import game.components.crate.core.Crate;
 import main.GamePanel;
 import core.utils.DebugText;
 import game.enums.CollisionLayer;
@@ -17,8 +18,8 @@ public class Rigidbody extends Component {
     public Vector2 maxVelocity;
     public float restitution;
     public float gravityScale;
-    private List<Vector2> forces = new ArrayList<>();
-    private boolean isKinematic;
+    private final List<Vector2> forces = new ArrayList<>();
+    private final boolean isKinematic;
     private boolean isGrounded = false;
     private final ArrayList<Collider> groundedColliders = new ArrayList<>();
     private final float mass;
@@ -40,9 +41,7 @@ public class Rigidbody extends Component {
     }
 
     public void update(){
-        if(isKinematic){
-            return;
-        }
+        if(isKinematic) return;
         groundCheck();
         velocityLastFrame = velocity;
         for (Vector2 force : forces) {
@@ -67,7 +66,6 @@ public class Rigidbody extends Component {
         limitVelocity(Vector2.right);
         limitVelocity(Vector2.left);
         limitVelocity(Vector2.up);
-        if(isKinematic){return;}
         getGameObject().getTransform().translate(velocity.div(60));
         if(isGrounded && velocity.getY() > 0){
             velocity.setY(0);
@@ -97,7 +95,7 @@ public class Rigidbody extends Component {
     private void limitVelocity(Vector2 direction) {
         Vector2 halfSize = rbCollider.getColliderSize().div(2);
         Vector2 pos = gameObject.getTransform().getPosition();
-        double offsetAmount = direction.getX() != 0 ? halfSize.getX() : halfSize.getY();
+        float offsetAmount = direction.getX() != 0 ? halfSize.getX() : halfSize.getY();
         Vector2 rayOffset = direction.mul(offsetAmount);
         Vector2 perp = new Vector2(-direction.getY(), direction.getX()).mul(halfSize).mul(0.8f);
 
@@ -138,6 +136,7 @@ public class Rigidbody extends Component {
         }
         if (closestHit != null ) {
             if(closestHit.getCollider().hasComponent(Rigidbody.class)){return;}
+            if(closestHit.getCollider().hasComponent(Crate.class)){return;}
 
             double adjustedVel = (float) (closestDistance / GamePanel.getDeltaTime());
 
@@ -188,7 +187,7 @@ public class Rigidbody extends Component {
         Vector2 maxOverlap = new Vector2(0, 0);
         Collider strongestCollider = colliders.getFirst();
         for (Collider c : colliders) {
-            Vector2 o = rbCollider.getOverlap(c);
+            Vector2 o = Collider.getOverlap(rbCollider,c);
             if (o.getMag() > maxOverlap.getMag()) {
                 maxOverlap = o;
                 strongestCollider = c;
@@ -201,7 +200,7 @@ public class Rigidbody extends Component {
         //clone the position so overlap can be resolved then setpos can be called at the end
         Vector2 thisPosCopy = new Vector2(getGameObject().getTransform().getPosition());
         Vector2 otherPos = other.getGameObject().getTransform().getPosition();
-        Vector2 overlap = rbCollider.getOverlap(other);
+        Vector2 overlap = Collider.getOverlap(rbCollider,other);
         double dx = thisPosCopy.getX() - otherPos.getX();
         double dy = thisPosCopy.getY() - otherPos.getY();
 
@@ -246,7 +245,7 @@ public class Rigidbody extends Component {
         forces.clear();
     }
     //Getters
-    public ArrayList<Collider> getGroundedColliders() {
+    public List<Collider> getGroundedColliders() {
         return groundedColliders;
     }
     public boolean isGrounded() {

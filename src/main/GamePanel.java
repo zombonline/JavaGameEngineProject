@@ -1,6 +1,5 @@
 package main;
 
-import game.components.core.Component;
 import core.asset.Assets;
 import core.utils.DebugText;
 import core.asset.AssetLoader;
@@ -22,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.LoadLevelByInt(3);
+        SessionManager.loadLevelByIndex(0);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -38,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
         gameThread = Thread.currentThread();
-        double drawInterval = 1000000000.0 / FPS;
+        double drawInterval = 1_000_000_000.0 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -46,21 +45,21 @@ public class GamePanel extends JPanel implements Runnable{
         int drawCount = 0;
         while (running) {
             currentTime = System.nanoTime();
-            deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
-            delta += (currentTime - lastTime) / drawInterval; // Accumulate time in terms of drawInterval
+            deltaTime = (currentTime - lastTime) / 1_000_000_000.0;
+            delta += (currentTime - lastTime) / drawInterval;
             timer += currentTime - lastTime;
             lastTime = currentTime;
             if (delta >= 1) {
                 try {
-                    awake(); // Call awake (only new objects will run this)
+                    awake();
                     start();
-                    update(); // Update game logic
-                    repaint(); // Render the game
-                    destroyObjects(); //Remove objects marked for destroy at end of frame
+                    update();
+                    repaint();
+                    destroyObjects();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                delta--; // Decrement delta by 1
+                delta--;
                 drawCount++;
             }
             if (timer >= 1000000000) {
@@ -122,6 +121,20 @@ public class GamePanel extends JPanel implements Runnable{
         DebugText.drawDebugText(g);
         GameUI.getInstance().drawUI(g2d);
     }
+    public void destroyObjects(){
+        if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
+        try {
+            for (GameObject gameObject :SessionManager.getCurrentLevel().gameObjectsToDestroy) {
+                if(gameObject==null){continue;}
+                gameObject.onDestroy();
+                SessionManager.getCurrentLevel().activeGameObjects.remove(gameObject);
+            }
+            SessionManager.getCurrentLevel().gameObjectsToDestroy.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void drawBackground(Graphics2D g2d) {
         try {
@@ -134,19 +147,4 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    public void destroyObjects(){
-        if(SessionManager.getCurrentLevel()==null || gamePaused){return;}
-        try {
-            for (GameObject gameObject :SessionManager.getCurrentLevel().gameObjectsToDestroy) {
-                if(gameObject==null){continue;}
-                for (Component component : gameObject.getAllComponents()) {
-                    component.onDestroy();
-                }
-                SessionManager.getCurrentLevel().activeGameObjects.remove(gameObject);
-            }
-            SessionManager.getCurrentLevel().gameObjectsToDestroy.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

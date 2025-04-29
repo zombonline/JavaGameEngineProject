@@ -9,7 +9,7 @@ import core.utils.Vector2;
 
 public class SpatialHashGrid {
     private int cellSize = 8;
-    private Map<Integer, List<Collider>> grid = new HashMap<>();;
+    private final Map<Integer, List<Collider>> grid = new HashMap<>();
     public SpatialHashGrid(int cellSize){
         this.cellSize = cellSize;
         DebugText.logTemporarily("New SpatialHashGrid with cellSize: " + cellSize);
@@ -34,33 +34,22 @@ public class SpatialHashGrid {
 
     public void remove(Collider collider, int cellKey){
         List<Collider> cell = grid.get(cellKey);
-        if(cell==null){
-            return;
-        }
+        if(cell==null) return;
         cell.remove(collider);
         if(cell.isEmpty()){
             grid.remove(cellKey);
         }
     }
 
-    public void remove(Collider collider){
-        int cellKey = hash(collider.getColliderPosition());
-        List<Collider> cell = grid.get(cellKey);
-        if(cell==null){
-            System.out.println("cell is null");
-            return;
-        }
-        cell.remove(collider);
-        if(cell.isEmpty()){
-            grid.remove(cellKey);
-        }
+    public void remove(Collider collider) {
+        remove(collider, hash(collider.getColliderPosition()));
     }
 
     public void clear(){
         grid.clear();
     }
 
-    public List<Collider> getNearby(Vector2 pos, ArrayList<CollisionLayer> layerMask) {
+    public List<Collider> getNearby(Vector2 pos, List<CollisionLayer> layerMask) {
         List<Collider> nearbyColliders = new ArrayList<>();
         for (Collider collider : getNearby(pos)) {
             if (layerMask.contains(collider.getCollisionLayer())) {

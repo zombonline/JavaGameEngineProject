@@ -1,5 +1,7 @@
 package core.ui;
 
+import game.components.player.Player;
+import game.entities.GameObject;
 import main.Main;
 import core.asset.Assets;
 import main.GamePanel;
@@ -73,8 +75,11 @@ public class GameUI {
         }
         else if(currentScreen==Screen.GAME_COMPLETE){
             updateScreen(Screen.GAME);
-            SessionManager.LoadLevelByPath(SessionManager.getCurrentLevel().levelString);
+            SessionManager.loadLevelByPath(SessionManager.getCurrentLevel().levelString);
             GamePanel.setGamePaused(false);
+        } else if(currentScreen==Screen.DIALOGUE){
+            GameObject.findFirstObjectByType(Player.class).getComponent(Player.class).setCanMove(true);
+            updateScreen(Screen.GAME);
         }
     }
     private void drawGameScreen(Graphics2D g2d) {

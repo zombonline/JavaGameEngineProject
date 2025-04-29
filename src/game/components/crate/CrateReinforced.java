@@ -2,6 +2,7 @@ package game.components.crate;
 
 import core.asset.Assets;
 import core.audio.SFXPlayer;
+import game.components.Collider;
 import game.components.crate.behaviours.BounceBehavior;
 import game.components.crate.behaviours.DestroyedByExplosionBehaviour;
 import game.components.crate.behaviours.HitCounterBehavior;
@@ -30,12 +31,12 @@ public class CrateReinforced extends Crate {
         getBehavior(HitCounterBehavior.class).addListener(
                 new HitCounterBehavior.HitCounterListener() {
                     @Override
-                    public void onHit(int current, int start) {
+                    public void onHit(int current, int start, Collider other) {
                         SFXPlayer.playSound(Assets.SFXClips.CRATE_REINFORCED_BOUNCE);
                     }
 
                     @Override
-                    public void onHitsReachedZero() {
+                    public void onHitsReachedZero(Collider other) {
 
                     }
                 }

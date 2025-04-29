@@ -7,41 +7,42 @@ import game.entities.GameObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SessionManager {
     private static LevelData currentLevel;
     private static int currentLevelIndex;
-    private static ArrayList<String> levelList = new ArrayList<>(
-            Arrays.asList(
-                    Assets.Tilemaps.LEVEL_0,
-                    Assets.Tilemaps.LEVEL_1_NEW,
-                    Assets.Tilemaps.LEVEL_2,
-                    Assets.Tilemaps.LEVEL_3
-            )
+    private static final List<String> levelList = List.of(
+            Assets.Tilemaps.LEVEL_0,
+            Assets.Tilemaps.LEVEL_1,
+            Assets.Tilemaps.LEVEL_2,
+            Assets.Tilemaps.LEVEL_3,
+            Assets.Tilemaps.LEVEL_4
     );
 
 
-    public static void LoadLevelByPath(String levelPath){
-        if(levelList.contains(levelPath)){
+    public static void loadLevelByPath(String levelPath) {
+        if (levelList.contains(levelPath)) {
             currentLevelIndex = levelList.indexOf(levelPath);
-            currentLevel = LevelLoader.parse(levelPath);
-            for(GameObject gameObject : currentLevel.initialGameobjects){
-                gameObject.initialize();
-            }
+            loadLevelInternal(levelPath);
         } else {
             System.out.println("No such level: " + levelPath);
         }
     }
 
-    public static void LoadLevelByInt(int val){
-        if(-1 < val && val < levelList.size()){
+    public static void loadLevelByIndex(int val) {
+        if (val >= 0 && val < levelList.size()) {
             currentLevelIndex = val;
-            currentLevel = LevelLoader.parse(levelList.get(currentLevelIndex));
-            for(GameObject gameObject : currentLevel.initialGameobjects){
-                gameObject.initialize();
-            }
+            loadLevelInternal(levelList.get(currentLevelIndex));
         } else {
-            System.out.println("No Level at index: " + val);
+            System.out.println("No level at index: " + val);
+        }
+    }
+
+    private static void loadLevelInternal(String levelPath) {
+        currentLevel = LevelLoader.parse(levelPath);
+        for (GameObject gameObject : currentLevel.initialGameobjects) {
+            gameObject.initialize();
         }
     }
     public static LevelData getCurrentLevel(){
@@ -50,13 +51,13 @@ public class SessionManager {
     public static boolean loadNextLevel(){
         currentLevelIndex++;
         if(currentLevelIndex < levelList.size()){
-            LoadLevelByPath(levelList.get(currentLevelIndex));
+            loadLevelByPath(levelList.get(currentLevelIndex));
             return true;
         }
         return false;
     }
     public static void reloadCurrentLevel(){
         currentLevel = null;
-        LoadLevelByPath(levelList.get(currentLevelIndex));
+        loadLevelByPath(levelList.get(currentLevelIndex));
     }
 }

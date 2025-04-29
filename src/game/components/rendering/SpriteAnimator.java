@@ -19,20 +19,23 @@ public class SpriteAnimator extends Component {
 
     public SpriteAnimator(SpriteRenderer spriteRenderer, Animation anim){
         this.spriteRenderer = spriteRenderer;
-        this(anim);
+        if(anim==null){return;}
+        currentStepIndex = 0;
+        currentAnim = anim;
+        frameTimer = currentAnim.animationSteps.getFirst().delay;
     }
 
     public SpriteAnimator(Animation anim){
         if(anim==null){return;}
         currentStepIndex = 0;
         currentAnim = anim;
-        frameTimer = currentAnim.animationSteps.getFirst().getDelay();
+        frameTimer = currentAnim.animationSteps.getFirst().delay;
     }
 
     public void loadAnimation(String animPath){
         currentStepIndex = 0;
         currentAnim = AssetLoader.getInstance().getAnimation(animPath);
-        frameTimer = currentAnim.animationSteps.getFirst().getDelay();
+        frameTimer = currentAnim.animationSteps.getFirst().delay;
         spriteRenderer.setSpriteImage(currentAnim.animationSteps.get(currentStepIndex).getImage()); // Ensure image is set immediately
 
     }
@@ -85,7 +88,7 @@ public class SpriteAnimator extends Component {
                 notifyAnimationEvent(eventKey);
             }
             spriteRenderer.setSpriteImage(currentAnim.animationSteps.get(currentStepIndex).getImage());
-            frameTimer = currentAnim.animationSteps.get(currentStepIndex).getDelay();
+            frameTimer = currentAnim.animationSteps.get(currentStepIndex).delay;
         }
     }
     public static Map<String, Object> getDefaultValues(){

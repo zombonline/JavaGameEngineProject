@@ -1,9 +1,9 @@
 package game.entities;
 
+import core.utils.Vector2;
 import game.components.core.Component;
 import game.components.core.Transform;
 import core.scene.SessionManager;
-import main.GamePanel;
 
 import java.awt.*;
 import java.util.*;
@@ -15,27 +15,55 @@ public class GameObject {
     private final List<Component> componentList = new ArrayList<>();
     private final String name;
 
-    private final HashMap extraDataMap = new HashMap<>();
-
+    private final HashMap<Object, Object> extraDataMap = new HashMap<>();
 
     public GameObject(String name) {
-        this.transform = new Transform();
+        this.transform = new Transform(Vector2.zero,Vector2.one);
         this.transform.setGameObject(this);
         componentList.add(this.transform);
         this.name = (name == null || name.isBlank()) ? DEFAULT_NAME : name; // Default naming
     }
+
     public void initialize(){
         if(SessionManager.getCurrentLevel() != null){
             SessionManager.getCurrentLevel().gameObjectsToAwake.add(this);
         }
     }
-    public GameObject() {
-        this(null);
+
+    public void awake(){
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for(Component component : snapshot){
+            component.awake();
+        }
     }
-    public <T extends Component> T addComponent(T component) {
+    public void start(){
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for (Component component :snapshot){
+            component.start();
+        }
+    }
+    public void update() {
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for (Component component : snapshot) {
+            component.update();
+        }
+    }
+    public void draw(Graphics2D g2d) {
+        for (Component component : componentList) {
+            component.draw(g2d);
+        }
+    }
+    public void onDestroy() {
+        ArrayList<Component> snapshot = new ArrayList<>(componentList);
+        for (Component component : snapshot) {
+            component.onDestroy();
+        }
+    }
+
+    //region Component add/remove/find logic
+    public <T extends Component> void addComponent(T component) {
         componentList.add(component); // Added explicit list reference
         component.setGameObject(this);
-        return component;
     }
 
     public <T extends Component> void removeComponentByType(Class<T> type) {
@@ -58,37 +86,6 @@ public class GameObject {
         return Collections.unmodifiableList(componentList); // Defensive copy with unmodifiable list
     }
 
-    public void awake(){
-        ArrayList<Component> snapshot = new ArrayList<>(componentList);
-        for(Component component : snapshot){
-            component.awake();
-
-        }
-
-    }
-    public void start(){
-        ArrayList<Component> snapshot = new ArrayList<>(componentList);
-        for (Component component :snapshot){
-            component.start();
-        }
-    }
-    public void update() {
-        ArrayList<Component> snapshot = new ArrayList<>(componentList);
-        for (Component component : snapshot) {
-            component.update();
-        }
-    }
-    public void draw(Graphics2D g2d) {
-        for (Component component : componentList) {
-            component.draw(g2d);
-        }
-    }
-    public static void destroy(GameObject object){
-        for(Transform child : object.getTransform().getChildren()){
-            SessionManager.getCurrentLevel().gameObjectsToDestroy.add(child.getGameObject());
-        }
-        SessionManager.getCurrentLevel().gameObjectsToDestroy.add(object);
-    }
     private <T extends Component> Component findComponent(Class<T> type) {
         for (Component component : componentList) {
             if (type.isInstance(component)) {
@@ -97,7 +94,9 @@ public class GameObject {
         }
         return null; // No matching component
     }
+    //endregion
 
+    //region extra data logic
     public void insertExtraData(Object key, Object value){
         extraDataMap.put(key,value);
     }
@@ -110,6 +109,9 @@ public class GameObject {
         return extraDataMap.getOrDefault(key, null);
     }
 
+    //endregion
+
+    //region getters
     public Transform getTransform() {
         return transform;
     }
@@ -117,7 +119,9 @@ public class GameObject {
     public String getName() {
         return name;
     }
+    //endregion
 
+    //region static methods (find/destroy objects)
     public static <T extends Component> GameObject findFirstObjectByType(Class<T> type){
         for(GameObject gameObject : SessionManager.getCurrentLevel().activeGameObjects){
             if(gameObject.hasComponent(type)){
@@ -136,5 +140,11 @@ public class GameObject {
         }
         return gameObjects;
     }
-
+    public static void destroy(GameObject object){
+        for(Transform child : object.getTransform().getChildren()){
+            SessionManager.getCurrentLevel().gameObjectsToDestroy.add(child.getGameObject());
+        }
+        SessionManager.getCurrentLevel().gameObjectsToDestroy.add(object);
+    }
+    //endregion
 }

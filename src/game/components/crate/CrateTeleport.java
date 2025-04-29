@@ -4,6 +4,7 @@ import core.asset.Assets;
 import core.audio.SFXPlayer;
 import core.utils.Vector2;
 import game.components.CameraFollow;
+import game.components.Collider;
 import game.components.crate.behaviours.BounceBehavior;
 import game.components.crate.behaviours.DestroyedByExplosionBehaviour;
 import game.components.crate.behaviours.HitCounterBehavior;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CrateTeleport extends Crate {
+    Collider collider;
+
     private String teleportKey;
     private CrateTeleport pairedCrate;
     private GameObject player;
@@ -33,8 +36,15 @@ public class CrateTeleport extends Crate {
     public void awake() {
         super.awake();
         getExtraData();
+        getRequiredComponentReferences();
         setUpHitCounterListener();
     }
+
+    @Override
+    protected void getRequiredComponentReferences() {
+        collider = fetchRequiredComponent(Collider.class);
+    }
+
     @Override
     public void start() {
         super.start();
@@ -45,6 +55,8 @@ public class CrateTeleport extends Crate {
     private void getExtraData() {
         if(gameObject.hasExtraData("teleportKey")){
             teleportKey = gameObject.getExtraData("teleportKey").toString();
+        } else {
+            System.out.println("Teleport key not found on crate at: " + getGameObject().getTransform().getPosition().toString());
         }
         if(gameObject.hasExtraData("cameraSnap")){
             cameraSnap = gameObject.getExtraData("cameraSnap").toString().equals("true");
@@ -66,13 +78,15 @@ public class CrateTeleport extends Crate {
         getBehavior(HitCounterBehavior.class).addListener(
                 new HitCounterBehavior.HitCounterListener() {
                     @Override
-                    public void onHit(int current, int start) {
+                    public void onHit(int current, int start, Collider other) {
 
                     }
 
                     @Override
-                    public void onHitsReachedZero() {
-                        player.getTransform().setPosition(pairedCrate.getGameObject().getTransform().getPosition().add(Vector2.up));
+                    public void onHitsReachedZero(Collider other) {
+                        Vector2 contactNormal = Collider.getContactNormal(collider, other);
+                        player.getTransform().setPosition(pairedCrate.getGameObject().getTransform().getPosition().add(contactNormal.invert()));
+
                         if(cameraSnap) {player.getComponent(CameraFollow.class).snapToTarget();}
                         getBehavior(HitCounterBehavior.class).active =false;
                         getBehavior(BounceBehavior.class).active = false;

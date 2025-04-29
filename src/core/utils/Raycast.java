@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Raycast {
-    private Vector2 origin;
-    private double length;
-    private float rotation;
-    private float checkFrequency;
-    private ArrayList<CollisionLayer> mask;
-    private boolean ignoreTriggers;
-    public Raycast(Vector2 origin, double length, float rotation, float checkFrequency, ArrayList<CollisionLayer> mask, boolean ignoreTriggers){
+    private final Vector2 origin;
+    private final double length;
+    private final float rotation;
+    private final float checkFrequency;
+    private final List<CollisionLayer> mask;
+    private final boolean ignoreTriggers;
+    public Raycast(Vector2 origin, double length, float rotation, float checkFrequency, List<CollisionLayer> mask, boolean ignoreTriggers){
         this.origin = origin;
         this.length = length;
         this.rotation = rotation;
@@ -23,7 +23,7 @@ public class Raycast {
         this.ignoreTriggers = ignoreTriggers;
     }
 
-    public class Hit {
+    public static class Hit {
         Vector2 hitPoint;
         Collider collider;
         public Hit(Vector2 hitPoint, Collider collider){
@@ -55,7 +55,7 @@ public class Raycast {
         }
         return null;
     }
-    public Collider checkForColliderAtPoint(Vector2 point, ArrayList<CollisionLayer> mask){
+    public Collider checkForColliderAtPoint(Vector2 point, List<CollisionLayer> mask){
         List<Collider> nearbyColliders = SessionManager.getCurrentLevel().spatialHashGrid.getNearby(point, mask);
         Collider result = null;
         for (Collider nearbyCollider : nearbyColliders) {

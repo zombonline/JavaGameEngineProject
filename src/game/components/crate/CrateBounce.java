@@ -4,6 +4,7 @@ package game.components.crate;
 import core.asset.Assets;
 import core.audio.SFXPlayer;
 import core.scene.SessionManager;
+import game.components.Collider;
 import game.components.crate.behaviours.BounceBehavior;
 import game.components.crate.behaviours.DestroyedByExplosionBehaviour;
 import game.components.crate.behaviours.HitCounterBehavior;
@@ -26,7 +27,7 @@ public class CrateBounce extends Crate {
         getBehavior(HitCounterBehavior.class).addListener(
                 new HitCounterBehavior.HitCounterListener() {
                     @Override
-                    public void onHit(int current, int start) {
+                    public void onHit(int current, int start, Collider other) {
                         SessionManager.getCurrentLevel().getObjectByName("Player").getComponent(PlayerComboTracker.class).onCrateHit();
                         if(current>0){
                             SFXPlayer.playSound(Assets.SFXClips.CRATE_BOUNCE);
@@ -34,10 +35,11 @@ public class CrateBounce extends Crate {
                     }
 
                     @Override
-                    public void onHitsReachedZero() {
+                    public void onHitsReachedZero(Collider other) {
                         SFXPlayer.playSound(Assets.SFXClips.CRATE_DESTROYED);
                         GameObject.destroy(gameObject);
                     }
+
                 }
         );
     }

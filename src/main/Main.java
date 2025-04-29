@@ -17,15 +17,16 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, IOException {
 
         // Initialize JFrame properties
+
+        gamePanel.setDoubleBuffered(true);
+        gamePanel.setFocusable(true);
+        gamePanel.setBackground(Color.BLACK);
+        gamePanel.setBounds(0, 0, width, height);
         frame.setSize(width, height);
         frame.setTitle("Test Game");
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gamePanel.setDoubleBuffered(true);
-        gamePanel.setFocusable(true);
-        gamePanel.setBackground(Color.BLACK);
-        gamePanel.setBounds(0, 0, width, height);
         frame.add(gamePanel);
         frame.setVisible(true);
         // Start the game loop

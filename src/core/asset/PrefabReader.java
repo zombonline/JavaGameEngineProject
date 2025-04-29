@@ -66,7 +66,6 @@ public class PrefabReader {
                     if(component!= null){
                         if(component instanceof Transform){
                             newObject.getTransform().setPosition(((Transform) component).getPosition());
-                            newObject.getTransform().setRotation(((Transform) component).getRotation());
                             newObject.getTransform().setScale(((Transform) component).getScale());
                         } else {
                             newObject.addComponent(component);
@@ -131,9 +130,8 @@ public class PrefabReader {
     private static Transform buildTransform(JsonNode values){
         Map<String,Object> defaultValues = Transform.getDefaultValues();
         Vector2 position = getVector2("position", values, defaultValues);
-        Vector2 rotation = getVector2("rotation", values, defaultValues);
         Vector2 scale = getVector2("scale", values, defaultValues);
-        return new Transform(position, rotation, scale);
+        return new Transform(position, scale);
     }
 
     /**

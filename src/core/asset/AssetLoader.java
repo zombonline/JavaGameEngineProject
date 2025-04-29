@@ -173,6 +173,7 @@ public class AssetLoader {
             return objectMapper.readValue(input, Animation.class);
         } catch (Exception e){
             System.err.println("[AssetLoader] Failed to load asset: " + path);
+            e.printStackTrace();
             return null;
         }
     }

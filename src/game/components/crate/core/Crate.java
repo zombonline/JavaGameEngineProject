@@ -19,7 +19,7 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     Collider collider;
     Collider.CollisionListener listener;
     boolean breakable, destroyed;
-    public static float requiredHitStrength = 0.2f;
+    public static float requiredHitStrength = 0.00001f;
 
     protected List<CrateBehavior> behaviors;
 

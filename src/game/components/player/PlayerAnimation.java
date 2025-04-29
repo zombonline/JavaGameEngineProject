@@ -39,6 +39,7 @@ public class PlayerAnimation extends Component {
             @Override
             public void onAnimationEvent(String eventKey) {
                 switch(eventKey){
+
                     case "sfx_step":
                         double random = Math.random();
                         if(random>0.5){

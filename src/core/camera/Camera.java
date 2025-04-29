@@ -14,10 +14,17 @@ public class Camera{
     public Vector2 getPosition() {
         return position;
     }
-    public Vector2 getCameraCentrePosition(){
-        return new Vector2(position.getX()+((float) gamePanel.getWidth() /2),position.getY()+((float) gamePanel.getHeight() /2));
+    public Vector2 getCameraCentrePosition() {
+        float halfWidth = gamePanel.getWidth() / 2f;
+        float halfHeight = gamePanel.getHeight() / 2f;
+        return new Vector2(position.getX() + halfWidth, position.getY() + halfHeight);
     }
-    public void setPosition(Vector2 position){
-        this.position = new Vector2(position.getX()-((float) gamePanel.getWidth() /2),position.getY()-((float) gamePanel.getHeight() /2));
+    /**
+     * Sets the camera's position so that the given point becomes the center of the viewport.
+     */
+    public void setPosition(Vector2 centerPosition) {
+        float halfWidth = gamePanel.getWidth() / 2f;
+        float halfHeight = gamePanel.getHeight() / 2f;
+        this.position = new Vector2(centerPosition.getX() - halfWidth, centerPosition.getY() - halfHeight);
     }
 }

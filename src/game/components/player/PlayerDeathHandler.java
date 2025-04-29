@@ -19,16 +19,18 @@ public class PlayerDeathHandler extends Component implements Explosion.Explosion
     protected void getRequiredComponentReferences() {
         transform = fetchRequiredComponent(Transform.class);
     }
-
     @Override
     public void update() {
-        Vector2 position = transform.getPosition();
+        checkIfOutOfBounds();
+    }
 
+    private void checkIfOutOfBounds() {
+        Vector2 position = transform.getPosition();
         if(position.getX() < 0 || position.getX() > SessionManager.getCurrentLevel().getWidth() || position.getY() < 0 || position.getY() > SessionManager.getCurrentLevel().getHeight()) {
             die();
         }
-
     }
+
     public void die(){
         if(dead){return;}
         dead = true;
@@ -38,9 +40,7 @@ public class PlayerDeathHandler extends Component implements Explosion.Explosion
         new Thread(() -> {
             try {
                 Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException _) {}
            SessionManager.reloadCurrentLevel();
         }).start();
     }

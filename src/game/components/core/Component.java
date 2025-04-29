@@ -8,28 +8,15 @@ import java.util.ArrayList;
 
 public abstract class Component {
     protected GameObject gameObject;
-    protected ArrayList<Component> requiredComponents = new ArrayList<>();
-    public void setGameObject(GameObject gameObject) {
-        this.gameObject = gameObject;
-    }
-    public GameObject getGameObject() {
-        return gameObject;
-    }
-    public <T extends Component> T getComponent(Class<T> type) {
-        return gameObject.getComponent(type);
-    }
-    public <T extends Component> boolean hasComponent(Class<T> type) {
-        return gameObject.hasComponent(type);
-    }
+
+    //override methods
     public void awake() {}
     public void start() {}
-    protected void getRequiredComponentReferences() {};
+    protected void getRequiredComponentReferences() {}
     public void update() {}
     public void draw(Graphics2D g2d) {}
-
-
     public void onDestroy(){}
-//    public static Map<String,Object> getDefaultValues() {}
+
 
     protected <T extends Component> T fetchRequiredComponent(Class<T> tClass) {
         T component = gameObject.getComponent(tClass);
@@ -38,5 +25,18 @@ public abstract class Component {
         }
         return component;
     }
+    public void setGameObject(GameObject gameObject) {
+        this.gameObject = gameObject;
+    }
+    public GameObject getGameObject() {
+        return gameObject;
+    }
 
+    //game object methods accessed by component
+    public <T extends Component> T getComponent(Class<T> type) {
+        return gameObject.getComponent(type);
+    }
+    public <T extends Component> boolean hasComponent(Class<T> type) {
+        return gameObject.hasComponent(type);
+    }
 }
