@@ -33,7 +33,7 @@ public class PrefabReader {
      * in JSON format. If the file cannot be found, or if an error occurs during parsing,
      * the method returns null.
      *
-     * @param path the path to the JSON resource file containing the GameObject's data.
+     * @param input the path to the JSON resource file containing the GameObject's data.
      *             The path should be accessible as a resource within the application.
      * @return a {@link GameObject} constructed based on the data from the JSON file,
      *         or null if the file is not found or an error occurs during parsing.
@@ -113,7 +113,7 @@ public class PrefabReader {
             case "crateScaffold" -> new CrateScaffold();
             case "crate" -> new Crate();
             case "crateMetalMoving" -> buildCrateMetalMoving(values);
-
+            case "oneShotAnimationObject" -> new OneShotAnimationObject();
             default -> null;
         };
     }

@@ -28,7 +28,7 @@ public class DestroyedByExplosionBehaviour implements CrateBehavior {
     {
         void onDestroyed();
     }
-    private List<DestroyedByExplosionListener> listeners = new ArrayList<>();
+    private final List<DestroyedByExplosionListener> listeners = new ArrayList<>();
     public void addListener(DestroyedByExplosionListener listener) {
         listeners.add(listener);
     }

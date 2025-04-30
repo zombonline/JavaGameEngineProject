@@ -10,11 +10,11 @@ public class Main {
 
     public static final int width = (1920/10)*7;
     public static final int height = (1080/10)*7;
-    static JFrame frame = new JFrame(); // Main.Main window
-    public static GamePanel gamePanel = new GamePanel();
-    public static Camera camera = new Camera(gamePanel); // Camera system
+    static final JFrame frame = new JFrame(); // Main.Main window
+    public static final GamePanel gamePanel = new GamePanel();
+    public static final Camera camera = new Camera(gamePanel); // Camera system
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args){
 
         // Initialize JFrame properties
 

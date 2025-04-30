@@ -4,8 +4,8 @@ public class Key {
     private boolean held = false;
     private boolean pressedThisFrame = false;
     private boolean releasedThisFrame = false;
-    private Runnable onPressed;
-    private Runnable onReleased;
+    private final Runnable onPressed;
+    private final Runnable onReleased;
 
     public Key(Runnable onPressed, Runnable onReleased) {
         this.onPressed = onPressed != null ? onPressed : () -> {};
@@ -33,5 +33,21 @@ public class Key {
 
     public boolean isHeld() {
         return held;
+    }
+
+    public boolean isPressedThisFrame() {
+        return pressedThisFrame;
+    }
+
+    public void setPressedThisFrame(boolean pressedThisFrame) {
+        this.pressedThisFrame = pressedThisFrame;
+    }
+
+    public boolean isReleasedThisFrame() {
+        return releasedThisFrame;
+    }
+
+    public void setReleasedThisFrame(boolean releasedThisFrame) {
+        this.releasedThisFrame = releasedThisFrame;
     }
 }

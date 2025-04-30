@@ -16,7 +16,7 @@ public class Explosion extends Component {
     float scale;
     private SpriteAnimator spriteAnimator;
     private Collider collider;
-    private List<GameObject> affectedObjects = new ArrayList<>();
+    private final List<GameObject> affectedObjects = new ArrayList<>();
 
     private SpriteAnimator.AnimatorListener animatorListener;
     private Collider.CollisionListener collisionListener;

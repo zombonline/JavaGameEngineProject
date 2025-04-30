@@ -1,0 +1,9 @@
+{
+  "name": "Crate Break",
+  "components": {
+    "transform": {"scale": [1.1,1.1]},
+    "spriteRenderer": {"spriteImage": "Images.CRATE_TELEPORT_AURA_1"},
+    "spriteAnimator": {"startingAnim":"Animations.CRATE_TELEPORT_AURA"},
+    "oneShotAnimationObject": {}
+  }
+}

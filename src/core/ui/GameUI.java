@@ -24,7 +24,6 @@ public class GameUI {
     private static GameUI instance;
     private Vector2 textSize;
     private Screen currentScreen = Screen.GAME;
-    private final KeyHandler keyHandler = new KeyHandler();
 
     //LEVEL OVER SCREEN
     private int resultsCrates, resultsCombo;
@@ -38,7 +37,7 @@ public class GameUI {
 
 
     private GameUI() {
-        setUpControls(keyHandler);
+        setUpControls(new KeyHandler());
     }
     public static GameUI getInstance() {
         if (instance == null) {
@@ -75,7 +74,7 @@ public class GameUI {
         }
         else if(currentScreen==Screen.GAME_COMPLETE){
             updateScreen(Screen.GAME);
-            SessionManager.loadLevelByPath(SessionManager.getCurrentLevel().levelString);
+            SessionManager.loadLevelByIndex(0);
             GamePanel.setGamePaused(false);
         } else if(currentScreen==Screen.DIALOGUE){
             GameObject.findFirstObjectByType(Player.class).getComponent(Player.class).setCanMove(true);

@@ -22,9 +22,9 @@ public class PlayerComboTracker extends Component {
     private int comboCount = 0;
     private float comboDisplayTimer;
     private final float comboDisplayTime;
-    private float startFontSize;
+    private final float startFontSize;
     private float fontSize;
-    private float fontSizeIncrement;
+    private final float fontSizeIncrement;
 
     public PlayerComboTracker(float comboDisplayTime, float startFontSize, float fontSizeIncrement) {
         this.comboDisplayTime = comboDisplayTime;

@@ -36,11 +36,7 @@ public class CrateScaffold extends Crate {
         double playerBottom = Math.floor(playerBounds.maxY * 10) / 10;
         Bounds thisBounds = collider.getBounds();
         double thisTop = Math.floor(thisBounds.minY * 10) / 10;
-        if (playerBottom < thisTop+0.25f) {
-            collider.setIsTrigger(false);
-        } else {
-            collider.setIsTrigger(true);
-        }
+        collider.setIsTrigger(!(playerBottom < thisTop + 0.25f));
 
     }
 }

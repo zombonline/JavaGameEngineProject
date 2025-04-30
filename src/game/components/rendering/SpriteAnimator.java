@@ -14,7 +14,7 @@ public class SpriteAnimator extends Component {
     int frameTimer = 0;
     int currentStepIndex = 0;
     private Animation currentAnim;
-
+    boolean paused = false;
 
 
     public SpriteAnimator(SpriteRenderer spriteRenderer, Animation anim){
@@ -44,7 +44,7 @@ public class SpriteAnimator extends Component {
         void onAnimationEvent(String eventKey);
         void onAnimationComplete();
     }
-    private List<SpriteAnimator.AnimatorListener> listeners = new ArrayList<>();
+    private final List<SpriteAnimator.AnimatorListener> listeners = new ArrayList<>();
     public void addListener(SpriteAnimator.AnimatorListener listener) {
         listeners.add(listener);
     }
@@ -70,7 +70,7 @@ public class SpriteAnimator extends Component {
     }
     @Override
     public void update() {
-        if(currentAnim == null){return;}
+        if(currentAnim == null || paused){return;}
         frameTimer--;
         if(frameTimer == 0){
             currentStepIndex++;
@@ -95,5 +95,8 @@ public class SpriteAnimator extends Component {
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("startingAnim","");
         return defaultValues;
+    }
+    public void pause(){
+        paused = true;
     }
 }

@@ -221,7 +221,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="Items">
-  <object id="2" gid="70" x="8192" y="8192" width="512" height="1024">
+  <object id="2" gid="70" x="9216" y="6656" width="512" height="1024">
    <properties>
     <property name="dialogue">Great, another automated worker... I guess I'll be out of a
 job by the end of the month. Anyway, your first crate is waiting
@@ -229,7 +229,7 @@ just up ahead...</property>
     <property name="name" value="Fred the Shift Supvervisor"/>
    </properties>
   </object>
-  <object id="3" gid="51" x="12544" y="9600" width="512" height="512"/>
+  <object id="3" gid="51" x="8192" y="8192" width="512" height="512"/>
   <object id="4" gid="70" x="14080" y="9728" width="512" height="1024">
    <properties>
     <property name="dialogue">Hey, woah woah... you aren't meant to break those little guy...
@@ -268,57 +268,6 @@ don't know what that means!</property>
   <object id="46" gid="51" x="33536" y="8192" width="512" height="512"/>
   <object id="48" gid="51" x="34048" y="8192" width="512" height="512"/>
   <object id="49" gid="51" x="33792" y="7680" width="512" height="512"/>
- </objectgroup>
- <objectgroup id="12" name="Items">
-  <object id="50" gid="70" x="8192" y="8192" width="512" height="1024">
-   <properties>
-    <property name="dialogue">Great, another automated worker... I guess I'll be out of a
-job by the end of the month. Anyway, your first crate is waiting
-just up ahead...</property>
-    <property name="name" value="Fred the Shift Supvervisor"/>
-   </properties>
-  </object>
-  <object id="51" gid="51" x="12544" y="9600" width="512" height="512"/>
-  <object id="52" gid="70" x="14080" y="9728" width="512" height="1024">
-   <properties>
-    <property name="dialogue">Hey, woah woah... you aren't meant to break those little guy...
-Actually, screw this job. Go wild man!</property>
-    <property name="name" value="Chad"/>
-   </properties>
-  </object>
-  <object id="53" gid="54" x="12544" y="10112" width="512" height="512"/>
-  <object id="54" gid="51" x="15360" y="9728" width="512" height="512"/>
-  <object id="55" gid="51" x="16128" y="8960" width="512" height="512"/>
-  <object id="56" gid="54" x="16896" y="9728" width="512" height="512"/>
-  <object id="57" gid="51" x="19712" y="8448" width="512" height="512"/>
-  <object id="58" gid="51" x="20480" y="8448" width="512" height="512"/>
-  <object id="59" gid="51" x="21248" y="8448" width="512" height="512"/>
-  <object id="60" gid="70" x="21632" y="11776" width="512" height="1024">
-   <properties>
-    <property name="dialogue">Finally! Some help. I've been trying to get out of here for four
-days now! Management keep telling me to press my 'r' key but I
-don't know what that means!</property>
-    <property name="name" value="Larry"/>
-   </properties>
-  </object>
-  <object id="61" gid="51" x="24832" y="8704" width="512" height="512"/>
-  <object id="62" gid="51" x="25216" y="6400" width="512" height="512"/>
-  <object id="63" gid="51" x="25600" y="8704" width="512" height="512"/>
-  <object id="64" gid="51" x="25984" y="6400" width="512" height="512"/>
-  <object id="65" gid="51" x="27136" y="8704" width="512" height="512"/>
-  <object id="66" gid="54" x="28160" y="8704" width="512" height="512"/>
-  <object id="67" gid="54" x="28672" y="8704" width="512" height="512"/>
-  <object id="68" gid="54" x="29184" y="8704" width="512" height="512"/>
-  <object id="69" gid="51" x="26368" y="8704" width="512" height="512"/>
-  <object id="70" gid="51" x="26752" y="6400" width="512" height="512"/>
-  <object id="71" gid="54" x="29696" y="8704" width="512" height="512"/>
-  <object id="72" gid="51" x="30976" y="8704" width="512" height="512"/>
-  <object id="73" gid="69" x="36224" y="8192" width="512" height="1024"/>
-  <object id="74" gid="51" x="33536" y="8192" width="512" height="512"/>
-  <object id="75" gid="51" x="34560" y="8192" width="512" height="512"/>
-  <object id="76" gid="51" x="33792" y="7680" width="512" height="512"/>
-  <object id="77" gid="51" x="34048" y="7168" width="512" height="512"/>
-  <object id="78" gid="51" x="34304" y="7680" width="512" height="512"/>
  </objectgroup>
  <objectgroup id="5" name="Player Layer">
   <object id="6" gid="62" x="7168" y="8192" width="512" height="512"/>

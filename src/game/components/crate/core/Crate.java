@@ -2,6 +2,7 @@ package game.components.crate.core;
 
 import core.asset.AssetLoader;
 import core.asset.Assets;
+import core.asset.PrefabReader;
 import core.scene.SessionManager;
 import core.utils.Vector2;
 import game.components.Collider;
@@ -18,10 +19,11 @@ import java.util.List;
 public class Crate extends Component implements Explosion.ExplosionListener {
     Collider collider;
     Collider.CollisionListener listener;
-    boolean breakable, destroyed;
-    public static float requiredHitStrength = 0.00001f;
+    final boolean breakable;
+    boolean destroyed;
+    public static final float requiredHitStrength = 0.00001f;
 
-    protected List<CrateBehavior> behaviors;
+    protected final List<CrateBehavior> behaviors;
 
     public Crate(boolean breakable, List<CrateBehavior> behaviors) {
         this.breakable = breakable;
@@ -51,9 +53,6 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     }
 
     @Override
-    public void start(){}
-
-    @Override
     public void update(){
         for(CrateBehavior b : behaviors) {b.update(Crate.this);}
 
@@ -73,22 +72,11 @@ public class Crate extends Component implements Explosion.ExplosionListener {
             listener = new Collider.CollisionListener() {
                 @Override
                 public void onCollisionEnter(Collider other, Vector2 contactNormal) {
-//                    double otherBottom = Math.floor(other.getBounds().maxY * 10) / 10;
-//                    double colliderTop = Math.floor(collider.getBounds().minY * 10) / 10;
-//                    if (otherBottom <= colliderTop + 0.25f) {
-//                        for (CrateBehavior b : behaviors) {b.onTouchTop(other, Crate.this);}
-//                    }
                     if(contactNormal.getY() >0){
                         for (CrateBehavior b : behaviors) {b.onTouchTop(other, Crate.this);}
                     } else if(contactNormal.getY()<0) {
                         for (CrateBehavior b : behaviors) {b.onTouchBottom(other, Crate.this);}
                     }
-
-//                    double playerTop = Math.floor(other.getBounds().minY * 10) / 10;
-//                    double colliderBottom = Math.floor(collider.getBounds().maxY * 10) / 10;
-//                    if (playerTop >= colliderBottom - 0.25f) {
-//                        for (CrateBehavior b : behaviors) {b.onTouchBottom(other, Crate.this);}
-//                    }
                 }
 
                 @Override
@@ -106,6 +94,8 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     public void onDestroy() {
         if(destroyed) return;   
         if(isBreakable()){
+            GameObject crateBreak = AssetLoader.getInstance().getPrefab(Assets.Prefabs.CRATE_BREAK_BROWN);
+            crateBreak.getTransform().setPosition(getGameObject().getTransform().getPosition());
             destroyed = true;
             SessionManager.getCurrentLevel().incrementCratesDestroyed();
         }

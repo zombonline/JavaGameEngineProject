@@ -16,8 +16,8 @@ import java.util.List;
 public class ExplodeBehavior implements CrateBehavior {
     boolean triggered = false;
     boolean exploded = false;
-    public boolean active = true;
-    float explosionScale;
+    public final boolean active = true;
+    final float explosionScale;
     public ExplodeBehavior(float explosionScale) {
         this.explosionScale = explosionScale;
     }

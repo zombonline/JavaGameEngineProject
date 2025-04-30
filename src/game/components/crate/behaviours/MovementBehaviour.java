@@ -1,6 +1,7 @@
 package game.components.crate.behaviours;
 
 import game.components.Collider;
+import game.components.Rigidbody;
 import game.components.crate.core.Crate;
 import game.components.crate.behaviours.core.CrateBehavior;
 import game.entities.GameObject;
@@ -14,11 +15,11 @@ public class MovementBehaviour implements CrateBehavior {
 
     Vector2 initialPosition;
     Vector2 moveDirection;
-    float moveSpeed;
+    final float moveSpeed;
     float moveDistance;
-    public boolean active = true;
+    public final boolean active = true;
 
-    public ArrayList<GameObject> objectsOnTop = new ArrayList<>();
+    public final ArrayList<GameObject> objectsOnTop = new ArrayList<>();
 
 
     public MovementBehaviour(float moveSpeed, float moveDistance, Vector2 dir){
@@ -66,6 +67,11 @@ public class MovementBehaviour implements CrateBehavior {
 
     @Override
     public void onTouchTop(Collider other, Crate crate) {
+        if(other.hasComponent(Rigidbody.class)){
+            if(other.getComponent(Rigidbody.class).isKinematic()){
+                return;
+            }
+        }
         crate.getBehavior(MovementBehaviour.class).objectsOnTop.add(other.getGameObject());
     }
 
@@ -87,7 +93,7 @@ public class MovementBehaviour implements CrateBehavior {
     {
         void onChangeDirection(Vector2 newDirection);
     }
-    private List<MovementBehaviour.MovementListener> listeners = new ArrayList<>();
+    private final List<MovementBehaviour.MovementListener> listeners = new ArrayList<>();
     public void addListener(MovementBehaviour.MovementListener listener) {
         listeners.add(listener);
     }

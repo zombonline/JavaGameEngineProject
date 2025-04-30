@@ -48,10 +48,7 @@ public class NPCDialogueHandler extends Component {
             }
             @Override
             public void onCollisionExit(Collider other, Vector2 contactNormal) {
-                if(other.hasComponent(Player.class)){
-                    System.out.println("Bye bye Player");
-                    GameUI.getInstance().updateScreen(GameUI.Screen.GAME);
-                }
+
             }
             @Override
             public void onCollisionStay(Collider other, Vector2 contactNormal) {

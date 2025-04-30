@@ -22,7 +22,8 @@ import java.util.Map;
 public class CrateMetalMoving extends Crate {
 
     SpriteRenderer spriteRenderer;
-    BufferedImage horizontalImage, verticalImage;
+    final BufferedImage horizontalImage;
+    final BufferedImage verticalImage;
     public CrateMetalMoving(float moveSpeed, float moveDistance, Vector2 dir, BufferedImage horizontalImage, BufferedImage verticalImage){
         super(false, List.of(
                 new MovementBehaviour(moveSpeed, moveDistance, dir)

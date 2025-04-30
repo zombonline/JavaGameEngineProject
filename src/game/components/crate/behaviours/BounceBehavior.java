@@ -8,8 +8,8 @@ import game.components.Rigidbody;
 import core.utils.Vector2;
 
 public class BounceBehavior implements CrateBehavior {
-    private float bounceStrength;
-    private boolean bouncePlayerOnly;
+    private final float bounceStrength;
+    private final boolean bouncePlayerOnly;
     public boolean active = true;
 
     public BounceBehavior(float bounceStrength, boolean bouncePlayerOnly) {

@@ -58,7 +58,6 @@ public class AssetLoader {
             return ImageIO.read(input).getSubimage(x,y,w,h);
         } catch (Exception e){
             System.err.println("[AssetLoader] Failed to load image for sub image at: " + path);
-            e.printStackTrace();
             return null;
         }
     }
@@ -173,7 +172,6 @@ public class AssetLoader {
             return objectMapper.readValue(input, Animation.class);
         } catch (Exception e){
             System.err.println("[AssetLoader] Failed to load asset: " + path);
-            e.printStackTrace();
             return null;
         }
     }
@@ -202,10 +200,6 @@ public class AssetLoader {
                 }
             }
         }
-        if (cachedinputStream == null) {
-            System.err.println("[AssetLoader] Failed to get inputStream: " + path);
-            return null;
-        }
         return cachedinputStream.getNewInputStream();
     }
     private CachedInputStream loadAndCacheInputStream(String path) {
@@ -220,7 +214,6 @@ public class AssetLoader {
             return cachedInputStream;
         } catch (Exception e) {
             System.err.println("[AssetLoader] Failed to load asset: " + path);
-            e.printStackTrace();
             return null;
         }
     }
@@ -261,21 +254,21 @@ public class AssetLoader {
         }
     }
     private static class CachedImage extends CachedAsset {
-        BufferedImage image;
+        final BufferedImage image;
         public CachedImage(BufferedImage image) {
             super();
             this.image = image;
         }
     }
     private static class CachedAnimation extends CachedAsset {
-        Animation animation;
+        final Animation animation;
         public CachedAnimation(Animation animation) {
             super();
             this.animation = animation;
         }
     }
     private static class CachedSFXClip extends CachedAsset {
-        List<Clip> clipPool = new ArrayList<>();
+        final List<Clip> clipPool = new ArrayList<>();
         int nextClipIndex = 0;
 
         public CachedSFXClip(List<Clip> clips) {

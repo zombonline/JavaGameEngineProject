@@ -1,0 +1,9 @@
+{
+  "name": "Crate Break",
+  "components": {
+    "transform": {"scale": [2.0,2.0]},
+    "spriteRenderer": {"spriteImage": "Images.CRATE_BREAK_BROWN_1"},
+    "spriteAnimator": {"startingAnim":"Animations.CRATE_BREAK_BROWN"},
+    "oneShotAnimationObject": {}
+  }
+}

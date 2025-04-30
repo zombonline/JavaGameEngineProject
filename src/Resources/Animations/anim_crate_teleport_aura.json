@@ -1,0 +1,21 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.CRATE_TELEPORT_AURA_1",
+      "delay": 4
+    },
+    {
+      "imageAddress": "Images.CRATE_TELEPORT_AURA_2",
+      "delay": 4
+    },
+    {
+      "imageAddress": "Images.CRATE_TELEPORT_AURA_3",
+      "delay": 4
+    },
+    {
+      "imageAddress": "Images.CRATE_TELEPORT_AURA_4",
+      "delay": 4
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "isLooping": false,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.CRATE_BREAK_BROWN_1",
+      "delay": 1
+    },
+    {
+      "imageAddress": "Images.CRATE_BREAK_BROWN_2",
+      "delay": 2
+    },
+    {
+      "imageAddress": "Images.CRATE_BREAK_BROWN_3",
+      "delay": 3
+    },
+    {
+      "imageAddress": "Images.CRATE_BREAK_BROWN_4",
+      "delay": 3
+    }
+  ]
+}

@@ -105,24 +105,6 @@ public class CameraFollow extends Component {
                         SessionManager.getCurrentLevel().getHeight()* GamePanel.WORLD_SCALE));
     }
 
-    @Override
-    public void draw(Graphics2D g2d) {
-//        super.draw(g2d);
-//        g2d.setColor(new Color(255,255,0,100));
-//        Vector2 playerPos = transform.getPosition().add(transform.getScale()).mul(Main.Main.GamePanel.WORLD_SCALE);
-//        g2d.fillOval((int) playerPos.getX()-5,(int) playerPos.getY()-5,10,10);
-//        Vector2 screenCenter = new Vector2(Main.Main.width /2,Main.Main.height /2);
-//        g2d.fillOval((int) screenCenter.getX()-5,(int)screenCenter.getY()-5,10,10);
-//
-//        Bounds screenBounds = new Bounds(
-//                (((float) Main.Main.width /2) + bounds.minX + threshold),
-//                (((float) Main.Main.width /2) + bounds.maxX - threshold),
-//                (((float) Main.Main.height /2) + bounds.minY),
-//                (((float) Main.Main.height /2) + bounds.maxY));
-//        g2d.drawRect((int) screenBounds.minX, (int) screenBounds.minY,
-//                (int) (screenBounds.maxX - screenBounds.minX),
-//                (int) (screenBounds.maxY - screenBounds.minY));
-    }
     public static Map<String,Object> getDefaultValues() {
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("bounds" , new Bounds(-100,100,-100,100));

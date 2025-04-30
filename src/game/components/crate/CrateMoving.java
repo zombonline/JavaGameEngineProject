@@ -24,7 +24,8 @@ import java.util.Map;
 public class CrateMoving extends Crate {
 
     SpriteRenderer spriteRenderer;
-    BufferedImage horizontalImage, verticalImage;
+    final BufferedImage horizontalImage;
+    final BufferedImage verticalImage;
     public CrateMoving(float bounceStrength, int hitsToDestroy, float moveSpeed, float moveDistance, Vector2 dir, BufferedImage horizontalImage, BufferedImage verticalImage){
         super(true, List.of(
                 new MovementBehaviour(moveSpeed, moveDistance, dir),

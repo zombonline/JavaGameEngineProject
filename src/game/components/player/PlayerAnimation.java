@@ -11,13 +11,11 @@ import java.util.Random;
 
 public class PlayerAnimation extends Component {
     // Component references
-    private Player player;
     private Rigidbody rb;
     private SpriteAnimator animator;
     private SpriteRenderer renderer;
+    private PlayerDeathHandler playerDeathHandler;
 
-    //Variables
-    private String currentAnimation;
     private String prevAnimation;
     @Override
     public void awake() {
@@ -27,11 +25,10 @@ public class PlayerAnimation extends Component {
 
     @Override
     protected void getRequiredComponentReferences() {
-        player = fetchRequiredComponent(Player.class);
         rb = fetchRequiredComponent(Rigidbody.class);
         animator = fetchRequiredComponent(SpriteAnimator.class);
         renderer = fetchRequiredComponent(SpriteRenderer.class);
-
+        playerDeathHandler = fetchRequiredComponent(PlayerDeathHandler.class);
     }
 
     private void setUpAnimatorListener(){
@@ -61,6 +58,9 @@ public class PlayerAnimation extends Component {
     public void update() {
         renderer.setFlipHorizontally(Math.signum(rb.velocity.getX()) == -1);
 
+        //Variables
+        String currentAnimation;
+
         if(Math.abs(rb.velocity.getX()) > 0.2 && rb.isGrounded()){
             if(Math.abs(rb.velocity.getX())<4f){
                 currentAnimation = Assets.Animations.PLAYER_WALK;
@@ -71,13 +71,22 @@ public class PlayerAnimation extends Component {
         else {
             currentAnimation = Assets.Animations.PLAYER_IDLE;
         }
-        if(!rb.isGrounded() && rb.velocity.getY()>1){
-            currentAnimation = Assets.Animations.PLAYER_FALL;
+        if(!rb.isGrounded() ){
+            if(rb.velocity.getY()>0){
+                currentAnimation = Assets.Animations.PLAYER_FALL;
+            } else {
+                currentAnimation = Assets.Animations.PLAYER_RISE;
+            }
         }
+        if(playerDeathHandler.getDead()){
+            currentAnimation = Assets.Animations.PLAYER_DEATH_EXPLOSION;
+        }
+
 
         if(!currentAnimation.equals(prevAnimation)){
             animator.loadAnimation(currentAnimation);
         }
-        prevAnimation =currentAnimation;
+
+        prevAnimation = currentAnimation;
     }
 }

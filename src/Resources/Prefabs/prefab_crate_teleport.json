@@ -2,6 +2,7 @@
   "name": "Teleport Crate",
   "components": {
     "spriteRenderer": {"spriteImage": "Images.CRATE_TELEPORT"},
+    "spriteAnimator": {"startingAnim":"Animations.CRATE_TELEPORT_ACTIVE"},
     "collider": {},
     "crateTeleport": {
       "bounceStrength":20

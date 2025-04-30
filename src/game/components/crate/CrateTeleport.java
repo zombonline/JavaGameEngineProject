@@ -1,15 +1,19 @@
 package game.components.crate;
 
+import core.asset.AssetLoader;
 import core.asset.Assets;
 import core.audio.SFXPlayer;
 import core.utils.Vector2;
 import game.components.CameraFollow;
 import game.components.Collider;
+import game.components.Rigidbody;
 import game.components.crate.behaviours.BounceBehavior;
 import game.components.crate.behaviours.DestroyedByExplosionBehaviour;
 import game.components.crate.behaviours.HitCounterBehavior;
 import game.components.crate.core.Crate;
 import game.components.player.Player;
+import game.components.rendering.SpriteAnimator;
+import game.components.rendering.SpriteRenderer;
 import game.entities.GameObject;
 
 import java.util.HashMap;
@@ -63,6 +67,7 @@ public class CrateTeleport extends Crate {
         }
     }
 
+
     private void findPairedCrate() {
         for(GameObject otherCrate : GameObject.findAllObjectsByType(CrateTeleport.class)){
             if(otherCrate == this.gameObject){continue;}
@@ -90,6 +95,8 @@ public class CrateTeleport extends Crate {
                         if(cameraSnap) {player.getComponent(CameraFollow.class).snapToTarget();}
                         getBehavior(HitCounterBehavior.class).active =false;
                         getBehavior(BounceBehavior.class).active = false;
+                        getComponent(SpriteAnimator.class).pause();
+                        getComponent(SpriteRenderer.class).setSpriteImage(AssetLoader.getInstance().getImage(Assets.Images.CRATE_TELEPORT));
 
                         if(!pairedCrate.getBehavior(BounceBehavior.class).active){
                             SFXPlayer.playSound(Assets.SFXClips.CRATE_DESTROYED);

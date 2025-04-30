@@ -1,0 +1,29 @@
+{
+  "isLooping": false,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.PLAYER_DEATH_EXPLOSION_1",
+      "delay": 6
+    },
+    {
+      "imageAddress": "Images.PLAYER_DEATH_EXPLOSION_2",
+      "delay": 2
+    },
+    {
+      "imageAddress": "Images.PLAYER_DEATH_EXPLOSION_3",
+      "delay": 2
+    },
+    {
+      "imageAddress": "Images.PLAYER_DEATH_EXPLOSION_4",
+      "delay": 2
+    },
+    {
+      "imageAddress": "Images.PLAYER_DEATH_EXPLOSION_5",
+      "delay": 2
+    },
+    {
+      "imageAddress": "Images.PLAYER_DEATH_EXPLOSION_6",
+      "delay": 2
+    }
+  ]
+}

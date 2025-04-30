@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HitCounterBehavior implements CrateBehavior {
     int currentHitPoints;
-    int startingHitPoints;
+    final int startingHitPoints;
     public boolean active = true;
 
     public HitCounterBehavior(int startingHitPoints) {
@@ -54,7 +54,7 @@ public class HitCounterBehavior implements CrateBehavior {
         void onHit(int current, int start, Collider other);
         void onHitsReachedZero(Collider other);
     }
-    private List<HitCounterBehavior.HitCounterListener> listeners = new ArrayList<>();
+    private final List<HitCounterBehavior.HitCounterListener> listeners = new ArrayList<>();
     public void addListener(HitCounterBehavior.HitCounterListener listener) {
         listeners.add(listener);
     }

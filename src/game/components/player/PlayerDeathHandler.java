@@ -49,4 +49,7 @@ public class PlayerDeathHandler extends Component implements Explosion.Explosion
     public void onTriggered() {
         die();
     }
+    public boolean getDead(){
+        return dead;
+    }
 }

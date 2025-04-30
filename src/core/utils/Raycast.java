@@ -24,8 +24,8 @@ public class Raycast {
     }
 
     public static class Hit {
-        Vector2 hitPoint;
-        Collider collider;
+        final Vector2 hitPoint;
+        final Collider collider;
         public Hit(Vector2 hitPoint, Collider collider){
             this.hitPoint = hitPoint;
             this.collider = collider;

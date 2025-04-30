@@ -2,7 +2,6 @@ package game.components;
 import game.components.crate.core.Crate;
 import main.GamePanel;
 import core.utils.DebugText;
-import game.enums.CollisionLayer;
 import core.utils.Raycast;
 import core.utils.Vector2;
 import game.components.core.Component;
@@ -14,11 +13,14 @@ public class Rigidbody extends Component {
     Collider rbCollider;
 
     public Vector2 velocity, velocityLastFrame;
-    float drag;
-    public Vector2 maxVelocity;
-    public float restitution;
-    public float gravityScale;
+    final float drag;
+    public final Vector2 maxVelocity;
+    public final float restitution;
+    public final float gravityScale;
     private final List<Vector2> forces = new ArrayList<>();
+
+
+
     private final boolean isKinematic;
     private boolean isGrounded = false;
     private final ArrayList<Collider> groundedColliders = new ArrayList<>();
@@ -78,7 +80,7 @@ public class Rigidbody extends Component {
 
         Raycast raycast1 = new Raycast(rayOrigin1,.00000001f,0,100, rbCollider.getCollisionMask(), true);
         Raycast raycast2 = new Raycast(rayOrigin2,.00000001f,0,100, rbCollider.getCollisionMask(), true);
-        ArrayList<Collider> touching = new  ArrayList<Collider>();
+        ArrayList<Collider> touching = new  ArrayList<>();
 
         //CHECK IF THESE ARE TRIGGERS
         if(raycast1.checkForCollision() != null){touching.add(raycast1.checkForCollision().getCollider());}
@@ -136,7 +138,6 @@ public class Rigidbody extends Component {
         }
         if (closestHit != null ) {
             if(closestHit.getCollider().hasComponent(Rigidbody.class)){return;}
-            if(closestHit.getCollider().hasComponent(Crate.class)){return;}
 
             double adjustedVel = (float) (closestDistance / GamePanel.getDeltaTime());
 
@@ -164,13 +165,7 @@ public class Rigidbody extends Component {
             }
         }
     }
-    private boolean isInlist(Collider hit, ArrayList<Collider> hits) {
-        if (!hits.contains(hit)) {
-            hits.add(hit);
-            return false;
-        }
-        return true;
-    }
+
     public static Map<String, Object> getDefaultValues(){
         Map<String,Object> defaultValues = new HashMap<>();
         defaultValues.put("drag",0.9f);
@@ -197,6 +192,8 @@ public class Rigidbody extends Component {
     }
 
     public void handleCollision(Collider other){
+        if(isKinematic){return;}
+
         //clone the position so overlap can be resolved then setpos can be called at the end
         Vector2 thisPosCopy = new Vector2(getGameObject().getTransform().getPosition());
         Vector2 otherPos = other.getGameObject().getTransform().getPosition();
@@ -215,24 +212,19 @@ public class Rigidbody extends Component {
             double resolution = overlap.getX() * moveFraction;
             if (dx > 0) {
                 // Player is to the right of the object
-                if(isKinematic){return;}
                 thisPosCopy.setX(thisPosCopy.getX() + resolution);
             } else {
                 // Player is to the left of the object
-                if(isKinematic){return;}
                 thisPosCopy.setX(thisPosCopy.getX() - resolution);
             }
         } else {
             // Y-axis collision (top/bottom)
             double resolution = overlap.getY() * moveFraction;
-
             if (dy > 0) {
                 // Player is below the object
-                if(isKinematic){return;}
                 thisPosCopy.setY(thisPosCopy.getY() + resolution);
             } else {
                 // Player is above the object (standing on it)
-                if(isKinematic){return;}
                 thisPosCopy.setY(thisPosCopy.getY() - resolution);
             }
         }
@@ -253,5 +245,8 @@ public class Rigidbody extends Component {
     }
     public float getMass(){
         return mass;
+    }
+    public boolean isKinematic() {
+        return isKinematic;
     }
 }

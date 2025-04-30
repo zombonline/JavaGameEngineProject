@@ -20,7 +20,7 @@ public class Player extends Component {
     private final KeyHandler keyHandler;
 
     //Variables
-    private Key leftKey, rightKey, aKey, dKey, jumpKey, rKey;
+    private Key leftKey, rightKey, aKey, dKey;
 
     private boolean canMove = true;
 
@@ -65,10 +65,10 @@ public class Player extends Component {
         rightKey = keyHandler.addKey(KeyEvent.VK_RIGHT);
         aKey = keyHandler.addKey(KeyEvent.VK_A);
         dKey = keyHandler.addKey(KeyEvent.VK_D);
-        jumpKey = keyHandler.addKey(KeyEvent.VK_SPACE,
+        keyHandler.addKey(KeyEvent.VK_SPACE,
                 this::jumpPress,
                 ()->{});
-        rKey = keyHandler.addKey(KeyEvent.VK_R,
+        keyHandler.addKey(KeyEvent.VK_R,
                 this::resetPlayerPress,
                 ()->{});
     }

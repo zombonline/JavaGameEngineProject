@@ -5,7 +5,7 @@ import core.utils.Vector2;
 
 public class Camera{
     private Vector2 position;
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
 
     public Camera(GamePanel gamePanel) {
         this.position = new Vector2(0, 0); // Start at origin

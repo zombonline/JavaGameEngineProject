@@ -55,7 +55,6 @@ public class LevelLoader {
             return new LevelData(levelString, levelContents, mapWidth, mapHeight);
 
         } catch (Exception e){
-            e.printStackTrace();
             return null;
         }
     }
@@ -103,8 +102,8 @@ public class LevelLoader {
             NodeList tileNodes = tileSetDocument.getElementsByTagName("tile");
             for (int j = 0; j < tileNodes.getLength(); j++) {
                 Element tile = (Element) tileNodes.item(j);
-                //create a new prefab refenrce object (stores the prefab name connected to the tile plus any extra
-                // data tiles (not instances of tiles) might hold.
+                //create a new prefab reference object (stores the prefab name connected to the tile plus any extra
+                // data tiles (not instances of tiles) might hold).
                 PrefabReference prefabReference = new PrefabReference();
                 //get the id number of the tile (this is then later added to the firstgid attribute to get the sets ID inside the tile map
                 String tileId = tile.getAttribute("id");
@@ -165,7 +164,7 @@ public class LevelLoader {
                 for (int x = 0; x < mapWidth; x++) {
                     int tileID = Integer.parseInt(values[y * mapWidth + x].trim());
                     if(tileID == 0){continue;}
-                    GameObject newObject = null;
+                    GameObject newObject;
                     PrefabReference prefabReference = idToPrefabName.get(tileID);
                     if(prefabReference==null){
                         continue;
@@ -231,10 +230,10 @@ public class LevelLoader {
         mapHeight = Integer.parseInt(mapElement.getAttribute("height"));
     }
     private static void printIdToPrefabMap() {
-        String printValue = "";
+        StringBuilder printValue = new StringBuilder();
         for(Map.Entry entry : idToPrefabName.entrySet()){
             String prefabName = idToPrefabName.get(entry.getKey()).prefabName;
-            printValue+= entry.getKey()+"="+ prefabName +", ";
+            printValue.append(entry.getKey()).append("=").append(prefabName).append(", ");
         }
 
         System.out.println("ID to Prefab Name: " + printValue);

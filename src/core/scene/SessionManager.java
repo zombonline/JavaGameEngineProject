@@ -41,6 +41,7 @@ public class SessionManager {
 
     private static void loadLevelInternal(String levelPath) {
         currentLevel = LevelLoader.parse(levelPath);
+        assert currentLevel != null;
         for (GameObject gameObject : currentLevel.initialGameobjects) {
             gameObject.initialize();
         }

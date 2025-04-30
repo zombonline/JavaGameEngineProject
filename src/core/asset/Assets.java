@@ -13,11 +13,16 @@ public class Assets {
 
         public static final String CRATE_EXPLOSIVE_TRIGGER = ANIMATIONS_PATH +"anim_crate_explosive_triggered.json";
         public static final String CRATE_INTERACTABLE_GLOW = ANIMATIONS_PATH +"anim_crate_interactable.json";
+        public static final String CRATE_BREAK_BROWN = ANIMATIONS_PATH +"anim_crate_break_brown.json";
+        public static final String CRATE_TELEPORT_AURA = ANIMATIONS_PATH +"anim_crate_teleport_aura.json";
+        public static final String CRATE_TELEPORT_ACTIVE = ANIMATIONS_PATH +"anim_crate_teleport_active.json";
 
         public static final String EXPLOSION = ANIMATIONS_PATH +"anim_explosion.json";
 
+        public static final String PLAYER_DEATH_EXPLOSION = ANIMATIONS_PATH +"anim_player_death_explosion.json";
         public static final String PLAYER_IDLE = ANIMATIONS_PATH +"anim_player_idle.json";
         public static final String PLAYER_FALL = ANIMATIONS_PATH +"anim_player_fall.json";
+        public static final String PLAYER_RISE = ANIMATIONS_PATH +"anim_player_rise.json";
         public static final String PLAYER_RUN = ANIMATIONS_PATH +"anim_player_run.json";
         public static final String PLAYER_WALK = ANIMATIONS_PATH +"anim_player_walk.json";
     }
@@ -51,6 +56,20 @@ public class Assets {
         public static final String CRATE_INTERACTABLE_GLOW_4 = IMAGES_PATH +"Crates/crate_interactable_glow_3.png";
         public static final String CRATE_INTERACTABLE_GLOW_5 = IMAGES_PATH +"Crates/crate_interactable_glow_4.png";
 
+        public static final String CRATE_BREAK_BROWN_1 = IMAGES_PATH +"Crates/crate_break_1.png";
+        public static final String CRATE_BREAK_BROWN_2 = IMAGES_PATH +"Crates/crate_break_2.png";
+        public static final String CRATE_BREAK_BROWN_3 = IMAGES_PATH +"Crates/crate_break_3.png";
+        public static final String CRATE_BREAK_BROWN_4 = IMAGES_PATH +"Crates/crate_break_4.png";
+
+        public static final String CRATE_TELEPORT_AURA_1 = IMAGES_PATH +"Crates/crate_teleport_aura_1.png";
+        public static final String CRATE_TELEPORT_AURA_2 = IMAGES_PATH +"Crates/crate_teleport_aura_2.png";
+        public static final String CRATE_TELEPORT_AURA_3 = IMAGES_PATH +"Crates/crate_teleport_aura_3.png";
+        public static final String CRATE_TELEPORT_AURA_4 = IMAGES_PATH +"Crates/crate_teleport_aura_4.png";
+
+        public static final String CRATE_TELEPORT_ACTIVE_1 = IMAGES_PATH +"Crates/crate_teleport_active_1.png";
+        public static final String CRATE_TELEPORT_ACTIVE_2 = IMAGES_PATH +"Crates/crate_teleport_active_2.png";
+        public static final String CRATE_TELEPORT_ACTIVE_3 = IMAGES_PATH +"Crates/crate_teleport_active_3.png";
+
         public static final String DOOR = IMAGES_PATH +"door.png";
 
         public static final String EXPLOSION_SMALL = IMAGES_PATH +"effect_explosion_small.png";
@@ -62,11 +81,19 @@ public class Assets {
         public static final String PLACEHOLDER_TERRAIN = IMAGES_PATH +"placeholder_terrain.png";
         public static final String PLACEHOLDER_BACKGROUND = IMAGES_PATH +"placeholder_background.png";
 
+        public static final String PLAYER_DEATH_EXPLOSION_1 = IMAGES_PATH +"Player/player_death_explosion_1.png";
+        public static final String PLAYER_DEATH_EXPLOSION_2 = IMAGES_PATH +"Player/player_death_explosion_2.png";
+        public static final String PLAYER_DEATH_EXPLOSION_3 = IMAGES_PATH +"Player/player_death_explosion_3.png";
+        public static final String PLAYER_DEATH_EXPLOSION_4 = IMAGES_PATH +"Player/player_death_explosion_4.png";
+        public static final String PLAYER_DEATH_EXPLOSION_5 = IMAGES_PATH +"Player/player_death_explosion_5.png";
+        public static final String PLAYER_DEATH_EXPLOSION_6 = IMAGES_PATH +"Player/player_death_explosion_6.png";
 
         public static final String PLAYER_IDLE = IMAGES_PATH +"Player/player_idle.png";
         public static final String PLAYER_IDLE_BLINK = IMAGES_PATH +"Player/player_idle_blink.png";
         public static final String PLAYER_FALL_1 = IMAGES_PATH +"Player/player_fall_1.png";
         public static final String PLAYER_FALL_2 = IMAGES_PATH +"Player/player_fall_2.png";
+        public static final String PLAYER_RISE_1 = IMAGES_PATH +"Player/player_rise_1.png";
+        public static final String PLAYER_RISE_2 = IMAGES_PATH +"Player/player_rise_2.png";
         public static final String PLAYER_RUN_1 = IMAGES_PATH +"Player/player_run_1.png";
         public static final String PLAYER_RUN_2 = IMAGES_PATH +"Player/player_run_2.png";
         public static final String PLAYER_RUN_3 = IMAGES_PATH +"Player/player_run_3.png";
@@ -101,7 +128,8 @@ public class Assets {
         public static final String CRATE_TELEPORT = PREFABS_PATH +"prefab_crate_teleport.json";
 
         public static final String CRATE_INTERACTABLE_GLOW = PREFABS_PATH +"prefab_crate_interactable_glow.json";
-
+        public static final String CRATE_BREAK_BROWN = PREFABS_PATH+"prefab_crate_break.json";
+        public static final String CRATE_TELEPORT_AURA = PREFABS_PATH +"prefab_crate_teleport_aura.json";
 
         public static final String DOOR = PREFABS_PATH +"prefab_door.json";
 

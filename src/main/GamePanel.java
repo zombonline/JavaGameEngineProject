@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
-    public static int WORLD_SCALE = Math.min(Main.width, Main.height)/12;
+    public static final int WORLD_SCALE = Math.min(Main.width, Main.height)/12;
     public static final int FPS =60;
     private static double deltaTime = 0;
     Thread gameThread;
@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.loadLevelByIndex(0);
+        SessionManager.loadLevelByIndex(4);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -56,9 +56,7 @@ public class GamePanel extends JPanel implements Runnable{
                     update();
                     repaint();
                     destroyObjects();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception _) {}
                 delta--;
                 drawCount++;
             }
@@ -130,9 +128,7 @@ public class GamePanel extends JPanel implements Runnable{
                 SessionManager.getCurrentLevel().activeGameObjects.remove(gameObject);
             }
             SessionManager.getCurrentLevel().gameObjectsToDestroy.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception _) {}
     }
 
 
@@ -142,9 +138,7 @@ public class GamePanel extends JPanel implements Runnable{
                 gamePanelBackground = AssetLoader.getInstance().getImage(Assets.Images.BACKGROUND);
             }
             g2d.drawImage(gamePanelBackground, 0, 0, getWidth(), getHeight(), null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception _) {}
     }
 
 }

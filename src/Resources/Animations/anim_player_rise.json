@@ -1,0 +1,13 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.PLAYER_RISE_1",
+      "delay": 4
+    },
+    {
+      "imageAddress": "Images.PLAYER_RISE_2",
+      "delay": 4
+    }
+  ]
+}
