@@ -60,6 +60,7 @@ public class Crate extends Component implements Explosion.ExplosionListener {
 
     private void displayInteractableSprite(){
         if(hasComponent(Rigidbody.class)){
+            if(getComponent(Rigidbody.class).isKinematic()) return;
             GameObject glow = AssetLoader.getInstance().getPrefab(Assets.Prefabs.CRATE_INTERACTABLE_GLOW);
             glow.getTransform().setPosition(getGameObject().getTransform().getPosition());
             gameObject.getTransform().addChild(glow.getTransform());

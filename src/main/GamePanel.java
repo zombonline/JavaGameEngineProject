@@ -22,7 +22,6 @@ public class GamePanel extends JPanel implements Runnable{
     static boolean running = false;
     private static boolean gamePaused = false;
     public void startGameThread(){
-        SessionManager.loadLevelByIndex(2);
         running = true;
         if(gameThread == null){
             gameThread = new Thread(this);
@@ -38,7 +37,6 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
         gameThread = Thread.currentThread();
-        SFXPlayer.playSound(Assets.SFXClips.TRACK, true);
         double drawInterval = 1_000_000_000.0 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();

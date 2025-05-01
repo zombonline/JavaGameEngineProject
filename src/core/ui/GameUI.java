@@ -20,11 +20,12 @@ public class GameUI {
         GAME,
         DIALOGUE,
         LEVEL_COMPLETE,
-        GAME_COMPLETE
+        GAME_COMPLETE,
+        GAME_INTRO
     }
     private static GameUI instance;
     private Vector2 textSize;
-    private Screen currentScreen = Screen.GAME;
+    private Screen currentScreen = Screen.GAME_INTRO;
 
     //LEVEL OVER SCREEN
     private int resultsCrates, resultsCombo;
@@ -36,7 +37,7 @@ public class GameUI {
 
     //GAME SCREEN
     private final BufferedImage crateIcon = AssetLoader.getInstance().getImage(Assets.Images.CRATE_BASIC);
-
+    private final BufferedImage playerIcon = AssetLoader.getInstance().getImage(Assets.Images.PLAYER_RUN_1);
 
     private GameUI() {
         setUpControls(new KeyHandler());
@@ -53,6 +54,7 @@ public class GameUI {
             case DIALOGUE -> drawDialogueScreen(g2d);
             case LEVEL_COMPLETE -> drawLevelCompleteScreen(g2d);
             case GAME_COMPLETE -> drawGameCompleteScreen(g2d);
+            case GAME_INTRO -> drawGameIntroScreen(g2d);
         }
     }
 
@@ -82,6 +84,9 @@ public class GameUI {
             GameObject.findFirstObjectByType(Player.class).getComponent(Player.class).setCanMove(true);
             currentNpc.finishedDialogue();
             updateScreen(Screen.GAME);
+        } else if(currentScreen==Screen.GAME_INTRO){
+            updateScreen(Screen.GAME);
+            SessionManager.loadLevelByIndex(0);
         }
     }
     private void drawGameScreen(Graphics2D g2d) {
@@ -156,6 +161,30 @@ public class GameUI {
         g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
         textSize = getTextSize("Press Enter to Restart",g2d);
         g2d.drawString("Press Enter to Restart",
+                (int) (x+(w/2)-(textSize.getX()/2)),
+                (int) (y+(h)-(textSize.getY()/2)));
+
+    }
+
+    private void drawGameIntroScreen(Graphics2D g2d) {
+        g2d.setColor(Color.white);
+
+        int x = Main.width/10;
+        int y = Main.height/10;
+        int w = Main.width/10*8;
+        int h = Main.height/10*8;
+
+        drawBoxWithOutline(x,y,w,h,g2d);
+        g2d.drawImage(playerIcon, x,y+h/4, (int)(h/1.5f), (int)(h/1.5f),null);
+
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE));
+        textSize = getTextSize("CRATE CORRUPTION",g2d);
+        g2d.drawString("CRATE CORRUPTION",
+                (int) (x+(w/2)-(textSize.getX()/2)),
+                (int) (y+(h/2)-(textSize.getY()/2)));
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
+        textSize = getTextSize("Press Enter to Start",g2d);
+        g2d.drawString("Press Enter to Start",
                 (int) (x+(w/2)-(textSize.getX()/2)),
                 (int) (y+(h)-(textSize.getY()/2)));
     }
