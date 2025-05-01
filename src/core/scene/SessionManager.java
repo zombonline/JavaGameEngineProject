@@ -19,6 +19,7 @@ public class SessionManager {
             Assets.Tilemaps.LEVEL_3,
             Assets.Tilemaps.LEVEL_4
     );
+    private static final Object levelLoadLock = new Object();
 
 
     public static void loadLevelByPath(String levelPath) {
@@ -40,7 +41,20 @@ public class SessionManager {
     }
 
     private static void loadLevelInternal(String levelPath) {
-        currentLevel = LevelLoader.parse(levelPath);
+        synchronized (levelLoadLock) {
+            System.out.println("Loading level: " + levelPath + " on thread: " + Thread.currentThread().getName());
+
+            if (currentLevel != null) {
+                currentLevel.activeGameObjects.clear();
+                currentLevel.gameObjectsToAwake.clear();
+                currentLevel.gameObjectsToStart.clear();
+                currentLevel.gameObjectsToDestroy.clear();
+                currentLevel.initialGameobjects.clear();
+                currentLevel = null;
+            }
+
+            currentLevel = LevelLoader.parse(levelPath);
+        }
         assert currentLevel != null;
         for (GameObject gameObject : currentLevel.initialGameobjects) {
             gameObject.initialize();

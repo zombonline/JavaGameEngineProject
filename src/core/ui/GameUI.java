@@ -1,5 +1,6 @@
 package core.ui;
 
+import game.components.NPCDialogueHandler;
 import game.components.player.Player;
 import game.entities.GameObject;
 import main.Main;
@@ -31,6 +32,7 @@ public class GameUI {
     //DIALOGUE SCREEN
     String dialogueName = "Name";
     String dialogueContent = "Dialogue";
+    NPCDialogueHandler currentNpc;
 
     //GAME SCREEN
     private final BufferedImage crateIcon = AssetLoader.getInstance().getImage(Assets.Images.CRATE_BASIC);
@@ -78,6 +80,7 @@ public class GameUI {
             GamePanel.setGamePaused(false);
         } else if(currentScreen==Screen.DIALOGUE){
             GameObject.findFirstObjectByType(Player.class).getComponent(Player.class).setCanMove(true);
+            currentNpc.finishedDialogue();
             updateScreen(Screen.GAME);
         }
     }
@@ -170,9 +173,10 @@ public class GameUI {
         int textHeight = metrics.getStringBounds(text, g2d ).getBounds().height;
         return new Vector2(textWidth,textHeight);
     }
-    public void setDialogue(String dialogueName, String dialogueContent){
-        this.dialogueName = dialogueName;
-        this.dialogueContent = dialogueContent;
+    public void setDialogue(NPCDialogueHandler npcDialogueHandler){
+        this.dialogueName = npcDialogueHandler.getCharacterName();
+        this.dialogueContent = npcDialogueHandler.getDialogue();
+        currentNpc = npcDialogueHandler;
     }
     public void setResults(){
         this.resultsCombo = SessionManager.getCurrentLevel().getHighestCombo();

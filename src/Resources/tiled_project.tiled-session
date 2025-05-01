@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Tilemaps/level_4.tmx",
+    "activeFile": "Tilemaps/level_0.tmx",
     "expandedProjectPaths": [
-        "Tilemaps",
-        ".",
         "Tilemaps/rules",
-        "Tilesets"
+        ".",
+        "Tilesets",
+        "Tilemaps"
     ],
     "fileStates": {
         "Tilemaps/BACKGROUND_TILES.tsx": {
@@ -30,15 +30,14 @@
         },
         "Tilemaps/level_0.tmx": {
             "expandedObjectLayers": [
-                3,
-                12,
-                5
+                5,
+                3
             ],
-            "scale": 0.0259,
-            "selectedLayer": 5,
+            "scale": 0.03125,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 21583.011583011583,
-                "y": 7586.872586872587
+                "x": 28384,
+                "y": 6752
             }
         },
         "Tilemaps/level_1.tmx": {
@@ -54,26 +53,26 @@
         },
         "Tilemaps/level_1_new.tmx": {
             "expandedObjectLayers": [
-                3,
-                10
+                10,
+                3
             ],
-            "scale": 0.0229,
-            "selectedLayer": 1,
+            "scale": 0.015625,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 25589.519650655024,
-                "y": 10240.174672489084
+                "x": 32576,
+                "y": 9792
             }
         },
         "Tilemaps/level_2.tmx": {
             "expandedObjectLayers": [
-                3,
-                10
+                10,
+                3
             ],
             "scale": 0.03125,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 25600,
-                "y": 10224
+                "x": 33984,
+                "y": 8384
             }
         },
         "Tilemaps/level_3.tmx": {
@@ -86,14 +85,14 @@
         },
         "Tilemaps/level_4.tmx": {
             "expandedObjectLayers": [
-                4,
-                3
+                3,
+                4
             ],
             "scale": 0.0257,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 12217.898832684823,
-                "y": 10038.910505836575
+                "x": 25603.11284046692,
+                "y": 7684.824902723734
             }
         },
         "Tilemaps/level_template.tmx": {
@@ -199,12 +198,12 @@
         "Tilesets/tileset_panels.tsx",
         "Tilesets/tileset_panels_2x2.tsx",
         "Tilesets/tileset_panels_1x2.tsx",
-        "Tilemaps/level_0.tmx",
-        "Tilesets/tileset_panels_2x1.tsx",
-        "Tilemaps/level_1_new.tmx",
-        "Tilemaps/level_2.tmx",
+        "Tilemaps/level_4.tmx",
+        "Tilemaps/level_3.tmx",
         "Tilemaps/level_template.tmx",
-        "Tilemaps/level_3.tmx"
+        "Tilemaps/level_2.tmx",
+        "Tilemaps/level_1_new.tmx",
+        "Tilesets/tileset_panels_2x1.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

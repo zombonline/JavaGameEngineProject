@@ -17,7 +17,12 @@ public class Assets {
         public static final String CRATE_TELEPORT_AURA = ANIMATIONS_PATH +"anim_crate_teleport_aura.json";
         public static final String CRATE_TELEPORT_ACTIVE = ANIMATIONS_PATH +"anim_crate_teleport_active.json";
 
+        public static final String DOOR = ANIMATIONS_PATH +"anim_door.json";
+
         public static final String EXPLOSION = ANIMATIONS_PATH +"anim_explosion.json";
+
+        public static final String NPC_IDLE = ANIMATIONS_PATH +"anim_npc_idle.json";
+        public static final String NPC_TALK = ANIMATIONS_PATH +"anim_npc_talk.json";
 
         public static final String PLAYER_DEATH_EXPLOSION = ANIMATIONS_PATH +"anim_player_death_explosion.json";
         public static final String PLAYER_IDLE = ANIMATIONS_PATH +"anim_player_idle.json";
@@ -70,13 +75,20 @@ public class Assets {
         public static final String CRATE_TELEPORT_ACTIVE_2 = IMAGES_PATH +"Crates/crate_teleport_active_2.png";
         public static final String CRATE_TELEPORT_ACTIVE_3 = IMAGES_PATH +"Crates/crate_teleport_active_3.png";
 
-        public static final String DOOR = IMAGES_PATH +"door.png";
+        public static final String DOOR_1 = IMAGES_PATH +"door_1.png";
+        public static final String DOOR_2 = IMAGES_PATH +"door_2.png";
+        public static final String DOOR_3 = IMAGES_PATH +"door_3.png";
 
         public static final String EXPLOSION_SMALL = IMAGES_PATH +"effect_explosion_small.png";
         public static final String EXPLOSION_MEDIUM = IMAGES_PATH +"effect_explosion_medium.png";
         public static final String EXPLOSION_BIG = IMAGES_PATH +"effect_explosion_big.png";
 
         public static final String PLACEHOLDER_NPC = IMAGES_PATH +"placeholder_npc.png";
+        public static final String NPC_IDLE = IMAGES_PATH +"npc_idle.png";
+        public static final String NPC_IDLE_1 = IMAGES_PATH +"npc_idle_1.png";
+        public static final String NPC_IDLE_2 = IMAGES_PATH +"npc_idle_2.png";
+        public static final String NPC_TALK_1 = IMAGES_PATH +"npc_talk_1.png";
+        public static final String NPC_TALK_2 = IMAGES_PATH +"npc_talk_2.png";
 
         public static final String PLACEHOLDER_TERRAIN = IMAGES_PATH +"placeholder_terrain.png";
         public static final String PLACEHOLDER_BACKGROUND = IMAGES_PATH +"placeholder_background.png";
@@ -156,6 +168,8 @@ public class Assets {
         public static final String PLAYER_RUN_1 = SFX_PATH +"player_run_1.wav";
         public static final String PLAYER_RUN_2 = SFX_PATH +"player_run_2.wav";
         public static final String PLAYER_JUMP = SFX_PATH +"player_jump.wav";
+
+        public static final String TRACK = SFX_PATH+ "track.wav";
 
     }
 

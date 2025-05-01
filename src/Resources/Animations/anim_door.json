@@ -1,0 +1,21 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.DOOR_1",
+      "delay": 5
+    },
+    {
+      "imageAddress": "Images.DOOR_2",
+      "delay": 5
+    },
+    {
+      "imageAddress": "Images.DOOR_1",
+      "delay": 5
+    },
+    {
+      "imageAddress": "Images.DOOR_3",
+      "delay": 5
+    }
+  ]
+}

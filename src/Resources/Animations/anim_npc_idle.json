@@ -1,0 +1,21 @@
+{
+  "isLooping": true,
+  "animationSteps": [
+    {
+      "imageAddress": "Images.NPC_IDLE",
+      "delay": 20
+    },
+    {
+      "imageAddress": "Images.NPC_IDLE_1",
+      "delay": 20
+    },
+    {
+      "imageAddress": "Images.NPC_IDLE",
+      "delay": 20
+    },
+    {
+      "imageAddress": "Images.NPC_IDLE_2",
+      "delay": 20
+    }
+  ]
+}

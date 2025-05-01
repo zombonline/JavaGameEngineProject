@@ -5,8 +5,9 @@
       "scale": [1.0,2.0]
     },
     "spriteRenderer": [
-      {"spriteImage": "Images.DOOR", "offset": [0.0, -0.5]}
+      {"spriteImage": "Images.DOOR_1", "offset": [0.0, -0.5]}
     ],
+    "spriteAnimator": {"startingAnim": "Animations.DOOR"},
     "collider": {
       "isTrigger": true,
       "size": [1.0,1.0],

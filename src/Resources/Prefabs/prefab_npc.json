@@ -2,11 +2,14 @@
   "name": "NPC",
   "components": {
     "transform": {
-      "scale": [1.0,2.0]
+      "scale": [2.0,2.2]
     },
     "spriteRenderer": {
-      "spriteImage": "Images.PLACEHOLDER_NPC",
+      "spriteImage": "Images.NPC_IDLE",
       "offset": [0.0, -0.5]
+    },
+    "spriteAnimator": {
+      "startingAnim": "Animations.NPC_IDLE"
     },
     "collider": {
       "isTrigger": true
