@@ -6,7 +6,6 @@ import core.audio.SFXPlayer;
 import core.utils.Vector2;
 import game.components.CameraFollow;
 import game.components.Collider;
-import game.components.Rigidbody;
 import game.components.crate.behaviours.BounceBehavior;
 import game.components.crate.behaviours.DestroyedByExplosionBehaviour;
 import game.components.crate.behaviours.HitCounterBehavior;

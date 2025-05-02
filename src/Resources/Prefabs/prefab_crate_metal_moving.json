@@ -6,8 +6,6 @@
     "crateMetalMoving": {
       "horizontalSprite": "Images.CRATE_METAL_MOVING_HORIZONTAL",
       "verticalSprite": "Images.CRATE_METAL_MOVING_VERTICAL"
-    },
-    "rigidbody": {"isKinematic": true}
-
+    }
   }
 }

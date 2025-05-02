@@ -1,8 +1,7 @@
 package core.asset;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Assets {
     private Assets() {} //private constructor as the class is static
@@ -171,7 +170,25 @@ public class Assets {
 
         public static final String TRACK = SFX_PATH+ "track.wav";
 
-    }
+        public static final String VOICE_1 = SFX_PATH + "voice/untitled.wav";
+        public static final String VOICE_2 = SFX_PATH + "voice/untitled-2.wav";
+        public static final String VOICE_3 = SFX_PATH + "voice/untitled-3.wav";
+        public static final String VOICE_4 = SFX_PATH + "voice/untitled-4.wav";
+        public static final String VOICE_5 = SFX_PATH + "voice/untitled-5.wav";
+        public static final String VOICE_6 = SFX_PATH + "voice/untitled-6.wav";
+        public static final String VOICE_7 = SFX_PATH + "voice/untitled-7.wav";
+        public static final String VOICE_8 = SFX_PATH + "voice/untitled-8.wav";
+        public static final String VOICE_9 = SFX_PATH + "voice/untitled-9.wav";
+        public static final String VOICE_10 = SFX_PATH + "voice/untitled-10.wav";
+        public static final String VOICE_11 = SFX_PATH + "voice/untitled-11.wav";
+        public static final String VOICE_12 = SFX_PATH + "voice/untitled-12.wav";
+        public static final String VOICE_13 = SFX_PATH + "voice/untitled-13.wav";
+        public static final String VOICE_14 = SFX_PATH + "voice/untitled-14.wav";
+        public static final List<String> VOICES = new ArrayList<>(Arrays.asList(
+                VOICE_1, VOICE_2, VOICE_3, VOICE_4, VOICE_5,
+                VOICE_6, VOICE_7, VOICE_8, VOICE_9, VOICE_10,
+                VOICE_11, VOICE_12, VOICE_13, VOICE_14
+        ));    }
 
     // TILEMAP .TMX FILES
     public static class Tilemaps {
@@ -184,7 +201,9 @@ public class Assets {
     }
 
     private static final Map<String, String> assetMap = new HashMap<>();
-
+    public static Map<String, String> getAssetMap(){
+        return assetMap;
+    }
     static {
         addAssetsFromClass("Animations", Animations.class);
         addAssetsFromClass("Images", Images.class);

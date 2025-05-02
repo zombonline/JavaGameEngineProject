@@ -6,7 +6,7 @@
     },
     "spriteRenderer": {
       "spriteImage": "Images.NPC_IDLE",
-      "offset": [0.0, -0.5]
+      "offset": [0.0, -0.55]
     },
     "spriteAnimator": {
       "startingAnim": "Animations.NPC_IDLE"

@@ -99,10 +99,10 @@ public class CameraFollow extends Component {
         return new Vector2(
                 Math.clamp(initialPosition.getX(),
                         Main.width/2- GamePanel.WORLD_SCALE/2,
-                        SessionManager.getCurrentLevel().getWidth()* GamePanel.WORLD_SCALE),
+                        SessionManager.getCurrentLevel().getWidth()* GamePanel.WORLD_SCALE - Main.width / 2f),
                 Math.clamp(initialPosition.getY(),
-                        0 ,
-                        SessionManager.getCurrentLevel().getHeight()* GamePanel.WORLD_SCALE));
+                        Main.height / 2f,
+                        SessionManager.getCurrentLevel().getHeight() * GamePanel.WORLD_SCALE - Main.height / 2f));
     }
 
     public static Map<String,Object> getDefaultValues() {

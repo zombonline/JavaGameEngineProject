@@ -48,6 +48,7 @@ public class GameObject {
             component.update();
         }
     }
+
     public void draw(Graphics2D g2d) {
         for (Component component : componentList) {
             component.draw(g2d);

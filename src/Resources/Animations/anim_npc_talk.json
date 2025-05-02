@@ -3,19 +3,19 @@
   "animationSteps": [
     {
       "imageAddress": "Images.NPC_IDLE",
-      "delay": 10
+      "delay": 5
     },
     {
       "imageAddress": "Images.NPC_TALK_1",
-      "delay": 10
+      "delay": 5
     },
     {
       "imageAddress": "Images.NPC_IDLE",
-      "delay": 10
+      "delay": 5
     },
     {
       "imageAddress": "Images.NPC_TALK_2",
-      "delay": 10
+      "delay": 5
     }
   ]
 }

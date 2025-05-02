@@ -1,10 +1,11 @@
 package main;
 
+import core.asset.AssetLoader;
+import core.asset.Assets;
 import core.camera.Camera;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class Main {
 
@@ -18,12 +19,14 @@ public class Main {
 
         // Initialize JFrame properties
 
-        gamePanel.setDoubleBuffered(true);
+        gamePanel.setPreferredSize(new Dimension(width, height));
+        gamePanel.setIgnoreRepaint(true);
         gamePanel.setFocusable(true);
         gamePanel.setBackground(Color.BLACK);
         gamePanel.setBounds(0, 0, width, height);
         frame.setSize(width, height);
-        frame.setTitle("Test Game");
+        frame.setTitle("Crate Corruption");
+        frame.setIconImage(AssetLoader.getInstance().getImage(Assets.Images.CRATE_BASIC));
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -36,13 +36,13 @@ public class PlayerDeathHandler extends Component implements Explosion.Explosion
         dead = true;
         getComponent(Player.class).setCanMove(false);
         DebugText.logTemporarily("Player died");
-        //reload level after 3 seconds
-        new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException _) {}
-           SessionManager.reloadCurrentLevel();
-        }).start();
+        //reload level after 2 seconds
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        SessionManager.reloadCurrentLevel();
     }
 
     @Override

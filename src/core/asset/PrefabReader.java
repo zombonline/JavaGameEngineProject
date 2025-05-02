@@ -38,7 +38,7 @@ public class PrefabReader {
      * @return a {@link GameObject} constructed based on the data from the JSON file,
      *         or null if the file is not found or an error occurs during parsing.
      */
-    public static GameObject getObject(InputStream input)  {
+    public static GameObject getObject(InputStream input, Map<Object,Object> extraData)  {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode;
         try{
@@ -48,6 +48,9 @@ public class PrefabReader {
         }
         JsonNode componentsNode = rootNode.get("components");
         GameObject newObject = new GameObject(rootNode.get("name").asText());
+        for(Map.Entry entry : extraData.entrySet()){
+            newObject.insertExtraData(entry.getKey(),entry.getValue());
+        }
 
         if (componentsNode != null && componentsNode.isObject()) {
             Iterator<Map.Entry<String, JsonNode>> fields = componentsNode.fields();
@@ -59,10 +62,10 @@ public class PrefabReader {
                 Component component = null;
                 if (componentData.isArray()) {
                     for (JsonNode item : componentData) {
-                        newObject.addComponent(buildComponent(componentName, item));
+                        newObject.addComponent(buildComponent(componentName, item, newObject));
                     }
                 } else {
-                    component = buildComponent(componentName, componentData);
+                    component = buildComponent(componentName, componentData, newObject);
                     if(component!= null){
                         if(component instanceof Transform){
                             newObject.getTransform().setPosition(((Transform) component).getPosition());
@@ -88,7 +91,7 @@ public class PrefabReader {
      * @return a Component object of the specified type initialized with provided data,
      *         or null if the name does not match any component type.
      */
-    private static Component buildComponent(String name, JsonNode values) {
+    private static Component buildComponent(String name, JsonNode values, GameObject newObject) {
         return switch (name) {
             case "transform" -> buildTransform(values);
             case "spriteRenderer" -> buildSpriteRenderer(values);
@@ -109,7 +112,7 @@ public class PrefabReader {
             case "playerComboTracker" -> buildPlayerComboTracker(values);
             case "playerDeathHandler" -> new PlayerDeathHandler();
             case "npcDialogueHandler" -> new NPCDialogueHandler();
-            case "subImageSpriteSetter" -> new SubImageSpriteSetter();
+            case "subImageSpriteSetter" -> new SubImageSpriteSetter(newObject);
             case "crateScaffold" -> new CrateScaffold();
             case "crate" -> new Crate();
             case "crateMetalMoving" -> buildCrateMetalMoving(values);
@@ -216,7 +219,6 @@ public class PrefabReader {
     private static SpriteAnimator buildSpriteAnimator(JsonNode values){
         Map<String,Object> defaultValues = SpriteAnimator.getDefaultValues();
         String startingAnim = getString("startingAnim", values, defaultValues);
-        System.out.println("startingAnim " + startingAnim);
         return new SpriteAnimator(AssetLoader.getInstance().getAnimation(startingAnim));
     }
     private static Rigidbody buildRigidbody(JsonNode values){

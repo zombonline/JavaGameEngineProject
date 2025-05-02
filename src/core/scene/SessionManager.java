@@ -1,12 +1,12 @@
 package core.scene;
 
+import core.asset.AssetLoader;
 import core.asset.Assets;
 import core.asset.LevelData;
 import core.asset.LevelLoader;
-import game.entities.GameObject;
+import core.ui.GameUI;
+import main.Main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SessionManager {
@@ -43,21 +43,21 @@ public class SessionManager {
     private static void loadLevelInternal(String levelPath) {
         synchronized (levelLoadLock) {
             System.out.println("Loading level: " + levelPath + " on thread: " + Thread.currentThread().getName());
-
-            if (currentLevel != null) {
-                currentLevel.activeGameObjects.clear();
-                currentLevel.gameObjectsToAwake.clear();
-                currentLevel.gameObjectsToStart.clear();
-                currentLevel.gameObjectsToDestroy.clear();
-                currentLevel.initialGameobjects.clear();
-                currentLevel = null;
+            GameUI.getInstance().updateScreen(GameUI.Screen.LOADING);
+            Thread initThread = new Thread(() -> {
+                currentLevel = LevelLoader.parse(levelPath);
+                currentLevel.initializeObjects();
+            });
+            initThread.start();
+            while(initThread.isAlive()){
+                Main.gamePanel.draw();
             }
-
-            currentLevel = LevelLoader.parse(levelPath);
-        }
-        assert currentLevel != null;
-        for (GameObject gameObject : currentLevel.initialGameobjects) {
-            gameObject.initialize();
+            try {
+                initThread.join();  // main thread waits until initThread is completely done
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            GameUI.getInstance().updateScreen(GameUI.Screen.GAME);
         }
     }
     public static LevelData getCurrentLevel(){
@@ -66,7 +66,8 @@ public class SessionManager {
     public static boolean loadNextLevel(){
         currentLevelIndex++;
         if(currentLevelIndex < levelList.size()){
-            loadLevelByPath(levelList.get(currentLevelIndex));
+            GameUI.getInstance().updateScreen(GameUI.Screen.LOADING);
+           loadLevelByIndex(currentLevelIndex);
             return true;
         }
         return false;

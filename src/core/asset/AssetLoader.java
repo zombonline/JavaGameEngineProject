@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -45,6 +46,8 @@ public class AssetLoader {
         if(image != null){
             synchronized (cache) {
                 cache.put(subImagePath, new CachedImage(image));
+                System.out.println("[Asset loader] Cached image: " + path+x+y+w+h);
+
             }
         }
         return image;
@@ -76,6 +79,7 @@ public class AssetLoader {
         if(image != null){
             synchronized (cache) {
                 cache.put(path, new CachedImage(image));
+                System.out.println("[Asset loader] Cached image: " + path);
             }
         }
         return image;
@@ -115,27 +119,29 @@ public class AssetLoader {
     }
 
     private CachedSFXClip loadSFXClip(String path) {
-        try (InputStream input = getClass().getResourceAsStream(path)) {
-            if (input == null) {
+        try (InputStream rawInput = getClass().getResourceAsStream(path)) {
+            if (rawInput == null) {
                 System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;
             }
 
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(input);
-            AudioFormat format = audioStream.getFormat();
-            byte[] audioData = audioStream.readAllBytes();
+            try (BufferedInputStream input = new BufferedInputStream(rawInput)) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(input);
+                AudioFormat format = audioStream.getFormat();
+                byte[] audioData = audioStream.readAllBytes();
 
-            List<Clip> clipPool = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {  // load a small pool of 4 copies
-                Clip clip = AudioSystem.getClip();
-                clip.open(format, audioData, 0, audioData.length);
-                clipPool.add(clip);
+                List<Clip> clipPool = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(format, audioData, 0, audioData.length);
+                    clipPool.add(clip);
+                }
+                return new CachedSFXClip(clipPool);
             }
-
-            return new CachedSFXClip(clipPool);
 
         } catch (Exception e) {
             System.err.println("[AssetLoader] Failed to load and cache SFX: " + path);
+            e.printStackTrace();
             return null;
         }
     }
@@ -178,7 +184,18 @@ public class AssetLoader {
 
     public GameObject getPrefab(String path) {
         InputStream cachedPrefabFile = getInputStream(path);
-        GameObject prefab = PrefabReader.getObject(cachedPrefabFile);
+        GameObject prefab = PrefabReader.getObject(cachedPrefabFile, new HashMap<>());
+        if (prefab == null) {
+            System.err.println("[AssetLoader] Failed to parse prefab: " + path);
+            return null;
+        }
+        prefab.initialize();
+        return prefab;
+    }
+
+    public GameObject getPrefab(String path, Map<Object, Object> extraData) {
+        InputStream cachedPrefabFile = getInputStream(path);
+        GameObject prefab = PrefabReader.getObject(cachedPrefabFile, extraData);
         if (prefab == null) {
             System.err.println("[AssetLoader] Failed to parse prefab: " + path);
             return null;
@@ -204,6 +221,7 @@ public class AssetLoader {
     }
     private CachedInputStream loadAndCacheInputStream(String path) {
         try (InputStream input = getClass().getResourceAsStream(path)) {
+
             if (input == null) {
                 System.err.println("[AssetLoader] Asset not found at: " + path);
                 return null;

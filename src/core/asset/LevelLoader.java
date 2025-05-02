@@ -25,38 +25,48 @@ public class LevelLoader {
     private static int mapHeight;
     private static HashMap<Integer, PrefabReference> idToPrefabName;
     public static LevelData parse(String levelString) {
-        
-        ArrayList<GameObject> levelContents;
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
+        final ArrayList<GameObject> levelContents = new ArrayList<>();
+        Thread loadingThread = new Thread(() -> {
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
 
-            //load tilemap file
-            InputStream tileMapFile = AssetLoader.getInstance().getInputStream(levelString);
-            Document tileMapDocument = builder.parse(tileMapFile);
-            tileMapDocument.getDocumentElement().normalize();
+                //load tilemap file
+                InputStream tileMapFile = AssetLoader.getInstance().getInputStream(levelString);
+                Document tileMapDocument = builder.parse(tileMapFile);
+                tileMapDocument.getDocumentElement().normalize();
 
-            //get map element of tilemap file to read map data from
-            Element mapElement = tileMapDocument.getDocumentElement();
-            //set width and height of current tilemap
-            setMapWidthHeight(mapElement);
+                //get map element of tilemap file to read map data from
+                Element mapElement = tileMapDocument.getDocumentElement();
+                //set width and height of current tilemap
+                setMapWidthHeight(mapElement);
 
-            //get the elements that list which tilesets the map needs
-            NodeList tileSetFiles = mapElement.getElementsByTagName("tileset");
-            //send these elements to be parsed so the correct tilesets can be loaded
-            idToPrefabName = buildIDtoPrefabNameMap(builder, tileSetFiles);
-            //print the tile id -> prefab name map for debugging
-            printIdToPrefabMap();
+                //get the elements that list which tilesets the map needs
+                NodeList tileSetFiles = mapElement.getElementsByTagName("tileset");
+                //send these elements to be parsed so the correct tilesets can be loaded
+                idToPrefabName = buildIDtoPrefabNameMap(builder, tileSetFiles);
+                //print the tile id -> prefab name map for debugging
+                printIdToPrefabMap();
 
-            //get all the children of the mapElement (so we can parse the layers in the order they appear in.
-            //this is so if an object layer is sandwiched between two tile layers it will be parsed in that order
-            NodeList children = mapElement.getChildNodes();
-            levelContents = parseMapChildElements(children);
-            return new LevelData(levelString, levelContents, mapWidth, mapHeight);
+                //get all the children of the mapElement (so we can parse the layers in the order they appear in.
+                //this is so if an object layer is sandwiched between two tile layers it will be parsed in that order
+                NodeList children = mapElement.getChildNodes();
+                levelContents.addAll(parseMapChildElements(children));
 
-        } catch (Exception e){
-            return null;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+        loadingThread.start();
+        while(loadingThread.isAlive()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return new LevelData(levelString, levelContents, mapWidth, mapHeight);
+
     }
 
     private static ArrayList<GameObject> parseMapChildElements(NodeList children) {
@@ -74,11 +84,9 @@ public class LevelLoader {
                         continue;
                     }
                     result.addAll(parseTileLayer(element));
-                    System.out.println("Parsing layer: " + element.getAttribute("name"));
                     break;
                 case "objectgroup":
                     result.addAll(parseObjectLayer(element));
-                    System.out.println("Parsing object group: " + element.getAttribute("name"));
                     break;
             }
         }
@@ -92,7 +100,7 @@ public class LevelLoader {
             Element tileSetElement = (Element) tileSets.item(i);
             //grab relevant attributes from tile set reference element
             int firstgid = Integer.parseInt(tileSetElement.getAttribute("firstgid"));
-            String source = tileSetElement.getAttribute("source");
+            String source = tileSetElement.getAttribute( "source");
             //load the tile set file the reference is referring to
             InputStream tileSetFile = AssetLoader.getInstance().getInputStream(source);
             Document tileSetDocument = builder.parse(tileSetFile);
@@ -173,16 +181,18 @@ public class LevelLoader {
                         System.out.println("No prefab found for tile id: " + tileID);
                         continue;
                     }
-                    newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabReference.prefabName);
+                    Map<Object, Object> extraData = new HashMap<>();
+                    extraData.put("parallax", parallaxFactor);
+                    for(Map.Entry entry : idToPrefabName.get(tileID).data.entrySet()){
+                        extraData.put(entry.getKey(),entry.getValue());
+                    }
+                    newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabReference.prefabName, extraData);
+                    newObject.getTransform().setPosition(new Vector2(x, y));
                     if (newObject == null) {
                         System.out.println("New Object IS NULL");
                         continue;
                     }
-                    newObject.insertExtraData("parallax", parallaxFactor);
-                    newObject.getTransform().setPosition(new Vector2(x, y));
-                    for(Map.Entry entry : idToPrefabName.get(tileID).data.entrySet()){
-                        newObject.insertExtraData(entry.getKey(),entry.getValue());
-                    }
+
                     gameObjects.add(newObject);
                 }
             }
@@ -208,18 +218,18 @@ public class LevelLoader {
             if(prefabName.isEmpty()){
                 continue;
             }
-            GameObject newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabName);
+            Map<Object,Object> extraData = new HashMap<>();
+            for(Map.Entry entry : getPropertiesAsMap(item).entrySet()){
+                extraData.put(entry.getKey(),entry.getValue());
+            }
+            for(Map.Entry entry : idToPrefabName.get(gid).data.entrySet()){
+                extraData.put(entry.getKey(),entry.getValue());
+            }
+
+            GameObject newObject = AssetLoader.getInstance().getPrefab("Prefabs."+prefabName, extraData);
             float x = Float.parseFloat(item.getAttribute("x"))/512;
             float y = Float.parseFloat(item.getAttribute("y"))/512;
             newObject.getTransform().setPosition(new Vector2(x,y-1));
-            for(Map.Entry entry : getPropertiesAsMap(item).entrySet()){
-                newObject.insertExtraData(entry.getKey(),entry.getValue());
-
-            }
-            for(Map.Entry entry : idToPrefabName.get(gid).data.entrySet()){
-                newObject.insertExtraData(entry.getKey(),entry.getValue());
-                System.out.println("ADDED " + entry.getKey() + ": " + entry.getValue());
-            }
             newObject.insertExtraData("parallax", parallaxFactor);
             gameObjects.add(newObject);
         }

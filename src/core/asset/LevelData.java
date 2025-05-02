@@ -3,7 +3,6 @@ package core.asset;
 import game.components.crate.core.Crate;
 import game.entities.GameObject;
 import core.spatial.SpatialHashGrid;
-import core.ui.GameUI;
 
 import java.util.ArrayList;
 
@@ -27,8 +26,12 @@ public class LevelData {
         this.cratesToDestroy = countCratesToDestroy();
         this.width = mapWidth;
         this.height = mapHeight;
-        GameUI.getInstance().updateScreen(GameUI.Screen.GAME);
         System.out.println("LevelData created: " + initialGameobjects.size() + " game objects, " + cratesToDestroy + " crates to destroy");
+    }
+    public void initializeObjects(){
+        for(GameObject gameObject : initialGameobjects){
+            gameObject.initialize();
+        }
     }
 
     public int getCratesToDestroy(){

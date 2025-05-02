@@ -12,6 +12,7 @@ import game.components.core.Component;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+
 import main.GamePanel;
 
 public class Player extends Component {
@@ -87,6 +88,8 @@ public class Player extends Component {
             jumpCoyoteTimer = jumpCoyoteTime;
         }
         if (jumpCoyoteTimer > 0 && jumpPressTimer > 0 && rb.velocity.getY()>=0) {
+            System.out.println("Trying to load: " + Assets.SFXClips.PLAYER_JUMP);
+
             SFXPlayer.playSound(Assets.SFXClips.PLAYER_JUMP);
             rb.velocity.setY(0);
             rb.addForce(Vector2.up.mul(16));

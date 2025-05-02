@@ -2,17 +2,10 @@ package game.components.crate;
 
 import core.asset.AssetLoader;
 import core.asset.Assets;
-import core.audio.SFXPlayer;
-import core.scene.SessionManager;
 import core.utils.Vector2;
-import game.components.crate.behaviours.BounceBehavior;
-import game.components.crate.behaviours.DestroyedByExplosionBehaviour;
-import game.components.crate.behaviours.HitCounterBehavior;
 import game.components.crate.behaviours.MovementBehaviour;
 import game.components.crate.core.Crate;
-import game.components.player.PlayerComboTracker;
 import game.components.rendering.SpriteRenderer;
-import game.entities.GameObject;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;

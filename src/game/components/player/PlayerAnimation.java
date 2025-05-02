@@ -7,8 +7,6 @@ import game.components.rendering.SpriteAnimator;
 import game.components.rendering.SpriteRenderer;
 import game.components.core.Component;
 
-import java.util.Random;
-
 public class PlayerAnimation extends Component {
     // Component references
     private Rigidbody rb;
@@ -72,9 +70,9 @@ public class PlayerAnimation extends Component {
             currentAnimation = Assets.Animations.PLAYER_IDLE;
         }
         if(!rb.isGrounded() ){
-            if(rb.velocity.getY()>0){
+            if(rb.velocity.getY()>0.2){
                 currentAnimation = Assets.Animations.PLAYER_FALL;
-            } else {
+            } else if(rb.velocity.getY()<-0.2) {
                 currentAnimation = Assets.Animations.PLAYER_RISE;
             }
         }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public abstract class Component {
     protected GameObject gameObject;
-
     //override methods
     public void awake() {}
     public void start() {}
@@ -32,6 +31,7 @@ public abstract class Component {
         return gameObject;
     }
 
+
     //game object methods accessed by component
     public <T extends Component> T getComponent(Class<T> type) {
         return gameObject.getComponent(type);
@@ -39,4 +39,5 @@ public abstract class Component {
     public <T extends Component> boolean hasComponent(Class<T> type) {
         return gameObject.hasComponent(type);
     }
+
 }

@@ -2,7 +2,6 @@ package game.components.crate.core;
 
 import core.asset.AssetLoader;
 import core.asset.Assets;
-import core.asset.PrefabReader;
 import core.scene.SessionManager;
 import core.utils.Vector2;
 import game.components.Collider;
@@ -21,7 +20,7 @@ public class Crate extends Component implements Explosion.ExplosionListener {
     Collider.CollisionListener listener;
     final boolean breakable;
     boolean destroyed;
-    public static final float requiredHitStrength = 0.00001f;
+    public static float requiredHitStrength = 0.01f;
 
     protected final List<CrateBehavior> behaviors;
 

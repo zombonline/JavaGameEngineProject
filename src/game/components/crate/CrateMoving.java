@@ -1,6 +1,5 @@
 package game.components.crate;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import core.asset.AssetLoader;
 import core.asset.Assets;
 import core.audio.SFXPlayer;
@@ -35,7 +34,6 @@ public class CrateMoving extends Crate {
         ));
         this.horizontalImage = horizontalImage;
         this.verticalImage = verticalImage;
-
     }
 
     @Override

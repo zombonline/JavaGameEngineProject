@@ -1,5 +1,6 @@
 package game.components;
 import game.components.crate.core.Crate;
+import game.entities.GameObject;
 import main.GamePanel;
 import core.utils.DebugText;
 import core.utils.Raycast;
@@ -19,10 +20,9 @@ public class Rigidbody extends Component {
     public final float gravityScale;
     private final List<Vector2> forces = new ArrayList<>();
 
-
-
+    private boolean isOnMovingPlatform = false;
     private final boolean isKinematic;
-    private boolean isGrounded = false;
+    private boolean isGrounded = false, wasGroundedLastFrame = false;
     private final ArrayList<Collider> groundedColliders = new ArrayList<>();
     private final float mass;
 
@@ -43,6 +43,7 @@ public class Rigidbody extends Component {
     }
 
     public void update(){
+        wasGroundedLastFrame = isGrounded;
         if(isKinematic) return;
         groundCheck();
         velocityLastFrame = velocity;
@@ -52,10 +53,9 @@ public class Rigidbody extends Component {
         forces.clear();
         double horizontalAfterDrag = velocity.getX() * 1/(1+drag * GamePanel.getDeltaTime());
         velocity = new Vector2(horizontalAfterDrag, velocity.getY());
-        if(!isGrounded){
+        if(!isGrounded && !isOnMovingPlatform){
             velocity = velocity.add(Vector2.down.mul(gravityScale));
         }
-
         if(maxVelocity != null){
             if(Math.abs(velocity.getX()) > maxVelocity.getX()){
                 velocity.setX(Math.signum(velocity.getX())*maxVelocity.getX());
@@ -74,17 +74,26 @@ public class Rigidbody extends Component {
         }
     }
 
-    public void groundCheck(){
-        Vector2 rayOrigin1 = new Vector2(rbCollider.getBounds().minX+0.1f,rbCollider.getBounds().maxY+0.001f);
-        Vector2 rayOrigin2 = new Vector2(rbCollider.getBounds().maxX-0.1f, rbCollider.getBounds().maxY+0.001f);
+    public void groundCheck() {
+        Vector2 rayOrigin1 = new Vector2(rbCollider.getBounds().minX + 0.2f, rbCollider.getBounds().maxY + 0.001f);
+        Vector2 rayOrigin2 = new Vector2(rbCollider.getBounds().maxX - 0.2f, rbCollider.getBounds().maxY + 0.001f);
 
-        Raycast raycast1 = new Raycast(rayOrigin1,.00000001f,0,100, rbCollider.getCollisionMask(), true);
-        Raycast raycast2 = new Raycast(rayOrigin2,.00000001f,0,100, rbCollider.getCollisionMask(), true);
-        ArrayList<Collider> touching = new  ArrayList<>();
+        Raycast raycast1 = new Raycast(rayOrigin1, .00000001f, 0, 100, rbCollider.getCollisionMask(), true);
+        Raycast raycast2 = new Raycast(rayOrigin2, .00000001f, 0, 100, rbCollider.getCollisionMask(), true);
+        ArrayList<Collider> touching = new ArrayList<>();
 
         //CHECK IF THESE ARE TRIGGERS
-        if(raycast1.checkForCollision() != null){touching.add(raycast1.checkForCollision().getCollider());}
-        if(raycast2.checkForCollision() != null){touching.add(raycast2.checkForCollision().getCollider());}
+        if (raycast1.checkForCollision() != null) {
+            if (!Collider.getContactNormal(rbCollider, raycast1.checkForCollision().getCollider()).equals(Vector2.down)) {
+                touching.add(raycast1.checkForCollision().getCollider());
+            }
+        }
+        if (raycast2.checkForCollision() != null) {
+            if (!Collider.getContactNormal(rbCollider, raycast2.checkForCollision().getCollider()).equals(Vector2.down)) {
+                touching.add(raycast2.checkForCollision().getCollider());
+            }
+        }
+
         groundedColliders.clear();
         groundedColliders.addAll(touching);
         for(Collider collider : groundedColliders){
@@ -202,7 +211,7 @@ public class Rigidbody extends Component {
         double dy = thisPosCopy.getY() - otherPos.getY();
 
         float moveFraction = 1;
-        if(other.hasComponent(Rigidbody.class)){
+        if(other.hasComponent(Rigidbody.class) && !other.getComponent(Rigidbody.class).isKinematic()){
             float otherMass = other.getGameObject().getComponent(Rigidbody.class).getMass();
             float totalMass = mass + otherMass;
             moveFraction = otherMass /totalMass;
@@ -248,5 +257,13 @@ public class Rigidbody extends Component {
     }
     public boolean isKinematic() {
         return isKinematic;
+    }
+
+    public boolean isOnMovingPlatform() {
+        return isOnMovingPlatform;
+    }
+
+    public void setOnMovingPlatform(boolean onMovingPlatform) {
+        isOnMovingPlatform = onMovingPlatform;
     }
 }

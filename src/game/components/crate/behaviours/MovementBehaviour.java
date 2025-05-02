@@ -6,6 +6,7 @@ import game.components.crate.core.Crate;
 import game.components.crate.behaviours.core.CrateBehavior;
 import game.entities.GameObject;
 import core.utils.Vector2;
+import main.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,11 @@ public class MovementBehaviour implements CrateBehavior {
         if(!active){return;}
         GameObject crateGameObject = crate.getGameObject();
 
-        crateGameObject.getTransform().translate(moveDirection.mul(moveSpeed * main.GamePanel.getDeltaTime()));
+        Vector2 translation = moveDirection.mul(moveSpeed* main.GamePanel.getDeltaTime());
         for(GameObject object : objectsOnTop){
-            object.getTransform().translate(moveDirection.mul(moveSpeed * main.GamePanel.getDeltaTime()));
+            object.getTransform().translate(translation);
         }
+        crateGameObject.getTransform().translate(translation);
 
         if(Vector2.dist(initialPosition, crateGameObject.getTransform().getPosition()) > moveDistance){
             crateGameObject.getTransform().setPosition(initialPosition.add(moveDirection.mul(moveDistance)));

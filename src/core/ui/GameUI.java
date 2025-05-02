@@ -21,11 +21,12 @@ public class GameUI {
         DIALOGUE,
         LEVEL_COMPLETE,
         GAME_COMPLETE,
-        GAME_INTRO
+        GAME_INTRO,
+        LOADING
     }
     private static GameUI instance;
     private Vector2 textSize;
-    private Screen currentScreen = Screen.GAME_INTRO;
+    private Screen currentScreen = Screen.LOADING;
 
     //LEVEL OVER SCREEN
     private int resultsCrates, resultsCombo;
@@ -33,11 +34,44 @@ public class GameUI {
     //DIALOGUE SCREEN
     String dialogueName = "Name";
     String dialogueContent = "Dialogue";
+    StringBuilder displayedDialogue = new StringBuilder();
     NPCDialogueHandler currentNpc;
+    Thread dialogueAnimationThread = new Thread(() -> {
+        while (true){
+            if(displayedDialogue.length()<dialogueContent.length()){
+                displayedDialogue.append(dialogueContent.charAt(displayedDialogue.length()));
+            } else {
+                currentNpc.setTalking(false);
+            }
+            Main.gamePanel.repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e){
+                break;
+            }
+        }
+    });
 
     //GAME SCREEN
     private final BufferedImage crateIcon = AssetLoader.getInstance().getImage(Assets.Images.CRATE_BASIC);
     private final BufferedImage playerIcon = AssetLoader.getInstance().getImage(Assets.Images.PLAYER_RUN_1);
+
+    //LOADING SCREEN
+    StringBuilder dots = new StringBuilder();
+    Thread dotsAnimationThread = new Thread(() -> {
+        while (true){
+            dots.append(".");
+            if(dots.length()>3){
+                dots.setLength(0);
+            }
+            Main.gamePanel.repaint();
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException e){
+                break;
+            }
+        }
+    });
 
     private GameUI() {
         setUpControls(new KeyHandler());
@@ -55,11 +89,26 @@ public class GameUI {
             case LEVEL_COMPLETE -> drawLevelCompleteScreen(g2d);
             case GAME_COMPLETE -> drawGameCompleteScreen(g2d);
             case GAME_INTRO -> drawGameIntroScreen(g2d);
+            case LOADING -> drawLoadingScreen(g2d);
         }
     }
 
+    private void drawLoadingScreen(Graphics2D g2d) {
+        if(dotsAnimationThread.getState() == Thread.State.NEW){
+            dotsAnimationThread.start();
+        }
+        g2d.setColor(Color.black);
+        g2d.fillRect(0,0, Main.width,Main.height);
+        g2d.setFont(new Font("Arial", Font.PLAIN, GamePanel.WORLD_SCALE));
+        g2d.setColor(Color.white);
+        textSize = getTextSize("Loading...", g2d);
+        g2d.drawString( "Loading"+dots, ((float) Main.width /2)-textSize.getX()/2, ((float) Main.height /2)-textSize.getY()/2);
+    }
+
     public void updateScreen(Screen screen){
+        System.out.println("Screen updated to: " + screen.name());
         currentScreen = screen;
+        Main.gamePanel.repaint();
     }
 
     private void setUpControls(KeyHandler keyHandler) {
@@ -69,7 +118,6 @@ public class GameUI {
     }
     private void enterKeyPressed(){
         if(currentScreen==Screen.LEVEL_COMPLETE) {
-            updateScreen(Screen.GAME);
             if(SessionManager.loadNextLevel()){
                 GamePanel.setGamePaused(false);
             } else {
@@ -77,7 +125,6 @@ public class GameUI {
             }
         }
         else if(currentScreen==Screen.GAME_COMPLETE){
-            updateScreen(Screen.GAME);
             SessionManager.loadLevelByIndex(0);
             GamePanel.setGamePaused(false);
         } else if(currentScreen==Screen.DIALOGUE){
@@ -98,17 +145,20 @@ public class GameUI {
         g2d.drawImage(crateIcon, (int) (Main.gamePanel.getWidth()-textSize.getX()-GamePanel.WORLD_SCALE),GamePanel.WORLD_SCALE/4, GamePanel.WORLD_SCALE, GamePanel.WORLD_SCALE,null);
     }
     private void drawDialogueScreen(Graphics2D g2d){
+        if(dialogueAnimationThread.getState() == Thread.State.NEW){
+            dialogueAnimationThread.start();
+        }
         int w = GamePanel.WORLD_SCALE*10;
-        int h = (int) (GamePanel.WORLD_SCALE*2.75f);
-        int x = (int) (Main.width-w-GamePanel.WORLD_SCALE*0.15f);
-        int y = (int) (GamePanel.WORLD_SCALE*0.15f);
+        int h = (int) (GamePanel.WORLD_SCALE*2.5f);
+        int x = (int) (Main.width/2-w/2-GamePanel.WORLD_SCALE*0.3f);
+        int y = (int) (Main.height-h-GamePanel.WORLD_SCALE*0.5f);
         drawBoxWithOutline(x,y,w,h, g2d);
 
         g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
         textSize = getTextSize(dialogueName,g2d);
-        g2d.drawString(dialogueName, x+GamePanel.WORLD_SCALE/10, (int) (y+textSize.getY()/1.5f));
+        g2d.drawString(dialogueName, x+GamePanel.WORLD_SCALE/10, (int) (y+textSize.getY()/1.3f));
 
-        String[] lines = dialogueContent.split("\n");
+        String[] lines = displayedDialogue.toString().split("\n");
         int yIncrement = 0;
         for (String line : lines) {
             g2d.setFont(new Font("Arial", Font.PLAIN, GamePanel.WORLD_SCALE/3));
@@ -116,6 +166,9 @@ public class GameUI {
             g2d.drawString(line, x+GamePanel.WORLD_SCALE/10, (int) (y+textSize.getY()*2+yIncrement));
             yIncrement+=textSize.getY();
         }
+        g2d.setFont(new Font("Arial", Font.BOLD, GamePanel.WORLD_SCALE/2));
+        textSize = getTextSize("Press Enter to Continue",g2d);
+        g2d.drawString("Press Enter to Continue", x+w-textSize.getX()*1.1f, (int) (y+h-textSize.getY()/2));
     }
     private void drawLevelCompleteScreen(Graphics2D g2d) {
         g2d.setColor(Color.white);
@@ -205,6 +258,7 @@ public class GameUI {
     public void setDialogue(NPCDialogueHandler npcDialogueHandler){
         this.dialogueName = npcDialogueHandler.getCharacterName();
         this.dialogueContent = npcDialogueHandler.getDialogue();
+        displayedDialogue.setLength(0);
         currentNpc = npcDialogueHandler;
     }
     public void setResults(){
